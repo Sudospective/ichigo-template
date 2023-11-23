@@ -52,6 +52,7 @@ return Def.ActorFrame {
 			self:sleep(self:GetEffectDelta()):queuecommand('Update')
 		end,
 	},
+	table.unpack(ichi.ActorTable),
 	Def.ActorFrame {
 		Name = 'Picasso',
 		OnCommand = function(self)
@@ -60,5 +61,4 @@ return Def.ActorFrame {
 			end
 		end,
 	},
-	table.unpack(ichi.ActorTable)
 }
