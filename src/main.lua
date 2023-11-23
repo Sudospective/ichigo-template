@@ -1,13 +1,14 @@
 include 'actors'
 
 
--- define variables here
 local shaders = ShaderLoader:new()
 local bg = Rect:new()
+
 local proxy = {}
 for _, pn in ipairs(Players) do
 	proxy[pn] = Proxy:new()
 end
+
 local r = Rect:new()
 local i = Image:new()
 local l = Label:new()
@@ -19,7 +20,6 @@ function init()
 	shaders:LoadShader(SRC_ROOT..'/assets/breathing-colors.frag', 'Colors')
 
 end
-
 
 function ready()
 
