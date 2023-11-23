@@ -1,4 +1,4 @@
-include 'actors'
+include 'gizmos'
 
 
 Shaders = ShaderLoader:new()
