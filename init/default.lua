@@ -15,6 +15,16 @@ ichi.run '/main.lua'
 if ichi.init then ichi.init() end
 
 
+-- icky
+table.insert(ichi.ActorTable, Def.ActorFrame {
+	Name = 'Picasso',
+	OnCommand = function(self)
+		if ichi.draw then
+			self:SetDrawFunction(ichi.draw)
+		end
+	end
+})
+
 return Def.ActorFrame {
 	OnCommand = function(self)
 		for _, v in pairs(self:GetChildren()) do
@@ -52,13 +62,5 @@ return Def.ActorFrame {
 			self:sleep(self:GetEffectDelta()):queuecommand('Update')
 		end,
 	},
-	table.unpack(ichi.ActorTable),
-	Def.ActorFrame {
-		Name = 'Picasso',
-		OnCommand = function(self)
-			if ichi.draw then
-				self:SetDrawFunction(ichi.draw)
-			end
-		end,
-	},
+	table.unpack(ichi.ActorTable)
 }
