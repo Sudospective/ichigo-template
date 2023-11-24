@@ -17,7 +17,7 @@ L2 = Label:new()
 
 function init()
 
-	Shaders:LoadShader(SRC_ROOT..'/assets/breathing-colors.frag', 'Colors')
+	Shaders:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
 
 end
 

@@ -22,7 +22,7 @@ class 'Viewport' : extends 'Node' {
 
 class 'ShaderLoader' : extends 'Node' {
 	__type = 'Sprite',
-	LoadShader = function(self, path, name)
+	LoadShader = function(self, name, path)
 		local shader = Def.Actor {
 			Frag = path,
 			InitCommand = function(s)
