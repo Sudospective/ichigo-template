@@ -30,6 +30,7 @@ class 'ShaderLoader' : extends 'Node' {
 			end
 		}
 		table.insert(ichi.ActorTable, 1, shader)
+		return self
 	end,
 }
 
