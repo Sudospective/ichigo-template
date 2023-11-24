@@ -7,8 +7,10 @@ ichi.ichi = ichi
 ichi.ActorTable = {}
 ichi.ModTable = {}
 ichi.Players = {}
+ichi.Options = {}
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	ichi.Players[#ichi.Players + 1] = ToEnumShortString(pn)
+	ichi.Options[ToEnumShortString(pn)] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
 end
 ichi.SRC_ROOT = SRC_ROOT
 ichi.__version = '1.0'

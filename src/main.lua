@@ -28,6 +28,7 @@ function ready()
 	for _, pn in ipairs(Players) do
 		Proxies[pn]:SetTarget(ActorTable[pn])
 		ActorTable[pn]:visible(false)
+		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
 	end
 
 	R:name('GoodBoy')
