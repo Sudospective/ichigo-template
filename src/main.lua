@@ -14,14 +14,14 @@ L = Label:new()
 L2 = Label:new()
 
 
--- initialize custom objects here
+-- ran right after main.lua is loaded
 function init()
 
 	Shaders:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
 
 end
 
--- initialize gizmos and actors
+-- ran after all actors are ready
 function ready()
 
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
@@ -67,18 +67,22 @@ function ready()
 end
 
 -- please delete these if unused to improve performance
+
+-- ran on input event
 function input(event)
 
 	-- handle input here (good for minigames)
 
 end
 
+-- ran on each frame
 function update(params)
 
 	-- update stuff here
 
 end
 
+-- ran on each draw
 function draw()
 
 	-- draw stuff here
