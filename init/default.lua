@@ -33,6 +33,14 @@ return Def.ActorFrame {
 		for _, pn in ipairs(ichi.Players) do
 			ichi.ActorTable[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
 		end
+		if ichi.input then
+			SCREENMAN:GetTopScreen():AddInputCallback(ichi.input)
+		end
+	end,
+	OffCommand = function(self)
+		if ichi.input then
+			SCREENMAN:GetTopScreen():RemoveInputCallback(ichi.input)
+		end
 	end,
 	Def.Actor {
 		Name = 'Sleepyhead',

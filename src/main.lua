@@ -1,26 +1,27 @@
 include 'gizmos'
 
 
+-- gizmos appear in order created
 Shaders = ShaderLoader:new()
 BG = Rect:new()
-
 Proxies = {}
 for _, pn in ipairs(Players) do
 	Proxies[pn] = Proxy:new()
 end
-
 R = Rect:new()
 I = Image:new()
 L = Label:new()
 L2 = Label:new()
 
 
+-- initialize custom objects here
 function init()
 
 	Shaders:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
 
 end
 
+-- initialize gizmos and actors
 function ready()
 
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
@@ -65,7 +66,22 @@ function ready()
 
 end
 
+-- please delete these if unused to improve performance
+function input(event)
+
+	-- handle input here (good for minigames)
+
+end
+
 function update(params)
+
+	-- update stuff here
+
+end
+
+function draw()
+
+	-- draw stuff here
 
 end
 
