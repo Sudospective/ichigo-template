@@ -21,7 +21,7 @@ class 'Viewport' : extends 'Node' {
 }
 
 class 'ShaderLoader' : extends 'Node' {
-	__type = 'Sprite',
+	__type = 'Actor',
 	LoadShader = function(self, name, path)
 		local shader = Def.Actor {
 			Frag = path,
@@ -46,6 +46,41 @@ class 'Proxy' : extends 'Node' {
 	__type = 'ActorProxy'
 }
 
-class 'Playfield' : extends 'Node' {
-	__type = 'NoteField'
+class 'PlayField' : extends 'Node' {
+	__type = 'ActorFrame',
+	__ready = function(self)
+		local function metric(str)
+			return tonumber(THEME:GetMetric('Player', str))
+		end
+		self.__actor.FOV = 45
+		local nf = Def.NoteField {
+			Name = 'NoteField',
+			DrawDistanceAfterTargetsPixels = metric 'DrawDistanceAfterTargetsPixels',
+			DrawDistanceBeforeTargetsPixels = metric 'DrawDistanceBeforeTargetsPixels',
+			YReverseOffsetPixels = metric 'ReceptorArrowsYReverse' - metric 'ReceptorArrowsYStandard',
+			InitCommand = function(self)
+				local plr = self:GetParent()
+				local po = self:GetPlayerOptions('ModsLevel_Current')
+				local vanishx = plr.vanishpointx
+				local vanishy = plr.vanishpointy
+				function plr:vanishpointx(n)
+					local offset = scale(po:Skew(), 0, 1, plr:GetX(), SCREEN_CENTER_X)
+					vanishx(plr, offset + n)
+					return self
+				end
+				function plr:vanishpointy(n)
+					local offset = SCREEN_CENTER_Y
+					vanishy(plr, offset + n)
+					return self
+				end
+				function plr:vanishpoint(x, y)
+					return plr:vanishpointx(x):vanishpointy(y)
+				end
+				local nfmid = (metric 'ReceptorArrowsYStandard' + metric 'ReceptorArrowsYReverse') / 2
+				plr:Center():zoom(SCREEN_HEIGHT / 480)
+				self:y(nfmid)
+			end,
+		}
+		table.insert(self.__actor, nf)
+	end
 }
