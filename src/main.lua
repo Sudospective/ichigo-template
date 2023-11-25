@@ -36,6 +36,8 @@ function ready()
 		:SetSize(96, 96)
 		:zoom(0)
 		:rotationz(360)
+		:shadowcolor(0, 0, 0, 0.5)
+		:shadowlengthy(3)
 	
 	I:name('Strawb')
 		:Center()
@@ -58,6 +60,8 @@ function ready()
 		:addy(96)
 		:settext('Ichigo Template')
 		:cropright(1)
+		:shadowcolor(0, 0, 0, 0.5)
+		:shadowlengthy(3)
 
 end
 
