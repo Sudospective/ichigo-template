@@ -24,8 +24,8 @@ function ichi.class(name)
 			object[k]=v
 		end
 		setmetatable(object,{__index=class})
-		if object.initialize then
-			object:initialize(...)
+		if object.__init then
+			object:__init(...)
 		end
 		return object
 	end

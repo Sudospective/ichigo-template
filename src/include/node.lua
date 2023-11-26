@@ -3,7 +3,7 @@ class 'Node' {
 	__type = 'Actor',
 
 	
-	initialize = function(self)
+	__init = function(self)
 		self.__actor = Def[self.__type] {}
 		local t = _G[self.__type] or {}
 		for k, v in pairs(Actor) do

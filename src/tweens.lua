@@ -2,17 +2,21 @@ ease
 
 	{0, function()
 
-		R:easeoutquint(2)
+		R:stoptweening()
+			:easeoutquint(2)
 			:zoom(1)
 			:rotationz(-45)
 		
-		I:easeoutback(0.25)
+		I:stoptweening()
+			:easeoutback(0.25)
 			:zoom(1)
 		
-		L:easeoutback(0.25)
+		L:stoptweening()
+			:easeoutback(0.25)
 			:zoom(1)
 		
-		L2:sleep(1)
+		L2:stoptweening()
+			:sleep(1)
 			:linear(0.25)
 			:cropright(0)
 		
