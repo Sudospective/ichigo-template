@@ -6,7 +6,9 @@ Shaders = ShaderLoader:new()
 BG = Rect:new()
 Proxies = {}
 for _, pn in ipairs(Players) do
-	Proxies[pn] = Proxy:new()
+	Proxies['Player'..pn] = Proxy:new()
+	Proxies['Judgment'..pn] = Proxy:new()
+	Proxies['Combo'..pn] = Proxy:new()
 end
 R = Rect:new()
 I = Image:new()
@@ -27,8 +29,18 @@ function ready()
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
 
 	for _, pn in ipairs(Players) do
-		Proxies[pn]:SetTarget(ActorTable[pn])
+		Proxies['Player'..pn]:SetTarget(ActorTable[pn])
+		Proxies['Judgment'..pn]
+			:SetTarget(ActorTable[pn]:GetChild('Judgment'))
+			:xy(ActorTable[pn]:GetX(), SCREEN_CENTER_Y)
+			:zoom(SCREEN_HEIGHT / 480)
+		Proxies['Combo'..pn]
+			:SetTarget(ActorTable[pn]:GetChild('Combo'))
+			:xy(ActorTable[pn]:GetX(), SCREEN_CENTER_Y)
+			:zoom(SCREEN_HEIGHT / 480)
 		ActorTable[pn]:visible(false)
+		ActorTable[pn]:GetChild('Judgment'):visible(false):diffusealpha(0.5):sleep(9e9)
+		ActorTable[pn]:GetChild('Combo'):visible(false):diffusealpha(0.5):sleep(9e9)
 		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
 	end
 
