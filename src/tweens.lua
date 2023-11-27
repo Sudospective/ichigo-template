@@ -2,20 +2,24 @@ ease
 
 	{0, function()
 
-		R:stoptweening()
+		GoodBoy
+			:stoptweening()
 			:easeoutquint(2)
 			:zoom(1)
 			:rotationz(-45)
 		
-		I:stoptweening()
+		Strawb
+			:stoptweening()
 			:easeoutback(0.25)
 			:zoom(1)
 		
-		L:stoptweening()
+		Ichigo
+			:stoptweening()
 			:easeoutback(0.25)
 			:zoom(1)
 		
-		L2:stoptweening()
+		Template
+			:stoptweening()
 			:sleep(1)
 			:linear(0.25)
 			:cropright(0)
@@ -24,20 +28,24 @@ ease
 
 	{9, function()
 		
-		R:stoptweening()
+		GoodBoy
+			:stoptweening()
 			:easeinquad(0.5)
 			:addrotationz(-360)
 			:zoom(0)
 		
-		I:stoptweening()
+		Strawb
+			:stoptweening()
 			:easeinback(0.25)
 			:zoom(0)
 		
-		L:stoptweening()
+		Ichigo
+			:stoptweening()
 			:easeinback(0.25)
 			:zoom(0)
 		
-		L2:stoptweening()
+		Template
+			:stoptweening()
 			:linear(0.25)
 			:cropright(1)
 		

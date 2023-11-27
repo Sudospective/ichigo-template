@@ -4,16 +4,18 @@ include 'gizmos'
 -- gizmos appear in order created
 Shaders = ShaderLoader:new()
 BG = Rect:new()
+
 Proxies = {}
-for _, pn in ipairs(Players) do
+loop {Players, function(i, pn)
 	Proxies['Player'..pn] = Proxy:new()
 	Proxies['Judgment'..pn] = Proxy:new()
 	Proxies['Combo'..pn] = Proxy:new()
-end
-R = Rect:new()
-I = Image:new()
-L = Label:new()
-L2 = Label:new()
+end}
+
+GoodBoy = Rect:new()
+Strawb = Image:new()
+Ichigo = Label:new()
+Template = Label:new()
 
 
 -- ran right after main.lua is loaded
@@ -28,7 +30,7 @@ function ready()
 
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
 
-	for _, pn in ipairs(Players) do
+	loop {Players, function(i, pn)
 		Proxies['Player'..pn]:SetTarget(ActorTable[pn])
 		Proxies['Judgment'..pn]
 			:SetTarget(ActorTable[pn]:GetChild('Judgment'))
@@ -48,9 +50,9 @@ function ready()
 			:visible(false)
 			:sleep(9e9)
 		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
-	end
+	end}
 
-	R:name('GoodBoy')
+	GoodBoy
 		:Center()
 		:SetSize(96, 96)
 		:zoom(0)
@@ -58,13 +60,13 @@ function ready()
 		:shadowcolor(0, 0, 0, 0.5)
 		:shadowlengthy(3)
 	
-	I:name('Strawb')
+	Strawb
 		:Center()
 		:Load(SRC_ROOT..'/assets/strawb.png')
 		:SetSize(64, 64)
 		:zoom(0)
 	
-	L:name('Ichigo')
+	Ichigo
 		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
 		:Center()
 		:diffuse(0, 0, 0, 1)
@@ -73,7 +75,7 @@ function ready()
 		:effectmagnitude(0, 0, 5)
 		:zoom(0)
 
-	L2:name('Template')
+	Template
 		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
 		:Center()
 		:addy(96)
@@ -87,7 +89,7 @@ end
 -- ran on each frame
 function update(params)
 
-	R:addrotationz(-30 * params.dt)
+	GoodBoy:addrotationz(-30 * params.dt)
 
 end
 
