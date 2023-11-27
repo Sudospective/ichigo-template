@@ -86,3 +86,22 @@ class 'PlayField' : extends 'Node' {
 		table.insert(self.__actor, nf)
 	end
 }
+
+class 'Polygon' : extends 'Node' {
+	__type = 'ActorMultiVertex'
+}
+
+class 'Canvas' : extends 'Node' {
+	__type = 'ActorFrame'
+}
+
+class 'Input' : extends 'Node' {
+	__type = 'Actor',
+	SetInputCallback = function(self, func)
+		if self.__func then
+			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__func)
+		end
+		self.__func = func
+		SCREENMAN:GetTopScreen():AddInputCallback(self.__func)
+	end
+}
