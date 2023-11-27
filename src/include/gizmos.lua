@@ -29,7 +29,7 @@ class 'ShaderLoader' : extends 'Node' {
 				self[name] = s:GetShader()
 			end
 		}
-		table.insert(ichi.ActorTable, 1, shader)
+		table.insert(ichi.Actors, 1, shader)
 		return self
 	end,
 }
