@@ -18,7 +18,7 @@ if ichi.init then ichi.init() end
 
 
 -- icky
-table.insert(ichi.ActorTable, Def.ActorFrame {
+table.insert(ichi.Actors, Def.ActorFrame {
 	Name = 'Picasso',
 	OnCommand = function(self)
 		if ichi.draw then
@@ -31,10 +31,10 @@ table.insert(ichi.ActorTable, Def.ActorFrame {
 return Def.ActorFrame {
 	OnCommand = function(self)
 		for _, v in pairs(self:GetChildren()) do
-			ichi.ActorTable[v:GetName()] = v
+			ichi.Actors[v:GetName()] = v
 		end
 		for _, pn in ipairs(ichi.Players) do
-			ichi.ActorTable[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
+			ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
 		end
 		if ichi.input then
 			SCREENMAN:GetTopScreen():AddInputCallback(ichi.input)
@@ -70,5 +70,5 @@ return Def.ActorFrame {
 			self:sleep(self:GetEffectDelta()):queuecommand('Update')
 		end
 	},
-	table.unpack(ichi.ActorTable)
+	table.unpack(ichi.Actors)
 }

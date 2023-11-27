@@ -4,9 +4,9 @@ local ichi = ...
 local SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 
 ichi.ichi = ichi
-ichi.ActorTable = {}
 ichi.ModTable = {}
 ichi.PopTable = {}
+ichi.Actors = {}
 ichi.Players = {}
 ichi.Options = {}
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
@@ -35,7 +35,7 @@ function ichi.include(name, ...)
 end
 
 function ichi.actor(t)
-	table.insert(ichi.ActorTable, t)
+	table.insert(ichi.Actors, t)
 	return ichi.actor
 end
 
