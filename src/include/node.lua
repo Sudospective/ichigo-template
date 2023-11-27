@@ -18,7 +18,7 @@ class 'Node' {
 		self.__actor.InitCommand = function(s)
 			self.__actor = s
 		end
-		table.insert(ActorTable, self.__actor)
+		table.insert(Actors, self.__actor)
 		if self.__ready then
 			self:__ready()
 		end
