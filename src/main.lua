@@ -84,26 +84,10 @@ function ready()
 
 end
 
--- please delete these if unused to improve performance
-
--- ran on input event
-function input(event)
-
-	-- handle input here (good for minigames)
-
-end
-
 -- ran on each frame
 function update(params)
 
-	-- update stuff here
-
-end
-
--- ran on each draw
-function draw()
-
-	-- draw stuff here
+	R:addrotationz(-30 * params.dt)
 
 end
 

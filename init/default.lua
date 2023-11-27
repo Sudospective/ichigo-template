@@ -7,9 +7,11 @@ setmetatable(ichi, {
 	end,
 })
 
+
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 loadfile(ROOT..'lib/std.lua')(ichi)
 loadfile(ROOT..'lib/classes.lua')(ichi)
+
 
 ichi.run '/main.lua'
 if ichi.init then ichi.init() end
@@ -24,6 +26,7 @@ table.insert(ichi.ActorTable, Def.ActorFrame {
 		end
 	end
 })
+
 
 return Def.ActorFrame {
 	OnCommand = function(self)
@@ -48,17 +51,14 @@ return Def.ActorFrame {
 	},
 	Def.PandaTemplate {
 		Name = 'Bookworm',
-		ClearDoneMods = false,
-		ClearDoneEases = false,
+		ClearDoneMods = true,
+		ClearDoneEases = true,
+		ClearAllPoptions = true,
+		LoopModsAllPoptions = true,
 		OnCommand = function(self)
 			if ichi.ready then ichi.ready() end
-			if ichi.mods then
-				local t = ichi.mods()
-				for _, v in ipairs(t) do
-					table.insert(ichi.ModTable, {v[1], v[2], v[4], v[5], v[6], 'len', v[3]})
-				end
-			end
 			self:PopulateEases(ichi.ModTable)
+			self:PopulatePoptions(ichi.PopTable)
 			--self:SetPostCommand('Update')
 			self:queuecommand('Update')
 		end,
@@ -68,7 +68,7 @@ return Def.ActorFrame {
 			if ichi.update then ichi.update(params) end
 			self:SetUpdateSleep(self:GetEffectDelta())
 			self:sleep(self:GetEffectDelta()):queuecommand('Update')
-		end,
+		end
 	},
 	table.unpack(ichi.ActorTable)
 }

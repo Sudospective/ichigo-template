@@ -61,6 +61,8 @@ class 'PlayField' : extends 'Node' {
 			InitCommand = function(self)
 				local plr = self:GetParent()
 				local po = self:GetPlayerOptions('ModsLevel_Current')
+				table.insert(PopTable, po)
+				Options['P'..#PopTable] = po
 				local vanishx = plr.vanishpointx
 				local vanishy = plr.vanishpointy
 				function plr:vanishpointx(n)
