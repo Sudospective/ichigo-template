@@ -22,18 +22,28 @@ Template = Label:new()
 -- ran right after main.lua is loaded
 function init()
 
-	Shaders:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
+	do Shaders
+		:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
+	end
 
 end
 
 -- ran after all actors are ready
 function ready()
 
-	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
+	-- background
+	do BG
+		:FullScreen()
+		:SetShader(Shaders.Colors)
+		:glow(0, 0, 0, 0.5)
+	end
 
+	-- player proxies
 	loop {Players, function(i, pn)
 
-		Proxies['Player'..pn]:SetTarget(Actors[pn])
+		do Proxies['Player'..pn]
+			:SetTarget(Actors[pn])
+		end
 		do Proxies['Judgment'..pn]
 			:SetTarget(Actors[pn]:GetChild('Judgment'))
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
@@ -44,7 +54,9 @@ function ready()
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
 			:zoom(SCREEN_HEIGHT / 480)
 		end
-		Actors[pn]:visible(false)
+		do Actors[pn]
+			:visible(false)
+		end
 		do Actors[pn]:GetChild('Judgment')
 			:diffusealpha(0.5)
 			:visible(false)
@@ -55,8 +67,10 @@ function ready()
 			:visible(false)
 			:sleep(9e9)
 		end
-		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
-		
+		do Options[pn]
+			:NotePathDrawMode('DrawMode_PolyLineStrip')
+		end
+
 	end}
 
 	-- watermark stuff
