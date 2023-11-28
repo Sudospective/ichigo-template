@@ -2,9 +2,14 @@ include 'gizmos'
 
 
 -- gizmos appear in order created
+
+-- shader loader
 Shaders = ShaderLoader:new()
+
+-- bg
 BG = Rect:new()
 
+-- player proxies
 Proxies = {}
 loop {Players, function(i, pn)
 	Proxies['Player'..pn] = Proxy:new()
