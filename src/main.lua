@@ -6,7 +6,7 @@ Shaders = ShaderLoader:new()
 BG = Rect:new()
 
 Proxies = {}
-loop {Players, function(i, pn)
+loop {Players, function(_, pn)
 	Proxies['Player'..pn] = Proxy:new()
 	Proxies['Judgment'..pn] = Proxy:new()
 	Proxies['Combo'..pn] = Proxy:new()
@@ -30,7 +30,7 @@ function ready()
 
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
 
-	loop {Players, function(i, pn)
+	loop {Players, function(_, pn)
 		Proxies['Player'..pn]:SetTarget(Actors[pn])
 		Proxies['Judgment'..pn]
 			:SetTarget(Actors[pn]:GetChild('Judgment'))

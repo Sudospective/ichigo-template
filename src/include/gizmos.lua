@@ -5,7 +5,7 @@ class 'Rect' : extends 'Node' {
 	__type = 'Quad'
 }
 
-class 'Image' : extends 'Rect' {
+class 'Image' : extends 'Node' {
 	__type = 'Sprite'
 }
 
@@ -91,12 +91,13 @@ class 'Polygon' : extends 'Node' {
 	__type = 'ActorMultiVertex'
 }
 
-class 'Canvas' : extends 'Node' {
-	__type = 'ActorFrame'
-}
-
 class 'Input' : extends 'Node' {
 	__type = 'Actor',
+	__ready = function(self)
+		self.__actor.OffCommand = function(s)
+			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__func)
+		end
+	end,
 	SetInputCallback = function(self, func)
 		if self.__func then
 			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__func)
