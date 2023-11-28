@@ -6,12 +6,13 @@ Shaders = ShaderLoader:new()
 BG = Rect:new()
 
 Proxies = {}
-loop {Players, function(_, pn)
+loop {Players, function(i, pn)
 	Proxies['Player'..pn] = Proxy:new()
 	Proxies['Judgment'..pn] = Proxy:new()
 	Proxies['Combo'..pn] = Proxy:new()
 end}
 
+-- watermark stuff
 GoodBoy = Rect:new()
 Strawb = Image:new()
 Ichigo = Label:new()
@@ -30,43 +31,50 @@ function ready()
 
 	BG:FullScreen():SetShader(Shaders.Colors):glow(0, 0, 0, 0.5)
 
-	loop {Players, function(_, pn)
+	loop {Players, function(i, pn)
+
 		Proxies['Player'..pn]:SetTarget(Actors[pn])
-		Proxies['Judgment'..pn]
+		do Proxies['Judgment'..pn]
 			:SetTarget(Actors[pn]:GetChild('Judgment'))
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
 			:zoom(SCREEN_HEIGHT / 480)
-		Proxies['Combo'..pn]
+		end
+		do Proxies['Combo'..pn]
 			:SetTarget(Actors[pn]:GetChild('Combo'))
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
 			:zoom(SCREEN_HEIGHT / 480)
+		end
 		Actors[pn]:visible(false)
-		Actors[pn]:GetChild('Judgment')
+		do Actors[pn]:GetChild('Judgment')
 			:diffusealpha(0.5)
 			:visible(false)
 			:sleep(9e9)
-		Actors[pn]:GetChild('Combo')
+		end
+		do Actors[pn]:GetChild('Combo')
 			:diffusealpha(0.5)
 			:visible(false)
 			:sleep(9e9)
+		end
 		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
+		
 	end}
 
-	GoodBoy
+	-- watermark stuff
+	do GoodBoy
 		:Center()
 		:SetSize(96, 96)
 		:zoom(0)
 		:rotationz(360)
 		:shadowcolor(0, 0, 0, 0.5)
 		:shadowlengthy(3)
-	
-	Strawb
+	end
+	do Strawb
 		:Center()
 		:Load(SRC_ROOT..'/assets/strawb.png')
 		:SetSize(64, 64)
 		:zoom(0)
-	
-	Ichigo
+	end
+	do Ichigo
 		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
 		:Center()
 		:diffuse(0, 0, 0, 1)
@@ -74,8 +82,8 @@ function ready()
 		:wag()
 		:effectmagnitude(0, 0, 5)
 		:zoom(0)
-
-	Template
+	end
+	do Template
 		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
 		:Center()
 		:addy(96)
@@ -83,13 +91,17 @@ function ready()
 		:cropright(1)
 		:shadowcolor(0, 0, 0, 0.5)
 		:shadowlengthy(3)
+	end
 
 end
 
 -- ran on each frame
 function update(params)
 
-	GoodBoy:addrotationz(-30 * params.dt)
+	-- watermark stuff
+	do GoodBoy
+		:addrotationz(-30 * params.dt)
+	end
 
 end
 

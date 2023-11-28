@@ -26,12 +26,14 @@ function ichi.ni(f)
 	return f()
 end
 
-function ichi.run(path, ...)
-	return ichi(loadfile(SRC_ROOT..path))(...)
+function ichi.run(path)
+	local data = assert(loadfile(SRC_ROOT..path))
+	return ichi(data)()
 end
 
-function ichi.include(name, ...)
-	return ichi(loadfile(SRC_ROOT..'/include/'..name..'.lua'))(...)
+function ichi.include(name)
+	local data = assert(loadfile(SRC_ROOT..'/include/'..name..'.lua'))
+	return ichi(data)()
 end
 
 function ichi.actor(t)
