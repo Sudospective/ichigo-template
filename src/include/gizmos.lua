@@ -126,14 +126,16 @@ class 'Input' : extends 'Gizmo' {
 	__type = 'Actor',
 	__ready = function(self)
 		self.__actor.OffCommand = function(s)
-			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__func)
+			if self.__callback then
+				SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
+			end
 		end
 	end,
-	SetInputCallback = function(self, func)
-		if self.__func then
-			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__func)
+	SetInputCallback = function(self, callback)
+		if self.__callback then
+			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
 		end
-		self.__func = func
-		SCREENMAN:GetTopScreen():AddInputCallback(self.__func)
+		self.__callback = callback
+		SCREENMAN:GetTopScreen():AddInputCallback(self.__callback)
 	end
 }

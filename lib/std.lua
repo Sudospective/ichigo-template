@@ -6,7 +6,7 @@ local SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 ichi.ichi = ichi
 ichi.ModTable = {}
 ichi.PopTable = {}
-ichi.Actors = {}
+ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
 ichi.Options = {}
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
