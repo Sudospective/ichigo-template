@@ -1,26 +1,57 @@
-include 'node'
+class 'Gizmo' {
+
+	__type = 'Actor',
+
+	
+	__init = function(self)
+		self.__actor = Def[self.__type] {}
+		local t = _G[self.__type] or {}
+		for k, v in pairs(Actor) do
+			t[k] = v
+		end
+		for k, v in pairs(t) do
+			self[k] = function(s, ...)
+				v(self.__actor, ...)
+				return self
+			end
+		end
+		self.__actor.InitCommand = function(s)
+			self.__actor = s
+		end
+		table.insert(Actors, self.__actor)
+		if self.__ready then
+			self:__ready()
+		end
+	end,
 
 
-class 'Rect' : extends 'Node' {
+	-- shouldnt be needed, but just in case
+	GetActor = function(self)
+		return self.__actor
+	end,
+
+}
+
+class 'Rect' : extends 'Gizmo' {
 	__type = 'Quad'
 }
 
-class 'Image' : extends 'Node' {
+class 'Image' : extends 'Gizmo' {
 	__type = 'Sprite'
 }
 
-class 'Label' : extends 'Node' {
+class 'Label' : extends 'Gizmo' {
 	__type = 'BitmapText',
 	__ready = function(self)
 		self.__actor.Font = 'Common Normal'
 	end
 }
 
-class 'Viewport' : extends 'Node' {
+class 'Viewport' : extends 'Gizmo' {
 	__type = 'ActorScreenTexture'
 }
 
-class 'ShaderLoader' : extends 'Node' {
+class 'ShaderLoader' : extends 'Gizmo' {
 	__type = 'Actor',
 	LoadShader = function(self, name, path)
 		local shader = Def.Actor {
@@ -34,19 +65,19 @@ class 'ShaderLoader' : extends 'Node' {
 	end,
 }
 
-class 'Model3D' : extends 'Node' {
+class 'Model3D' : extends 'Gizmo' {
 	__type = 'Model'
 }
 
-class 'Audio' : extends 'Node' {
+class 'Audio' : extends 'Gizmo' {
 	__type = 'Sound'
 }
 
-class 'Proxy' : extends 'Node' {
+class 'Proxy' : extends 'Gizmo' {
 	__type = 'ActorProxy'
 }
 
-class 'PlayField' : extends 'Node' {
+class 'PlayField' : extends 'Gizmo' {
 	__type = 'ActorFrame',
 	__ready = function(self)
 		local function metric(str)
@@ -87,11 +118,11 @@ class 'PlayField' : extends 'Node' {
 	end
 }
 
-class 'Polygon' : extends 'Node' {
+class 'Polygon' : extends 'Gizmo' {
 	__type = 'ActorMultiVertex'
 }
 
-class 'Input' : extends 'Node' {
+class 'Input' : extends 'Gizmo' {
 	__type = 'Actor',
 	__ready = function(self)
 		self.__actor.OffCommand = function(s)
