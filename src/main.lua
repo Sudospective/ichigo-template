@@ -11,11 +11,11 @@ BG = Rect:new()
 
 -- player proxies
 Proxies = {}
-loop {Players, function(i, pn)
+for _, pn in ipairs(Players) do
 	Proxies['Player'..pn] = Proxy:new()
 	Proxies['Judgment'..pn] = Proxy:new()
 	Proxies['Combo'..pn] = Proxy:new()
-end}
+end
 
 -- watermark stuff
 GoodBoy = Rect:new()
@@ -44,7 +44,7 @@ function ready()
 	end
 
 	-- player proxies
-	loop {Players, function(i, pn)
+	for _, pn in ipairs(Players) do
 
 		do Proxies['Player'..pn]
 			:SetTarget(Actors[pn])
@@ -76,7 +76,7 @@ function ready()
 			:NotePathDrawMode('DrawMode_PolyLineStrip')
 		end
 
-	end}
+	end
 
 	-- watermark stuff
 	do GoodBoy
