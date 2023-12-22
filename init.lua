@@ -19,9 +19,6 @@ if ichi.init then ichi.init() end
 
 return Def.ActorFrame {
 	OnCommand = function(self)
-		for _, v in pairs(self:GetChildren()) do
-			ichi.Actors[v:GetName()] = v
-		end
 		for _, pn in ipairs(ichi.Players) do
 			ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
 		end

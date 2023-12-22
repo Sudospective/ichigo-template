@@ -124,6 +124,7 @@ class 'Polygon' : extends 'Gizmo' {
 
 class 'Input' : extends 'Gizmo' {
 	__type = 'Actor',
+	__enabled = true,
 	__ready = function(self)
 		self.__actor.OffCommand = function(s)
 			if self.__callback then
@@ -131,11 +132,18 @@ class 'Input' : extends 'Gizmo' {
 			end
 		end
 	end,
+	SetEnabled = function(self, b)
+		if b == nil then return end
+		self.__enabled = b
+	end,
 	SetInputCallback = function(self, callback)
 		if self.__callback then
 			SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
 		end
-		self.__callback = callback
+		self.__callback = function(event)
+			if not self.__enabled then return end
+			callback(event)
+		end
 		SCREENMAN:GetTopScreen():AddInputCallback(self.__callback)
 	end
 }
