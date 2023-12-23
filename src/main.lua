@@ -1,6 +1,9 @@
 include 'gizmos'
 
 
+-- uncomment this to require two players
+-- ni()
+
 -- gizmos appear in order created
 
 -- shader loader
@@ -35,9 +38,6 @@ end
 
 -- ran after all actors are ready
 function ready()
-
-	-- uncomment this to require two players
-	--ni()
 
 	-- background
 	do BG

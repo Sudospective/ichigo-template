@@ -21,7 +21,11 @@ ichi.__version = '1.0'
 function ichi.ni()
 	if GAMESTATE:GetNumPlayersEnabled() < 2 then
 		SCREENMAN:SystemMessage('Two Players Required')
-		SCREENMAN:GetTopScreen():Cancel()
+		table.insert(ichi.Actors, Def.Actor {
+			OnCommand = function(self)
+				SCREENMAN:GetTopScreen():Cancel()
+			end
+		})
 	end
 end
 
