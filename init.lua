@@ -9,8 +9,10 @@ setmetatable(ichi, {
 
 
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
-loadfile(ROOT..'lib/std.lua')(ichi)
-loadfile(ROOT..'lib/class.lua')(ichi)
+local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
+for k, v in pairs(LIBS) do
+	loadfile(v)(ichi)
+end
 
 
 ichi.run '/main.lua'

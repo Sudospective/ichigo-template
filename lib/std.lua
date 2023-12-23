@@ -17,30 +17,33 @@ end
 ichi.SRC_ROOT = SRC_ROOT
 ichi.__version = '1.0'
 
-
-function ichi.ni(f)
-	local env = {}
-	setmetatable(env, {__index = ichi})
-	env.ichi = ichi
-	setfenv(f, env)
-	return f()
+-- require two players
+function ichi.ni()
+	if GAMESTATE:GetNumPlayersEnabled() < 2 then
+		SCREENMAN:SystemMessage('Two Players Required')
+		SCREENMAN:GetTopScreen():Cancel()
+	end
 end
 
+-- run a file from src
 function ichi.run(path)
 	local data = assert(loadfile(SRC_ROOT..path))
 	return ichi(data)()
 end
 
+-- include a file from src/include
 function ichi.include(name)
 	local data = assert(loadfile(SRC_ROOT..'/include/'..name..'.lua'))
 	return ichi(data)()
 end
 
+-- create an actor
 function ichi.actor(t)
 	table.insert(ichi.Actors, t)
 	return ichi.actor
 end
 
+-- create an ease
 function ichi.ease(t)
 	local newT = {}
 	if type(t[2]) == 'function' then -- func
@@ -58,6 +61,7 @@ function ichi.ease(t)
 	return ichi.ease
 end
 
+-- create a loop
 function ichi.loop(t)
 	if type(t[1]) == 'number' then
 		for i = t[1], t[1] + t[2] - t.step, t.step do
