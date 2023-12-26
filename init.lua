@@ -47,15 +47,13 @@ return Def.ActorFrame {
 			if ichi.ready then ichi.ready() end
 			self:PopulateEases(ichi.ModTable)
 			self:PopulatePoptions(ichi.PopTable)
-			--self:SetPostCommand('Update')
-			self:queuecommand('Update')
+			self:SetPostCommand('Update')
 		end,
 		UpdateCommand = function(self, params)
 			params = params or {}
 			params.dt = self:GetEffectDelta()
 			if ichi.update then ichi.update(params) end
-			self:SetUpdateSleep(self:GetEffectDelta())
-			self:sleep(self:GetEffectDelta()):queuecommand('Update')
+			self:SetUpdateSleep(params.dt)
 		end
 	},
 	ichi.Actors,

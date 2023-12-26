@@ -2,7 +2,7 @@ include 'gizmos'
 
 
 -- uncomment this to require two players
--- ni()
+--ni()
 
 -- gizmos appear in order created
 
