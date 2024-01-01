@@ -1,8 +1,5 @@
 class 'Gizmo' {
-
 	__type = 'Actor',
-
-	
 	__init = function(self)
 		self.__actor = Def[self.__type] {}
 		local t = _G[self.__type] or {}
@@ -11,8 +8,7 @@ class 'Gizmo' {
 		end
 		for k, v in pairs(t) do
 			self[k] = function(s, ...)
-				v(self.__actor, ...)
-				return self
+				return v(self.__actor, ...) or self
 			end
 		end
 		self.__actor.InitCommand = function(s)
@@ -23,13 +19,10 @@ class 'Gizmo' {
 			self:__ready()
 		end
 	end,
-
-
 	-- shouldnt be needed, but just in case
 	GetActor = function(self)
 		return self.__actor
 	end,
-
 }
 
 class 'Rect' : extends 'Gizmo' {
@@ -55,7 +48,7 @@ class 'ShaderLoader' : extends 'Gizmo' {
 	__type = 'Actor',
 	LoadShader = function(self, name, path)
 		local shader = Def.Actor {
-			Frag = path,
+			Frag = SRC_ROOT..path,
 			InitCommand = function(s)
 				self[name] = s:GetShader()
 			end

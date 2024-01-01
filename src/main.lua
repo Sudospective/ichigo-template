@@ -31,7 +31,7 @@ Template = Label:new()
 function init()
 
 	do Shaders
-		:LoadShader('Colors', SRC_ROOT..'/assets/breathing-colors.frag')
+		:LoadShader('Colors', '/assets/breathing-colors.frag')
 	end
 
 end
@@ -42,8 +42,8 @@ function ready()
 	-- background
 	do BG
 		:FullScreen()
-		:SetShader(Shaders.Colors)
 		:glow(0, 0, 0, 0.5)
+		:SetShader(Shaders.Colors)
 	end
 
 	-- player proxies
