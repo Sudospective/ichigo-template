@@ -8,7 +8,7 @@ class 'Gizmo' {
 		end
 		for k, v in pairs(t) do
 			self[k] = function(s, ...)
-				return v(self.__actor, ...) or self
+				return v(self.__actor, ...) or self.__actor
 			end
 		end
 		self.__actor.InitCommand = function(s)
@@ -18,10 +18,6 @@ class 'Gizmo' {
 		if self.__ready then
 			self:__ready()
 		end
-	end,
-	-- shouldnt be needed, but just in case
-	GetActor = function(self)
-		return self.__actor
 	end,
 }
 
