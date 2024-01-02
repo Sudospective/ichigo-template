@@ -1,3 +1,5 @@
+if Gizmo then return end
+
 class 'Gizmo' {
 	__type = 'Actor',
 	__init = function(self)
