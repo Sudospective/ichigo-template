@@ -1,23 +1,13 @@
 local ichi = ...
+local SRC_ROOT = ichi.SRC_ROOT
 
 
-local SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
-
-ichi.ichi = ichi
-ichi.ModTable = {}
-ichi.MsgTable = {}
-ichi.EaseTable = {}
-ichi.PopTable = {}
-ichi.Actors = Def.ActorFrame {}
-ichi.Players = {}
-ichi.Options = {}
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	ichi.Players[#ichi.Players + 1] = ToEnumShortString(pn)
 	ichi.PopTable[#ichi.PopTable + 1] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
 	ichi.Options['P'..#ichi.PopTable] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
 end
-ichi.SRC_ROOT = SRC_ROOT
-ichi.__version = '1.0'
+
 
 -- require two players
 function ichi.ni()
@@ -29,18 +19,6 @@ function ichi.ni()
 			end
 		})
 	end
-end
-
--- run a file from src
-function ichi.run(path)
-	local data = assert(loadfile(SRC_ROOT..path))
-	return ichi(data)()
-end
-
--- include a file from src/include
-function ichi.include(name)
-	local data = assert(loadfile(SRC_ROOT..'/include/'..name..'.lua'))
-	return ichi(data)()
 end
 
 -- create an actor

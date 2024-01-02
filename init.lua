@@ -8,6 +8,29 @@ setmetatable(ichi, {
 })
 
 
+ichi.__version = '1.0'
+ichi.ichi = ichi
+ichi.Actors = Def.ActorFrame {}
+ichi.ModTable = {}
+ichi.MsgTable = {}
+ichi.EaseTable = {}
+ichi.PopTable = {}
+ichi.Players = {}
+ichi.Options = {}
+ichi.SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
+
+-- run a file from src
+function ichi.run(path)
+	local data = assert(loadfile(SRC_ROOT..path))
+	return ichi(data)()
+end
+-- include a file from src/include
+function ichi.include(name)
+	local data = assert(loadfile(SRC_ROOT..'/include/'..name..'.lua'))
+	return ichi(data)()
+end
+
+
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
 for k, v in pairs(LIBS) do
@@ -17,6 +40,7 @@ end
 
 ichi.run '/main.lua'
 if ichi.init then ichi.init() end
+
 
 return Def.ActorFrame {
 	OnCommand = function(self)
