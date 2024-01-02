@@ -32,7 +32,9 @@ class 'Image' : extends 'Gizmo' {
 class 'Label' : extends 'Gizmo' {
 	__type = 'BitmapText',
 	__ready = function(self)
-		self.__actor.Font = 'Common Normal'
+		if not self.__actor.Font then
+			self.__actor.Font = 'Common Normal'
+		end
 	end
 }
 
