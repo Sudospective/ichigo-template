@@ -18,7 +18,6 @@ end
 ichi.run '/main.lua'
 if ichi.init then ichi.init() end
 
-
 return Def.ActorFrame {
 	OnCommand = function(self)
 		for _, pn in ipairs(ichi.Players) do
@@ -45,7 +44,9 @@ return Def.ActorFrame {
 		LoopModsAllPoptions = true,
 		OnCommand = function(self)
 			if ichi.ready then ichi.ready() end
-			self:PopulateEases(ichi.ModTable)
+			self:PopulateBeatMods(ichi.ModTable)
+			self:PopulateBeatMessages(ichi.MsgTable)
+			self:PopulateEases(ichi.EaseTable)
 			self:PopulatePoptions(ichi.PopTable)
 			self:SetPostCommand('Update')
 		end,

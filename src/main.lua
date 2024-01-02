@@ -1,7 +1,6 @@
 include 'gizmos'
 
 
-
 --ni() -- uncomment to require two players
 
 -- gizmos appear in order created

@@ -5,6 +5,8 @@ local SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 
 ichi.ichi = ichi
 ichi.ModTable = {}
+ichi.MsgTable = {}
+ichi.EaseTable = {}
 ichi.PopTable = {}
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
@@ -47,22 +49,29 @@ function ichi.actor(t)
 	return ichi.actor
 end
 
--- create an ease
-function ichi.ease(t)
+-- create a gimmick
+function ichi.gimmick(t)
 	local newT = {}
 	if type(t[2]) == 'function' then -- func
-		newT = {t[1], 0.1, 0, 1, t[2], 'len', Tweens.easeLinear, t.plr or nil}
+		newT = {t[1], t[2]}
+		table.insert(ichi.MsgTable, newT)
 	elseif type(t[3]) == 'string' then -- set
-		newT = {t[1], 0.1, t[2], t[2], t[3], 'len', Tweens.easeLinear, t.plr or nil}
+		newT = {t[1], 9e9, '*9e9 '..t[2]..' '..t[3], 'len', t.plr or nil}
+		table.insert(ichi.ModTable, newT)
 	elseif type(t[3]) == 'function' then -- ease / func_ease / perframe
 		if #t < 4 then -- perframe
-			newT = {t[1], t[2], 0, 1, t[3], 'len', Tweens.easeLinear, t.plr or nil}
+			newT = {t[1], t[2], t[1], t[2], t[3], 'len', Tweens.easeLinear, t.plr or nil}
+			table.insert(ichi.EaseTable, newT)
 		else -- func_ease / ease
 			newT = {t[1], t[2], t[4], t[5], t[6], 'len', t[3], t.plr or nil}
+			table.insert(ichi.EaseTable, newT)
+			if type(t[6]) == 'string' then
+				local newerT = {t[1] + t[2], 9e9, '*9e9 '..t[5]..' '..t[6], 'len', t.plr or nil}
+				table.insert(ichi.ModTable, newerT)
+			end
 		end
 	end
-	table.insert(ichi.ModTable, newT)
-	return ichi.ease
+	return ichi.gimmick
 end
 
 -- create a loop
