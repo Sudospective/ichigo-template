@@ -9,6 +9,6 @@ class 'Example' {
 -- derived class
 class 'Example2' : extends 'Example' {
 	NewField = 'foo',
-	Method = function(self) return false end
+	Method = function(self) return false end,
 	NewMethod = function(self) return 'foo' end
 }
