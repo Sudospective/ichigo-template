@@ -21,12 +21,12 @@ ichi.SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 
 -- run a file from src
 function ichi.run(path)
-	local data = assert(loadfile(SRC_ROOT..path))
+	local data = assert(loadfile(ichi.SRC_ROOT..path))
 	return ichi(data)()
 end
 -- include a file from src/include
 function ichi.include(name)
-	local data = assert(loadfile(SRC_ROOT..'/include/'..name..'.lua'))
+	local data = assert(loadfile(ichi.SRC_ROOT..'/include/'..name..'.lua'))
 	return ichi(data)()
 end
 
