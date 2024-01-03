@@ -11,7 +11,7 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:
 ```lua
--- set 2x on beat 0
+-- set 2 xmod on beat 0
 gimmick {0, 2, 'xmod'}
 -- ease 100 drunk on beat 2 for 4 beats
 gimmick {2, 4, Tweens.easeInOutQuint, 0, 100, 'drunk'}
@@ -32,7 +32,7 @@ actor {
 	end,
 }
 ```
-The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of actors. Here is an example of creating a Quad actor using a Rect gizmo:
+The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of Actors. Here is an example of creating a Quad Actor using a Rect Gizmo:
 ```lua
 local q = Rect:new()
 
