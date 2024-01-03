@@ -30,7 +30,7 @@ Template = Label:new()
 function init()
 
 	do Shaders
-		:LoadShader('Colors', '/assets/breathing-colors.frag')
+		:LoadShader('Colors', '/assets/colors.frag')
 	end
 
 end
