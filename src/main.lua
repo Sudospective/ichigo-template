@@ -3,28 +3,6 @@ include 'gizmos'
 
 --ni() -- uncomment to require two players
 
--- gizmos appear in order created
-
--- shader loader
-Shaders = ShaderLoader:new()
-
--- bg
-BG = Rect:new()
-
--- player proxies
-Proxies = {}
-for _, pn in ipairs(Players) do
-	Proxies['Player'..pn] = Proxy:new()
-	Proxies['Judgment'..pn] = Proxy:new()
-	Proxies['Combo'..pn] = Proxy:new()
-end
-
--- watermark stuff
-GoodBoy = Rect:new()
-Strawb = Image:new()
-Ichigo = Label:new()
-Template = Label:new()
-
 
 -- ran right after main.lua is loaded
 function init()
@@ -53,7 +31,6 @@ function ready()
 		do Proxies['Player'..pn]
 			:SetTarget(Actors[pn])
 		end
-		
 		do Actors[pn]
 			:visible(false)
 		end
@@ -64,7 +41,6 @@ function ready()
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
 			:zoom(SCREEN_HEIGHT / 480)
 		end
-
 		do Actors[pn]:GetChild('Judgment')
 			:diffusealpha(0.5)
 			:visible(false)
@@ -77,7 +53,6 @@ function ready()
 			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
 			:zoom(SCREEN_HEIGHT / 480)
 		end
-
 		do Actors[pn]:GetChild('Combo')
 			:diffusealpha(0.5)
 			:visible(false)
@@ -142,5 +117,5 @@ function update(params)
 end
 
 
+run '/layout.lua'
 run '/gimmicks.lua'
-run '/tweens.lua'

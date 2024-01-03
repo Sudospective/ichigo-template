@@ -1,5 +1,4 @@
 local ichi = ...
-local SRC_ROOT = ichi.SRC_ROOT
 
 
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
