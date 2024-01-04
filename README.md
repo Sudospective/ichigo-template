@@ -1,13 +1,17 @@
 # Ichigo Template
 ###### Created by Sudospective
 
+
 ## What is Ichigo Template?
 Ichigo Template is a gimmick template for Project OutFox powered by the in-engine PandaTemplate. You can think of it as the base PandaTemplate with some extra features included.
+
 
 ## What features does the template have?
 Ichigo Template allows you to not only streamline your gimmick creation process, but it also provides simple-to-use tools for complex features like classes and objects. Ichigo Template can be used for normal gimmick files, minigames, etc. The only limits are the ones you set yourself! Ichigo Template is also fully encapsulated in its own local environment that is garbage collected after screen changes, so you can be sure that nothing is leaked once the template is no longer in use by the engine. No more pesky globals hanging around after a gimmick file is finished, not a single one!
 
+
 ## Getting Started
+
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:
 ```lua
@@ -22,6 +26,7 @@ gimmick {12, 2, function(beat) print(beat) end}
 -- you can also ease functions
 gimmick {16, 4, Tweens.easeOutElastic, -SCREEN_CENTER_Y, SCREEN_CENTER_Y, function(p) myActor:y(p) end}
 ```
+
 ### Adding Actors in Ichigo
 There are two ways to add actors in Ichigo. The first way is to call `actor` with at least the Actor type. For example:
 ```lua
@@ -36,8 +41,11 @@ The second way is to use Gizmos. Gizmos are object oriented and allow for easier
 ```lua
 q = Rect:new()
 ```
+Either method will give you the same result. You can now manipulate the Actor as you please.
+```lua
+q:SetSize(64, 64):Center()
+```
 See the below table for a list of Gizmos and their corresponding Actors:
-
 | Actor Name | Gizmo Name |
 | ----- | ----- |
 | Actor | Gizmo |
@@ -58,7 +66,7 @@ See the below table for a list of Gizmos and their corresponding Actors:
 | N/A | Input |
 
 ### Classes in Ichigo
-Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo. A brief example of classes looks like this:
+If you've used classes in other languages before, this should be a straightforward process. A brief example of classes looks like this:
 ```lua
 -- load blocker (keeps from loading file twice)
 if Example then return end
@@ -73,6 +81,8 @@ class 'Example2' : extends 'Example' {
 	Method = function(self) return self.Field..self.NewField end, -- returns 'foobar'
 }
 ```
+You can also take a look at `example.lua` in `src/include`.
+
 
 ## Tips to Keep Your Files Clean
 - Do all of your work within the `src` folder.
