@@ -64,6 +64,7 @@ end
 -- create a loop
 function ichi.loop(t)
 	if type(t[1]) == 'number' then
+		t.step = t.step or 1
 		for i = t[1], t[1] + t[2] - t.step, t.step do
 			t[3](i)
 		end
