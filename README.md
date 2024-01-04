@@ -68,8 +68,6 @@ See the below table for a list of Gizmos and their corresponding Actors:
 ### Classes in Ichigo
 If you've used classes in other languages before, this should be a straightforward process. A brief example of classes looks like this:
 ```lua
--- load blocker (keeps from loading file twice)
-if Example then return end
 -- base class
 class 'Example' {
 	Field = 'foo',
