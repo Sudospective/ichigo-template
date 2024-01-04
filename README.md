@@ -42,10 +42,25 @@ end
 ```
 Look in `gizmo.lua` inside the `src/include` folder for more Gizmos and which Gizmos give which Actors.
 ### Classes in Ichigo
-Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo.
+Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo. An example of classes looks like this:
+```lua
+-- load blocker (keeps from loading file twice)
+if Example then return end
+-- base class
+class 'Example' {
+	Field = 'foo',
+	Method = function(self) return self.Field end, -- returns 'foo'
+}
+-- derived cass
+class 'Example2' : extends 'Example' {
+	NewField = 'bar',
+	Method = function(self) return self.Field .. self.NewField end, -- returns 'foobar'
+}
+```
 
 ## Tips to Keep Your Files Clean
 - Do all of your work within the `src` folder.
 - Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
 - Make use of the `init`, `ready`, and `update` functions when necessary.
+- Keep all class definitions in the `src/include` folder and include them with `include`.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
