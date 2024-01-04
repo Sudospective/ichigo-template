@@ -19,6 +19,7 @@ ichi.Players = {}
 ichi.Options = {}
 ichi.SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 
+
 -- run a file from src
 function ichi.run(path)
 	local data = assert(loadfile(ichi.SRC_ROOT..path))

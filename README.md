@@ -44,7 +44,8 @@ Look in `gizmo.lua` inside the `src/include` folder for more Gizmos and which Gi
 ### Classes in Ichigo
 Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo.
 
-## Tips
+## Tips to Keep Your Files Clean
 - Do all of your work within the `src` folder.
-- Keep `main.lua`, `gimmicks.lua`, and `layout.lua` clean with only setup, gimmicks, and Actors/Gizmos, respectively.
-- Don't be afraid to ask me any questions! You can contact me in the Project OutFox Discord server.
+- Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
+- Make use of the `init`, `ready`, and `update` functions when necessary.
+- Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
