@@ -23,12 +23,20 @@ class 'Gizmo' {
 	end,
 }
 
+class 'Container' : extends 'Gizmo' {
+	__type = 'ActorFrame'
+}
+
 class 'Rect' : extends 'Gizmo' {
 	__type = 'Quad'
 }
 
 class 'Image' : extends 'Gizmo' {
 	__type = 'Sprite'
+}
+
+class 'MultiImage' : extends 'Gizmo' {
+	__type = 'ActorMultiTexture'
 }
 
 class 'Label' : extends 'Gizmo' {
@@ -38,6 +46,10 @@ class 'Label' : extends 'Gizmo' {
 			self.__actor.Font = 'Common Normal'
 		end
 	end
+}
+
+class 'RenderTarget' : extends 'Gizmo' {
+	__type = 'ActorFrameTexture'
 }
 
 class 'Viewport' : extends 'Gizmo' {
@@ -71,6 +83,10 @@ class 'Proxy' : extends 'Gizmo' {
 }
 
 class 'PlayField' : extends 'Gizmo' {
+	__type = 'NoteField'
+}
+
+class 'FakePlayer' : extends 'Gizmo' {
 	__type = 'ActorFrame',
 	__ready = function(self)
 		local function metric(str)

@@ -5,7 +5,7 @@
 Ichigo Template is a gimmick template for Project OutFox powered by the in-engine PandaTemplate. You can think of it as the base PandaTemplate with some extra features included.
 
 ## What features does the template have?
-Ichigo Template allows you to not only streamline your gimmick creation process, but it also provides simple-to-use tools for complex Lua features like classes and objects. Ichigo Template can be used for normal gimmick files, minigames, etc. The only limits are the ones you set yourself!
+Ichigo Template allows you to not only streamline your gimmick creation process, but it also provides simple-to-use tools for complex features like classes and objects. Ichigo Template can be used for normal gimmick files, minigames, etc. The only limits are the ones you set yourself! Ichigo Template is also fully encapsulated in its own local environment that is garbage collected after screen changes, so you can be sure that nothing is leaked once the template is no longer in use by the engine. No more pesky globals hanging around after a gimmick file is finished, not a single one!
 
 ## Getting Started
 ### Adding Gimmicks in Ichigo
@@ -20,29 +20,45 @@ gimmick {8, function() SCREENMAN:SystemMessage('hewo') end}
 -- perframe on beat 12 for 2 beats
 gimmick {12, 2, function(beat) print(beat) end}
 -- you can also ease functions
-gimmick {16, 4, Tweens.easeOutElastic, 0, 1, function(p) print(p) end}
+gimmick {16, 4, Tweens.easeOutElastic, -SCREEN_CENTER_Y, SCREEN_CENTER_Y, function(p) myActor:y(p) end}
 ```
 ### Adding Actors in Ichigo
 There are two ways to add actors in Ichigo. The first way is to call `actor` with at least the Actor type. For example:
 ```lua
 actor {
 	Type = 'Quad',
-	OnCommand = function(self)
-		self:SetSize(64, 64):Center()
+	InitCommand = function(self)
+		q = self
 	end,
 }
 ```
-The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of Actors. Here is an example of creating a Quad Actor using a Rect Gizmo:
+The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of Actors. Here is an example of creating a Quad Actor using the Rect Gizmo:
 ```lua
-local q = Rect:new()
-
-function ready()
-	q:SetSize(64, 64):Center()
-end
+q = Rect:new()
 ```
-Look in `gizmo.lua` inside the `src/include` folder for more Gizmos and which Gizmos give which Actors.
+See the below table for a list of Gizmos and their corresponding Actors:
+
+| Actor Name | Gizmo Name |
+| ----- | ----- |
+| Actor | Gizmo |
+| ActorFrame | Container |
+| ActorFrameTexture | RenderTarget |
+| ActorMultiTexture | MultiImage |
+| ActorMultiVertex | Polygon |
+| ActorProxy | Proxy |
+| ActorScreenTexture | Viewport |
+| ActorSound | Audio |
+| BitmapText | Label |
+| Model | Model3D |
+| NoteField | PlayField |
+| Quad | Rect |
+| Sprite | Image |
+| N/A | ShaderLoader |
+| N/A | FakePlayer |
+| N/A | Input |
+
 ### Classes in Ichigo
-Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo. An example of classes looks like this:
+Take a look at `example.lua` in `src/include`. This should give you a quick and dirty lesson on how classes work in Ichigo. A brief example of classes looks like this:
 ```lua
 -- load blocker (keeps from loading file twice)
 if Example then return end
@@ -54,7 +70,7 @@ class 'Example' {
 -- derived cass
 class 'Example2' : extends 'Example' {
 	NewField = 'bar',
-	Method = function(self) return self.Field .. self.NewField end, -- returns 'foobar'
+	Method = function(self) return self.Field..self.NewField end, -- returns 'foobar'
 }
 ```
 
