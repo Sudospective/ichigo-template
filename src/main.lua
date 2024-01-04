@@ -66,42 +66,8 @@ function ready()
 
 	end
 
-
-	-- watermark stuff
-	do GoodBoy
-		:Center()
-		:SetSize(96, 96)
-		:zoom(0)
-		:rotationz(360)
-		:shadowcolor(0, 0, 0, 0.5)
-		:shadowlengthy(3)
-	end
-
-	do Strawb
-		:Center()
-		:Load(SRC_ROOT..'/assets/strawb.png')
-		:SetSize(64, 64)
-		:zoom(0)
-	end
-
-	do Ichigo
-		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
-		:Center()
-		:diffuse(0, 0, 0, 1)
-		:settext('イチゴ')
-		:wag()
-		:effectmagnitude(0, 0, 5)
-		:zoom(0)
-	end
-
-	do Template
-		:LoadFromFont(THEME:GetPathF('Common', 'Normal'))
-		:Center()
-		:addy(96)
-		:settext('Ichigo Template')
-		:cropright(1)
-		:shadowcolor(0, 0, 0, 0.5)
-		:shadowlengthy(3)
+	if watermark_ready then
+		watermark_ready()
 	end
 
 end
@@ -109,9 +75,8 @@ end
 -- ran on each frame
 function update(params)
 
-	-- watermark stuff
-	do GoodBoy
-		:addrotationz(-30 * params.dt)
+	if watermark_update then
+		watermark_update(params)
 	end
 
 end
@@ -119,3 +84,4 @@ end
 
 run '/layout.lua'
 run '/gimmicks.lua'
+run '/assets/watermark.lua'
