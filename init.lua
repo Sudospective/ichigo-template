@@ -8,7 +8,7 @@ setmetatable(ichi, {
 })
 
 
-ichi.__version = '1.0'
+ichi.__version = '1.0-RC1'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
 ichi.ModTable = {}
@@ -18,6 +18,8 @@ ichi.PopTable = {}
 ichi.Players = {}
 ichi.Options = {}
 ichi.SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
+ichi.SONG = GAMESTATE:GetCurrentSong()
+ichi.SONG_POS = GAMESTATE:GetSongPosition()
 
 
 -- run a file from src
@@ -48,6 +50,7 @@ return Def.ActorFrame {
 		for _, pn in ipairs(ichi.Players) do
 			ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
 		end
+		if ichi.ready then ichi.ready() end
 		if ichi.input then
 			SCREENMAN:GetTopScreen():AddInputCallback(ichi.input)
 		end
@@ -68,7 +71,6 @@ return Def.ActorFrame {
 		ClearAllPoptions = true,
 		LoopModsAllPoptions = true,
 		OnCommand = function(self)
-			if ichi.ready then ichi.ready() end
 			self:PopulateBeatMods(ichi.ModTable)
 			self:PopulateBeatMessages(ichi.MsgTable)
 			self:PopulateEases(ichi.EaseTable)
@@ -77,7 +79,8 @@ return Def.ActorFrame {
 		end,
 		UpdateCommand = function(self, params)
 			params = params or {}
-			params.dt = self:GetEffectDelta()
+			params.dt = params.dt or self:GetEffectDelta()
+			params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
 			if ichi.update then ichi.update(params) end
 			self:SetUpdateSleep(params.dt)
 		end

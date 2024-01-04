@@ -63,4 +63,5 @@ class 'Example2' : extends 'Example' {
 - Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
 - Make use of the `init`, `ready`, and `update` functions when necessary.
 - Keep all class definitions in the `src/include` folder and include them with `include`.
+- `include` at the top of the file. `run` at the bottom.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.

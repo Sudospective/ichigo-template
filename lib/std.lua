@@ -33,7 +33,17 @@ function ichi.gimmick(t)
 		newT = {t[1], t[2]}
 		table.insert(ichi.MsgTable, newT)
 	elseif type(t[3]) == 'string' then -- set
-		newT = {t[1], 9e9, '*9e9 '..t[2]..' '..t[3], 'len', t.plr or nil}
+		local modstring
+		if t[3]:find('mod') then
+			if t[3]:find('x') then
+				modstring = t[2]..t[3]:sub(1, 1)
+			else
+				modstring = t[3]:sub(1, 1)..t[2]
+			end
+		else
+			modstring = t[2]..' '..t[3]
+		end
+		newT = {t[1], 9e9, '*9e9 '..modstring, 'len', t.plr or nil}
 		table.insert(ichi.ModTable, newT)
 	elseif type(t[3]) == 'function' then -- ease / func_ease / perframe
 		if #t < 4 then -- perframe
