@@ -31,10 +31,10 @@ gimmick {16, 4, Tweens.easeOutElastic, -SCREEN_CENTER_Y, SCREEN_CENTER_Y, functi
 There are two ways to add actors in Ichigo. The first way is to call `actor` with at least the Actor type. For example:
 ```lua
 actor {
-	Type = 'Quad',
-	InitCommand = function(self)
-		q = self
-	end,
+    Type = 'Quad',
+    InitCommand = function(self)
+        q = self
+    end,
 }
 ```
 The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of Actors. Here is an example of creating a Quad Actor using the Rect Gizmo:
@@ -70,13 +70,13 @@ If you've used classes in other languages before, this should be a straightforwa
 ```lua
 -- base class
 class 'Example' {
-	Field = 'foo',
-	Method = function(self) return self.Field end, -- returns 'foo'
+    Field = 'foo',
+    Method = function(self) return self.Field end, -- returns 'foo'
 }
 -- derived cass
 class 'Example2' : extends 'Example' {
-	NewField = 'bar',
-	Method = function(self) return self.Field..self.NewField end, -- returns 'foobar'
+    NewField = 'bar',
+    Method = function(self) return self.Field..self.NewField end, -- returns 'foobar'
 }
 ```
 You can also take a look at `example.lua` in `src/include`.
