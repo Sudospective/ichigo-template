@@ -8,7 +8,7 @@ setmetatable(ichi, {
 })
 
 
-ichi.__version = '1.0-RC2'
+ichi.__version = '1.0-RC1'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
 ichi.SONG = GAMESTATE:GetCurrentSong()
