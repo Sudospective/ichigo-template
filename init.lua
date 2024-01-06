@@ -37,7 +37,7 @@ end
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
 for k, v in pairs(LIBS) do
-	loadfile(v)(ichi)
+	assert(loadfile(v))(ichi)
 end
 
 
