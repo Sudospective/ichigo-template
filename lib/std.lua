@@ -54,14 +54,15 @@ function ichi.gimmick(t)
 			table.insert(ichi.EaseTable, newT)
 			if type(t[6]) == 'string' then
 				local modstring
+				local perc = t[3](t[2], t[4], t[5] - t[4], t[2])
 				if t[6]:find('mod') then
 					if t[6]:find('x') then
-						modstring = t[5]..t[6]:sub(1, 1)
+						modstring = perc..t[6]:sub(1, 1)
 					else
-						modstring = t[6]:sub(1, 1)..t[5]
+						modstring = t[6]:sub(1, 1)..perc
 					end
 				else
-					modstring = t[5]..' '..t[6]
+					modstring = perc..' '..t[6]
 				end
 				local newerT = {t[1] + t[2], 9e9, modstring, 'len', t.plr or nil}
 				table.insert(ichi.ModTable, newerT)
