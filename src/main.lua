@@ -7,8 +7,10 @@ include 'gizmos'
 -- ran right after main.lua is loaded
 function init()
 
-	do Shaders
-		:LoadShader('Colors', '/assets/colors.frag')
+	if go() then
+		do Shaders
+			:LoadShader('Colors', '/assets/colors.frag')
+		end
 	end
 
 end
@@ -20,7 +22,12 @@ function ready()
 	do BG
 		:FullScreen()
 		:glow(0, 0, 0, 0.5)
-		:SetShader(Shaders.Colors)
+	end
+
+	if go() then
+		do BG
+			:SetShader(Shaders.Colors)
+		end
 	end
 
 

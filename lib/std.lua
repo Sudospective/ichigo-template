@@ -24,6 +24,11 @@ function ichi.ni()
 	end
 end
 
+-- check for alpha v
+function ichi.go()
+	return (ProductVersion():find('0.5') and true) or false
+end
+
 -- create an actor
 function ichi.actor(t)
 	table.insert(ichi.Actors, t)

@@ -1,7 +1,10 @@
 -- gizmos appear in order created
 
--- shader loader
-Shaders = ShaderLoader:new()
+-- if alpha v
+if go() then
+	-- shader loader
+	Shaders = ShaderLoader:new()
+end
 
 -- bg
 BG = Rect:new()
