@@ -100,9 +100,11 @@ class 'FakePlayer' : extends 'Gizmo' {
 			DrawDistanceBeforeTargetsPixels = metric 'DrawDistanceBeforeTargetsPixels',
 			YReverseOffsetPixels = metric 'ReceptorArrowsYReverse' - metric 'ReceptorArrowsYStandard',
 			InitCommand = function(self)
+				self:AutoPlay(true)
 				local plr = self:GetParent()
 				local po = self:GetPlayerOptions('ModsLevel_Current')
-				RegisterOptions(po)
+				self.FieldID = RegisterOptions(po)
+				self.Player = (self.FieldID - 1) % 2
 				local vanishx = plr.vanishpointx
 				local vanishy = plr.vanishpointy
 				function plr:vanishpointx(n)
@@ -121,6 +123,9 @@ class 'FakePlayer' : extends 'Gizmo' {
 				local nfmid = (metric 'ReceptorArrowsYStandard' + metric 'ReceptorArrowsYReverse') / 2
 				plr:Center():zoom(SCREEN_HEIGHT / 480)
 				self:y(nfmid)
+			end,
+			OnCommand = function(self)
+				self:SetNoteDataFromLua(Actors['P'..(self.Player + 1)]:GetNoteData())
 			end,
 		}
 		table.insert(self.__actor, nf)

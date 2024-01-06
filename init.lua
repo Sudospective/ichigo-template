@@ -17,9 +17,11 @@ ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
 
 ichi.Players = {}
 ichi.Options = {}
+ichi.Charts = {}
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 	ichi.Players[i] = ToEnumShortString(pn)
 	ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+	ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
 end
 
 

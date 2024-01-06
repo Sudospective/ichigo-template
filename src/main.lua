@@ -7,6 +7,7 @@ include 'gizmos'
 -- ran right after main.lua is loaded
 function init()
 
+	-- if alpha v
 	if go() then
 		Shaders:LoadShader('Colors', '/assets/colors.frag')
 	end
@@ -23,6 +24,7 @@ function ready()
 		:glow(0, 0, 0, 0.5)
 	end
 
+	-- if alpha v
 	if go() then
 		BG:SetShader(Shaders.Colors)
 	end

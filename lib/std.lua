@@ -99,7 +99,8 @@ end
 -- register playeroptions
 function ichi.RegisterOptions(po)
 	table.insert(PopTable, po)
-	Options['P'..#PopTable] = po
+	ichi.Options['P'..#PopTable] = po
+	return #PopTable
 end
 
 
