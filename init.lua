@@ -8,18 +8,12 @@ setmetatable(ichi, {
 })
 
 
-ichi.__version = '1.0-RC1'
+ichi.__version = '1.0-RC2'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
-ichi.ModTable = {}
-ichi.MsgTable = {}
-ichi.EaseTable = {}
-ichi.PopTable = {}
-ichi.Players = {}
-ichi.Options = {}
-ichi.SRC_ROOT = GAMESTATE:GetCurrentSong():GetSongDir()..'src'
 ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
+ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
 
 
 -- run a file from src
@@ -36,8 +30,9 @@ end
 
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
+local lib_actors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
-	assert(loadfile(v))(ichi)
+	table.insert(lib_actors, assert(loadfile(v))(ichi) or nil)
 end
 
 
@@ -64,27 +59,20 @@ return Def.ActorFrame {
 		Name = 'Sleepyhead',
 		InitCommand = function(self) self:sleep(9e9) end
 	},
-	Def.PandaTemplate {
-		Name = 'Bookworm',
-		ClearDoneMods = true,
-		ClearDoneEases = true,
-		ClearAllPoptions = true,
-		LoopModsAllPoptions = true,
+	Def.Actor {
+		Name = 'Newsboy',
 		OnCommand = function(self)
-			self:PopulateBeatMods(ichi.ModTable)
-			self:PopulateBeatMessages(ichi.MsgTable)
-			self:PopulateEases(ichi.EaseTable)
-			self:PopulatePoptions(ichi.PopTable)
-			self:SetPostCommand('Update')
+			self:sleep(self:GetEffectDelta()):queuecommand('Update')
 		end,
 		UpdateCommand = function(self, params)
 			params = params or {}
 			params.dt = params.dt or self:GetEffectDelta()
 			params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
 			if ichi.update then ichi.update(params) end
-			self:SetUpdateSleep(params.dt)
-		end
+			self:sleep(params.dt):queuecommand('Update')
+		end,
 	},
+	lib_actors,
 	ichi.Actors,
 	Def.ActorFrame {
 		Name = 'Picasso',

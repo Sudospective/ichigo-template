@@ -1,10 +1,20 @@
 local ichi = ...
 
 
+local ModTable = {}
+local MsgTable = {}
+local EaseTable = {}
+local PopTable = {}
+
+
+ichi.Players = {}
+ichi.Options = {}
+
+
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
+	PopTable[#PopTable + 1] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
 	ichi.Players[#ichi.Players + 1] = ToEnumShortString(pn)
-	ichi.PopTable[#ichi.PopTable + 1] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
-	ichi.Options['P'..#ichi.PopTable] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+	ichi.Options['P'..#PopTable] = PopTable[#PopTable]
 end
 
 
@@ -31,7 +41,7 @@ function ichi.gimmick(t)
 	local newT = {}
 	if type(t[2]) == 'function' then -- func
 		newT = {t[1], t[2]}
-		table.insert(ichi.MsgTable, newT)
+		table.insert(MsgTable, newT)
 	elseif type(t[3]) == 'string' then -- set
 		local modstring
 		if t[3]:find('mod') then
@@ -44,14 +54,14 @@ function ichi.gimmick(t)
 			modstring = t[2]..' '..t[3]
 		end
 		newT = {t[1], 9e9, '*9e9 '..modstring, 'len', t.plr or nil}
-		table.insert(ichi.ModTable, newT)
+		table.insert(ModTable, newT)
 	elseif type(t[3]) == 'function' then -- ease / func_ease / perframe
 		if #t < 4 then -- perframe
 			newT = {t[1], t[2], t[1], t[2], t[3], 'len', Tweens.easeLinear, t.plr or nil}
-			table.insert(ichi.EaseTable, newT)
+			table.insert(EaseTable, newT)
 		else -- func_ease / ease
 			newT = {t[1], t[2], t[4], t[5], t[6], 'len', t[3], t.plr or nil}
-			table.insert(ichi.EaseTable, newT)
+			table.insert(EaseTable, newT)
 			if type(t[6]) == 'string' then
 				local modstring
 				local perc = t[3](t[2], t[4], t[5] - t[4], t[2])
@@ -65,7 +75,7 @@ function ichi.gimmick(t)
 					modstring = perc..' '..t[6]
 				end
 				local newerT = {t[1] + t[2], 9e9, modstring, 'len', t.plr or nil}
-				table.insert(ichi.ModTable, newerT)
+				table.insert(ModTable, newerT)
 			end
 		end
 	end
@@ -86,3 +96,21 @@ function ichi.loop(t)
 	end
 	return ichi.loop
 end
+
+return Def.PandaTemplate {
+	Name = 'Bookworm',
+	ClearDoneMods = true,
+	ClearDoneEases = true,
+	ClearAllPoptions = true,
+	LoopModsAllPoptions = true,
+	OnCommand = function(self)
+		self:PopulateBeatMods(ModTable)
+		self:PopulateBeatMessages(MsgTable)
+		self:PopulateEases(EaseTable)
+		self:PopulatePoptions(PopTable)
+		self:SetPostCommand('Update')
+	end,
+	UpdateCommand = function(self, params)
+		self:SetUpdateSleep(params.dt)
+	end
+}

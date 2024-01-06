@@ -12,6 +12,16 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 
 ## Getting Started
 
+### Template Variables
+| Name | Description |
+| - | - |
+| Players | Shorthand enums for players (ex: "P1") |
+| Options | PlayerOptions for players |
+| Actors | Table Containing all actors (ex: Actors.P1) |
+| SONG | Current Song object |
+| SONG_POS | Song Position object |
+| SRC_ROOT | Source Root ("/Songs/Pack/Song/src") |
+
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:
 ```lua
