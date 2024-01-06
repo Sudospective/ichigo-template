@@ -7,14 +7,8 @@ local EaseTable = {}
 local PopTable = {}
 
 
-ichi.Players = {}
-ichi.Options = {}
-
-
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
-	PopTable[#PopTable + 1] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
-	ichi.Players[#ichi.Players + 1] = ToEnumShortString(pn)
-	ichi.Options['P'..#PopTable] = PopTable[#PopTable]
+	table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'))
 end
 
 
@@ -96,6 +90,13 @@ function ichi.loop(t)
 	end
 	return ichi.loop
 end
+
+-- register playeroptions
+function ichi.RegisterOptions(po)
+	table.insert(PopTable, po)
+	Options['P'..#PopTable] = po
+end
+
 
 return Def.PandaTemplate {
 	Name = 'Bookworm',

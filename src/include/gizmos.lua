@@ -1,5 +1,6 @@
 if Gizmo then return end
 
+
 class 'Gizmo' {
 	__type = 'Actor',
 	__init = function(self)
@@ -101,8 +102,7 @@ class 'FakePlayer' : extends 'Gizmo' {
 			InitCommand = function(self)
 				local plr = self:GetParent()
 				local po = self:GetPlayerOptions('ModsLevel_Current')
-				table.insert(PopTable, po)
-				Options['P'..#PopTable] = po
+				RegisterOptions(po)
 				local vanishx = plr.vanishpointx
 				local vanishy = plr.vanishpointy
 				function plr:vanishpointx(n)

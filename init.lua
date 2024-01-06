@@ -15,6 +15,13 @@ ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
 
+ichi.Players = {}
+ichi.Options = {}
+for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
+	ichi.Players[i] = ToEnumShortString(pn)
+	ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+end
+
 
 -- run a file from src
 function ichi.run(path)
@@ -30,9 +37,9 @@ end
 
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
-local lib_actors = Def.ActorFrame {}
+local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
-	table.insert(lib_actors, assert(loadfile(v))(ichi) or nil)
+	table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
 end
 
 
@@ -72,7 +79,7 @@ return Def.ActorFrame {
 			self:sleep(params.dt):queuecommand('Update')
 		end,
 	},
-	lib_actors,
+	LibActors,
 	ichi.Actors,
 	Def.ActorFrame {
 		Name = 'Picasso',
