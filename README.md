@@ -91,11 +91,27 @@ class 'Example2' : extends 'Example' {
 ```
 You can also take a look at `example.lua` in `src/include`.
 
+### Libraries in Ichigo
+Libraries are a great way to extend the functionality of Ichigo Template. They are not protected inside of the `ichi` environment, but instead add to it, defining variables and functions that source files will use. Here's a short example of a library:
+```lua
+local ichi = ... -- this grabs the ichi environment
+-- here we add to ichi like so
+function ichi.MyLibraryFunction()
+    print('My Ichigo Library')
+end
+-- you can also return actors
+return Def.Actor {
+    OnCommand = function(self) print('hewo') end
+}
+```
+You can then use the function in your `main.lua` by calling `MyLibraryFunction()`.
+
 
 ## Tips to Keep Your Files Clean
 - Do all of your work within the `src` folder.
 - Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
 - Make use of the `init`, `ready`, and `update` functions when necessary.
 - Keep all class definitions in the `src/include` folder and include them with `include`.
+- Keep all libraries in the `lib` folder. They autoload from there.
 - `include` at the top of the file. `run` at the bottom.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
