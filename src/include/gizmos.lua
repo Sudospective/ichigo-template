@@ -4,6 +4,10 @@ if Gizmo then return end
 class 'Gizmo' {
 	__type = 'Actor',
 	__init = function(self)
+		if not ActorUtil.IsRegisteredClass(self.__type) then
+			lua.ReportScriptError('Invalid Actor class '..self.__type..'.')
+			return
+		end
 		self.__actor = Def[self.__type] {}
 		local t = _G[self.__type] or {}
 		for k, v in pairs(Actor) do
