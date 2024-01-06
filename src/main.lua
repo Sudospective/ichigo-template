@@ -8,9 +8,7 @@ include 'gizmos'
 function init()
 
 	if go() then
-		do Shaders
-			:LoadShader('Colors', '/assets/colors.frag')
-		end
+		Shaders:LoadShader('Colors', '/assets/colors.frag')
 	end
 
 end
@@ -21,13 +19,12 @@ function ready()
 	-- background
 	do BG
 		:FullScreen()
+		:diffuse(0, 0, 0, 1)
 		:glow(0, 0, 0, 0.5)
 	end
 
 	if go() then
-		do BG
-			:SetShader(Shaders.Colors)
-		end
+		BG:SetShader(Shaders.Colors)
 	end
 
 

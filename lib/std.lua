@@ -103,7 +103,7 @@ function ichi.RegisterOptions(po)
 end
 
 
-return (ProductVersion():find('0.5')) and Def.PandaTemplate {
+return ActorUtil.IsRegisteredClass('PandaTemplate') and Def.PandaTemplate {
 	Name = 'Bookworm',
 	ClearDoneMods = true,
 	ClearDoneEases = true,
@@ -131,6 +131,8 @@ return (ProductVersion():find('0.5')) and Def.PandaTemplate {
 			return a[1] < b[1]
 		end
 		if #MsgTable > 1 then
+			table.sort(ModTable, mod_compare)
+			table.sort(EaseTable, mod_compare)
 			table.sort(MsgTable, mod_compare)
 		end
 		self:queuecommand('Update')
