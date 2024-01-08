@@ -77,6 +77,7 @@ return Def.ActorFrame {
 			params = params or {}
 			params.dt = params.dt or self:GetEffectDelta()
 			params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
+			params.time = params.time or ichi.SONG_POS:GetMusicSeconds()
 			if ichi.update then ichi.update(params) end
 			self:sleep(params.dt):queuecommand('Update')
 		end,
