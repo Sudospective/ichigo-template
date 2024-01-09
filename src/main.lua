@@ -1,7 +1,12 @@
 include 'gizmos'
+include 'autogimmick'
 
 
 --ni() -- uncomment to require two players
+
+
+-- open this json file in automaton to edit some gimmicks visually!
+AG = AutoGimmick:new('/assets/mods.json')
 
 
 -- ran right after main.lua is loaded
@@ -9,7 +14,7 @@ function init()
 
 	-- if alpha v
 	if go() then
-		Shaders:LoadShader('Colors', '/assets/colors.frag')
+		Shaders:LoadShader('/assets/colors.frag', 'Colors')
 	end
 
 end
@@ -72,18 +77,15 @@ function ready()
 
 	end
 
-	if watermark_ready then
-		watermark_ready()
-	end
+	watermark_ready()
 
 end
 
 -- ran on each frame
 function update(params)
 
-	if watermark_update then
-		watermark_update(params)
-	end
+	watermark_update(params)
+	AG:Update(params.time)
 
 end
 

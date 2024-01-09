@@ -63,7 +63,7 @@ class 'Viewport' : extends 'Gizmo' {
 
 class 'ShaderLoader' : extends 'Gizmo' {
 	__type = 'Actor',
-	LoadShader = function(self, name, path)
+	LoadShader = function(self, path, name)
 		local shader = Def.Actor {
 			Frag = SRC_ROOT..path,
 			InitCommand = function(s)
