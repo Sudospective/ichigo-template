@@ -114,9 +114,9 @@ local automatonBezierEasing = function( node0, node1, time )
   )
 end
 
-ichi.AutomatonCurve = {}
+local AutomatonCurve = {}
 
-ichi.AutomatonCurve.new = function( automaton, data )
+AutomatonCurve.new = function( automaton, data )
   local curve = {}
 
   curve.__automaton = automaton
@@ -124,18 +124,18 @@ ichi.AutomatonCurve.new = function( automaton, data )
   curve.__nodes = {}
   curve.__fxs = {}
 
-  setmetatable( curve, { __index = ichi.AutomatonCurve } )
+  setmetatable( curve, { __index = AutomatonCurve } )
 
   curve:deserialize( data )
 
   return curve
 end
 
-ichi.AutomatonCurve.getLength = function( self )
+AutomatonCurve.getLength = function( self )
   return self.__nodes[ table.getn( self.__nodes ) ].time
 end
 
-ichi.AutomatonCurve.deserialize = function( self, data )
+AutomatonCurve.deserialize = function( self, data )
   self.__nodes = {}
   for _, node in ipairs( data.nodes ) do
     table.insert( self.__nodes, {
@@ -166,12 +166,12 @@ ichi.AutomatonCurve.deserialize = function( self, data )
   self:precalc()
 end
 
-ichi.AutomatonCurve.precalc = function( self )
+AutomatonCurve.precalc = function( self )
   self:__generateCurve()
   self:__applyFxs()
 end
 
-ichi.AutomatonCurve.getValue = function( self, time )
+AutomatonCurve.getValue = function( self, time )
   if time < 0.0 then
     -- clamp left
     return self.__values[ 1 ]
@@ -198,7 +198,7 @@ ichi.AutomatonCurve.getValue = function( self, time )
   end
 end
 
-ichi.AutomatonCurve.__generateCurve = function( self )
+AutomatonCurve.__generateCurve = function( self )
   local resolution = self.__automaton:getResolution()
 
   local nodeTail = self.__nodes[ 1 ]
@@ -223,7 +223,7 @@ ichi.AutomatonCurve.__generateCurve = function( self )
   end
 end
 
-ichi.AutomatonCurve.__applyFxs = function( self )
+AutomatonCurve.__applyFxs = function( self )
   local resolution = self.__automaton:getResolution()
 
   for iFx, fx in ipairs( self.__fxs ) do
@@ -275,21 +275,21 @@ ichi.AutomatonCurve.__applyFxs = function( self )
   end
 end
 
-ichi.AutomatonChannelItem = {}
+local AutomatonChannelItem = {}
 
-ichi.AutomatonChannelItem.new = function( automaton, data )
+AutomatonChannelItem.new = function( automaton, data )
   local item = {}
 
   item.__automaton = automaton
 
-  setmetatable( item, { __index = ichi.AutomatonChannelItem } )
+  setmetatable( item, { __index = AutomatonChannelItem } )
 
   item:deserialize( data )
 
   return item
 end
 
-ichi.AutomatonChannelItem.deserialize = function( self, data )
+AutomatonChannelItem.deserialize = function( self, data )
   self.time = data.time or 0.0
   self.length = data.length or 0.0
   self.value = data.value or 0.0
@@ -304,7 +304,7 @@ ichi.AutomatonChannelItem.deserialize = function( self, data )
   end
 end
 
-ichi.AutomatonChannelItem.getValue = function( self, time )
+AutomatonChannelItem.getValue = function( self, time )
   if self.reset and self.length <= time then
     return 0.0
   end
@@ -317,9 +317,9 @@ ichi.AutomatonChannelItem.getValue = function( self, time )
   return self.value
 end
 
-ichi.AutomatonChannel = {}
+local AutomatonChannel = {}
 
-ichi.AutomatonChannel.new = function( automaton, data )
+AutomatonChannel.new = function( automaton, data )
   local channel = {}
 
   channel.__automaton = automaton
@@ -329,39 +329,39 @@ ichi.AutomatonChannel.new = function( automaton, data )
   channel.__head = 1
   channel.__listeners = {}
 
-  setmetatable( channel, { __index = ichi.AutomatonChannel } )
+  setmetatable( channel, { __index = AutomatonChannel } )
 
   channel:deserialize( data );
 
   return channel
 end
 
-ichi.AutomatonChannel.getCurrentValue = function( self )
+AutomatonChannel.getCurrentValue = function( self )
   return self.__value
 end
 
-ichi.AutomatonChannel.getCurrentTime = function( self )
+AutomatonChannel.getCurrentTime = function( self )
   return self.__time
 end
 
-ichi.AutomatonChannel.deserialize = function( self, data )
+AutomatonChannel.deserialize = function( self, data )
   self.__items = {}
   for iItem, item in ipairs( data.items or {} ) do
-    self.__items[ iItem ] = ichi.AutomatonChannelItem.new( self.__automaton, item )
+    self.__items[ iItem ] = AutomatonChannelItem.new( self.__automaton, item )
   end
 end
 
-ichi.AutomatonChannel.reset = function( self )
+AutomatonChannel.reset = function( self )
   self.__time = -1E999 -- -math.huge
   self.__value = 0.0
   self.__head = 1
 end
 
-ichi.AutomatonChannel.subscribe = function( self, listener )
+AutomatonChannel.subscribe = function( self, listener )
   table.insert( self.__listeners, listener )
 end
 
-ichi.AutomatonChannel.getValue = function( self, time )
+AutomatonChannel.getValue = function( self, time )
   local next = table.getn( self.__items )
   for iItem, item in ipairs( self.__items ) do
     if time < item.time then
@@ -383,7 +383,7 @@ ichi.AutomatonChannel.getValue = function( self, time )
   end
 end
 
-ichi.AutomatonChannel.update = function( self, time )
+AutomatonChannel.update = function( self, time )
   local value = self.__value
   local prevTime = self.__time
 
@@ -440,9 +440,9 @@ ichi.AutomatonChannel.update = function( self, time )
   self.__value = value
 end
 
-ichi.Automaton = {}
+local Automaton = {}
 
-ichi.Automaton.new = function( data, options )
+Automaton.new = function( data, options )
   local automaton = {}
 
   automaton.curves = {}
@@ -454,7 +454,7 @@ ichi.Automaton.new = function( data, options )
   automaton.__resolution = 1000
   automaton.__fxDefinitions = {}
 
-  setmetatable( automaton, { __index = ichi.Automaton } )
+  setmetatable( automaton, { __index = Automaton } )
 
   automaton.auto = function( name, callback ) return automaton:__auto( name, callback ) end
 
@@ -467,37 +467,37 @@ ichi.Automaton.new = function( data, options )
   return automaton
 end
 
-ichi.Automaton.getTime = function( self )
+Automaton.getTime = function( self )
   return self.__time
 end
 
-ichi.Automaton.getVersion = function( self )
+Automaton.getVersion = function( self )
   return self.__version
 end
 
-ichi.Automaton.getResolution = function( self )
+Automaton.getResolution = function( self )
   return self.__resolution
 end
 
-ichi.Automaton.deserialize = function( self, data )
+Automaton.deserialize = function( self, data )
   self.__length = data.length
   self.__resolution = data.resolution
 
   self.curves = {}
   for iCurve, data in ipairs( data.curves ) do
-    table.insert( self.curves, ichi.AutomatonCurve.new( self, data ) )
+    table.insert( self.curves, AutomatonCurve.new( self, data ) )
   end
 
   self.mapNameToChannel = {}
   self.channels = {}
   for iChannel, tuple in ipairs( data.channels ) do
-    local channel = ichi.AutomatonChannel.new( self, tuple[ 2 ] )
+    local channel = AutomatonChannel.new( self, tuple[ 2 ] )
     table.insert( self.channels, channel )
     self.mapNameToChannel[ tuple[ 1 ] ] = channel
   end
 end
 
-ichi.Automaton.addFxDefinitions = function( self, fxDefinitions )
+Automaton.addFxDefinitions = function( self, fxDefinitions )
   for id, fxDef in pairs( fxDefinitions ) do
     if type( fxDef.func ) == 'function' then
       self.__fxDefinitions[ id ] = fxDef
@@ -507,27 +507,27 @@ ichi.Automaton.addFxDefinitions = function( self, fxDefinitions )
   self:precalcAll()
 end
 
-ichi.Automaton.getFxDefinition = function( self, id )
+Automaton.getFxDefinition = function( self, id )
   return self.__fxDefinitions[ id ] or nil
 end
 
-ichi.Automaton.getCurve = function( self, index )
+Automaton.getCurve = function( self, index )
   return self.curves[ index + 1 ] or nil
 end
 
-ichi.Automaton.precalcAll = function( self )
+Automaton.precalcAll = function( self )
   for _, curve in ipairs( self.curves ) do
     curve:precalc()
   end
 end
 
-ichi.Automaton.reset = function( self )
+Automaton.reset = function( self )
   for _, channel in ipairs( self.channels ) do
     channel:reset()
   end
 end
 
-ichi.Automaton.update = function( self, time )
+Automaton.update = function( self, time )
   local t = math.max( time, 0.0 )
 
   -- cache the time
@@ -539,7 +539,7 @@ ichi.Automaton.update = function( self, time )
   end
 end
 
-ichi.Automaton.__auto = function( self, name, listener )
+Automaton.__auto = function( self, name, listener )
   local channel = self.mapNameToChannel[ name ]
   if not channel then return end
 
@@ -549,3 +549,6 @@ ichi.Automaton.__auto = function( self, name, listener )
 
   return channel:getCurrentValue()
 end
+
+
+ichi.automaton = Automaton.new

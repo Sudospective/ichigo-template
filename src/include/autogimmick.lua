@@ -18,9 +18,7 @@ class 'AutoGimmick' {
 		self.__data = JsonDecode(f:Read())
 		f:Close()
 		f:destroy()
-		self.__auto = Automaton.new(self.__data)
-		local tmp = {mods = {}}
-		local P1, P2 = DeepCopy(tmp), DeepCopy(tmp)
+		self.__auto = automaton(self.__data)
 		for k, _ in pairs(self.__auto.mapNameToChannel) do
 			self.__auto.auto(k, function(event)
 				local pn = k:sub(1, 2)

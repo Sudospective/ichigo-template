@@ -5,8 +5,8 @@ include 'autogimmick'
 --ni() -- uncomment to require two players
 
 
--- open this json file in automaton to edit some gimmicks visually!
-AG = AutoGimmick:new('/assets/mods.json')
+-- open this json file in automaton to edit gimmicks visually!
+AG = AutoGimmick:new('/assets/mods')
 
 
 -- ran right after main.lua is loaded
