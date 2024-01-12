@@ -53,9 +53,9 @@ end
 -- ran on each frame
 function update(params)
 
-	wm_update(params)
-
 	AG:Update(params.time)
+
+	wm_update(params)
 
 end
 
