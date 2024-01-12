@@ -2,7 +2,7 @@ include 'gizmos'
 
 
 -- main
-function watermark_ready()
+function wm_ready()
 	do GoodBoy
 		:Center()
 		:SetSize(96, 96)
@@ -36,7 +36,7 @@ function watermark_ready()
 		:shadowlengthy(3)
 	end
 end
-function watermark_update(params)
+function wm_update(params)
 	do GoodBoy
 		:addrotationz(-30 * params.dt)
 	end

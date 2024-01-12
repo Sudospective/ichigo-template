@@ -12,7 +12,8 @@ BG = Rect:new()
 -- player proxies
 Proxies = {}
 for _, pn in ipairs(Players) do
-	Proxies['Player'..pn] = Proxy:new()
-	Proxies['Judgment'..pn] = Proxy:new()
-	Proxies['Combo'..pn] = Proxy:new()
+	Proxies[pn] = {}
+	Proxies[pn].Player = Proxy:new()
+	Proxies[pn].Judgment = Proxy:new()
+	Proxies[pn].Combo = Proxy:new()
 end

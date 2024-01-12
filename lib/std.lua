@@ -97,10 +97,40 @@ function ichi.loop(t)
 end
 
 -- register playeroptions
-function ichi.RegisterOptions(po)
+function ichi.register(po)
 	table.insert(PopTable, po)
 	ichi.Options['P'..#PopTable] = po
 	return #PopTable
+end
+
+-- setup player proxies
+function ichi.setupPlayer(plr, proxy)
+	proxy:SetTarget(plr)
+	plr:visible(false)
+end
+
+-- setup judgment proxies
+function ichi.setupJudgment(plr, proxy)
+	proxy
+		:SetTarget(plr:GetChild('Judgment'))
+		:xy(plr:GetX(), SCREEN_CENTER_Y)
+		:zoom(SCREEN_HEIGHT / 480)
+	plr:GetChild('Judgment')
+		:diffusealpha(0.5)
+		:visible(false)
+		:sleep(9e9)
+end
+
+-- setup combo proxies
+function ichi.setupCombo(plr, proxy)
+	proxy
+		:SetTarget(plr:GetChild('Combo'))
+		:xy(plr:GetX(), SCREEN_CENTER_Y)
+		:zoom(SCREEN_HEIGHT / 480)
+	plr:GetChild('Combo')
+		:diffusealpha(0.5)
+		:visible(false)
+		:sleep(9e9)
 end
 
 

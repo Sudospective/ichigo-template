@@ -38,53 +38,23 @@ function ready()
 	-- per-player setup
 	for _, pn in ipairs(Players) do
 
-		-- players
-		do Proxies['Player'..pn]
-			:SetTarget(Actors[pn])
-		end
-		do Actors[pn]
-			:visible(false)
-		end
+		setupPlayer(Actors[pn], Proxies[pn].Player)
+		setupJudgment(Actors[pn], Proxies[pn].Judgment)
+		setupCombo(Actors[pn], Proxies[pn].Combo)
 
-		-- judgments
-		do Proxies['Judgment'..pn]
-			:SetTarget(Actors[pn]:GetChild('Judgment'))
-			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
-			:zoom(SCREEN_HEIGHT / 480)
-		end
-		do Actors[pn]:GetChild('Judgment')
-			:diffusealpha(0.5)
-			:visible(false)
-			:sleep(9e9)
-		end
-
-		-- combos
-		do Proxies['Combo'..pn]
-			:SetTarget(Actors[pn]:GetChild('Combo'))
-			:xy(Actors[pn]:GetX(), SCREEN_CENTER_Y)
-			:zoom(SCREEN_HEIGHT / 480)
-		end
-		do Actors[pn]:GetChild('Combo')
-			:diffusealpha(0.5)
-			:visible(false)
-			:sleep(9e9)
-		end
-
-		-- misc.
-		do Options[pn]
-			:NotePathDrawMode('DrawMode_PolyLineStrip')
-		end
+		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
 
 	end
 
-	watermark_ready()
+	wm_ready()
 
 end
 
 -- ran on each frame
 function update(params)
 
-	watermark_update(params)
+	wm_update(params)
+
 	AG:Update(params.time)
 
 end
