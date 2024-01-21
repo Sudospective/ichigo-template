@@ -1,6 +1,5 @@
 include 'gizmos'
 
-
 -- main
 function wm_ready()
   do GoodBoy
@@ -36,12 +35,12 @@ function wm_ready()
     :shadowlengthy(3)
   end
 end
+
 function wm_update(params)
   do GoodBoy
     :addrotationz(-30 * params.dt)
   end
 end
-
 
 -- layout
 GoodBoy = Rect:new()
@@ -49,11 +48,9 @@ Strawb = Image:new()
 Ichigo = Label:new()
 Template = Label:new()
 
-
 -- gimmicks
 gimmick
   {0, function()
-
     do GoodBoy
       :stoptweening()
       :easeoutquint(2)
@@ -76,10 +73,8 @@ gimmick
       :linear(0.25)
       :cropright(0)
     end
-
   end}
   {9, function()
-    
     do GoodBoy
       :stoptweening()
       :easeinquad(0.5)
@@ -101,5 +96,4 @@ gimmick
       :linear(0.25)
       :cropright(1)
     end
-    
   end}

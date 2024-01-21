@@ -8,16 +8,13 @@ AG = AutoGimmick:new('/assets/mods')
 
 -- ran right after main.lua is loaded
 function init()
-
   if go() then -- if alpha v
     Shaders:LoadShader('/assets/colors.frag', 'Colors')
   end
-
 end
 
 -- ran after all actors are ready
 function ready()
-
   -- background
   do BG
     :FullScreen()
@@ -40,15 +37,12 @@ function ready()
   end
 
   wm_ready()
-
 end
 
 -- ran on each frame
 function update(params)
-
   AG:Update(params.time)
   wm_update(params)
-
 end
 
 run '/layout.lua'
