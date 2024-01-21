@@ -1,64 +1,55 @@
 include 'gizmos'
 include 'autogimmick'
 
-
 --ni() -- uncomment to require two players
-
 
 -- open this json file in automaton to edit gimmicks visually!
 AG = AutoGimmick:new('/assets/mods')
 
-
 -- ran right after main.lua is loaded
 function init()
 
-	-- if alpha v
-	if go() then
-		Shaders:LoadShader('/assets/colors.frag', 'Colors')
-	end
+  if go() then -- if alpha v
+    Shaders:LoadShader('/assets/colors.frag', 'Colors')
+  end
 
 end
 
 -- ran after all actors are ready
 function ready()
 
-	-- background
-	do BG
-		:FullScreen()
-		:diffuse(0, 0, 0, 1)
-		:glow(0, 0, 0, 0.5)
-	end
+  -- background
+  do BG
+    :FullScreen()
+    :diffuse(0, 0, 0, 1)
+    :glow(0, 0, 0, 0.5)
+  end
 
-	-- if alpha v
-	if go() then
-		BG:SetShader(Shaders.Colors)
-	end
+  -- if alpha v
+  if go() then
+    BG:SetShader(Shaders.Colors)
+  end
 
+  -- per-player setup
+  for _, pn in ipairs(Players) do
+    setupPlayer(Actors[pn], Proxies[pn].Player)
+    setupJudgment(Actors[pn], Proxies[pn].Judgment)
+    setupCombo(Actors[pn], Proxies[pn].Combo)
 
-	-- per-player setup
-	for _, pn in ipairs(Players) do
+    Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
+  end
 
-		setupPlayer(Actors[pn], Proxies[pn].Player)
-		setupJudgment(Actors[pn], Proxies[pn].Judgment)
-		setupCombo(Actors[pn], Proxies[pn].Combo)
-
-		Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
-
-	end
-
-	wm_ready()
+  wm_ready()
 
 end
 
 -- ran on each frame
 function update(params)
 
-	AG:Update(params.time)
-
-	wm_update(params)
+  AG:Update(params.time)
+  wm_update(params)
 
 end
-
 
 run '/layout.lua'
 run '/gimmicks.lua'

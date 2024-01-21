@@ -115,3 +115,5 @@ You can then use the function in your `main.lua` by calling `MyLibraryFunction()
 - Keep all libraries in the `lib` folder. They autoload from there.
 - `include` at the top of the file. `run` at the bottom.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
+- If you plan to write code that other files will depend on, consider a library or an include file.
+- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the ichi environment handed to them.

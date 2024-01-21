@@ -9,7 +9,6 @@
 
 local ichi = ...
 
-
 local NEWTON_ITER = 4
 local NEWTON_EPSILON = 0.001
 local SUBDIV_ITER = 10
