@@ -55,7 +55,7 @@ Either method will give you the same result. You can now manipulate the Actor as
 ```lua
 q:SetSize(64, 64):Center()
 ```
-See the below table for a list of Gizmos and their corresponding Actors:
+Due to the global Lua variables used by the game, Actors and Gizmos do not share the same names. See the below table for a list of Gizmos and their corresponding Actors:
 | Actor Name | Gizmo Name |
 | ----- | ----- |
 | Actor | Gizmo |
@@ -67,6 +67,7 @@ See the below table for a list of Gizmos and their corresponding Actors:
 | ActorScreenTexture | Viewport |
 | ActorSound | Audio |
 | BitmapText | Label |
+| Text | TTFLabel |
 | Model | Model3D |
 | NoteField | PlayField |
 | Quad | Rect |
@@ -81,12 +82,12 @@ If you've used classes in other languages before, this should be a straightforwa
 -- base class
 class 'Example' {
     Field = 'foo',
-    Method = function(self) return self.Field end, -- returns 'foo'
+    Method = function(self) return self.Field end, -- 'foo'
 }
 -- derived cass
 class 'Example2' : extends 'Example' {
     NewField = 'bar',
-    Method = function(self) return self.Field..self.NewField end, -- returns 'foobar'
+    Method = function(self) return self.Field..self.NewField end, -- 'foobar'
 }
 ```
 You can also take a look at `example.lua` in `src/include`.
@@ -94,7 +95,8 @@ You can also take a look at `example.lua` in `src/include`.
 ### Libraries in Ichigo
 Libraries are a great way to extend the functionality of Ichigo Template. They are not protected inside of the `ichi` environment, but instead add to it, defining variables and functions that source files will use. Here's a short example of a library:
 ```lua
-local ichi = ... -- this grabs the ichi environment
+-- this grabs the ichi environment
+local ichi = ...
 -- here we add to ichi like so
 function ichi.MyLibraryFunction()
     print('My Ichigo Library')
