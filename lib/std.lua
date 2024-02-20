@@ -1,16 +1,13 @@
 local ichi = ...
 
-
 local ModTable = {}
 local MsgTable = {}
 local EaseTable = {}
 local PopTable = {}
 
-
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'))
 end
-
 
 -- require two players
 function ichi.ni()
@@ -132,7 +129,6 @@ function ichi.setupCombo(plr, proxy)
     :visible(false)
     :sleep(9e9)
 end
-
 
 return ActorUtil.IsRegisteredClass('PandaTemplate') and Def.PandaTemplate {
   Name = 'Bookworm',

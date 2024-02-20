@@ -1,7 +1,6 @@
 -- adapted from 32log to work with ichi template
 local ichi = ...
 
-
 function ichi.class(name)
   local newclass={}
   ichi[name]=newclass
