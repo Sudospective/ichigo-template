@@ -3,24 +3,31 @@
 
 
 ## What is Ichigo Template?
-Ichigo Template is a gimmick template for Project OutFox powered by the in-engine PandaTemplate. You can think of it as the base PandaTemplate with some extra features included.
+Ichigo Template (イチゴ) is a gimmick template for Project OutFox powered by the in-engine PandaTemplate. You can think of it as the base PandaTemplate with some extra features included.
 
 
 ## What features does the template have?
-Ichigo Template allows you to not only streamline your gimmick creation process, but it also provides simple-to-use tools for complex features like classes and objects. Ichigo Template can be used for normal gimmick files, minigames, etc. The only limits are the ones you set yourself! Ichigo Template is also fully encapsulated in its own local environment that is garbage collected after screen changes, so you can be sure that nothing is leaked once the template is no longer in use by the engine. No more pesky globals hanging around after a gimmick file is finished, not a single one!
+Ichigo Template allows you to not only streamline your gimmick creation process, but it also provides simple-to-use tools for complex features like classes and objects. Ichigo Template can be used for normal gimmick files, minigames, etc. The only limits are the ones you set yourself! Ichigo Template is also fully encapsulated in its own local environment that is garbage collected after a screen change, so you can be sure that nothing is leaked once the template is no longer in use by the engine. No more pesky globals hanging around after a gimmick file is finished, not a single one!
 
 
 ## Getting Started
 
-### Template Variables
+### Template Variables and Functions
 | Name | Description |
 | - | - |
+| **Variables** |
+| __version | Ichigo Template version (useful for issue reports) |
 | Players | Shorthand enums for players (ex: "P1") |
 | Options | PlayerOptions for players |
-| Actors | Table Containing all actors (ex: Actors.P1) |
+| Charts | Charts for players |
+| Actors | Table containing all actors (ex: Actors.P1) |
 | SONG | Current Song object |
 | SONG_POS | Song Position object |
 | SRC_ROOT | Source Root ("/Songs/Pack/Song/src") |
+| **Functions** |
+| run '*file.lua*' | Run a file within /src |
+| include '*file*' | Include a file within /src/include |
+| class '*name*' | Create a class |
 
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:
@@ -55,7 +62,7 @@ Either method will give you the same result. You can now manipulate the Actor as
 ```lua
 q:SetSize(64, 64):Center()
 ```
-Due to the global Lua variables used by the game, Actors and Gizmos do not share the same names. See the below table for a list of Gizmos and their corresponding Actors:
+Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not share the same names. See the below table for a list of Gizmos and their corresponding Actors. Feel free to look within `src/include/gizmos.lua`.
 | Actor Name | Gizmo Name |
 | ----- | ----- |
 | Actor | Gizmo |
