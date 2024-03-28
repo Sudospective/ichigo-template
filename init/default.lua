@@ -8,12 +8,13 @@ setmetatable(ichi, {
 })
 
 
-ichi.__version = '1.0-RC4'
+ichi.__version = '1.0-RC5'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
 ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
+ichi.INC_ROOT = ichi.SONG:GetSongDir()..'include'
 
 ichi.Players = {}
 ichi.Options = {}
@@ -32,7 +33,7 @@ function ichi.run(path)
 end
 -- include a file from src/include
 function ichi.include(name)
-  local data = assert(loadfile(ichi.SRC_ROOT..'/include/'..name..'.lua'))
+  local data = assert(loadfile(ichi.INC_ROOT..'/'..name..'.lua'))
   return ichi(data)()
 end
 
@@ -50,6 +51,7 @@ if ichi.init then ichi.init() end
 
 
 return Def.ActorFrame {
+  FOV = 90,
   OnCommand = function(self)
     for _, pn in ipairs(ichi.Players) do
       ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)

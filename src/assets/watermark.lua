@@ -34,15 +34,40 @@ function wm_ready()
     :shadowcolor(0, 0, 0, 0.5)
     :shadowlengthy(3)
   end
+
+  for _, sparkle in ipairs(Sparkles) do
+    do sparkle
+      :xyz(math.random(0, SCREEN_WIDTH), math.random(-SCREEN_HEIGHT, SCREEN_HEIGHT * 2), math.random(-500, 500))
+      :SetSize(10, 10)
+      :rotationx(math.random() * 360)
+      :rotationy(math.random() * 360)
+      :rotationz(math.random() * 360)
+    end
+  end
 end
 
 function wm_update(params)
   do GoodBoy
     :addrotationz(-30 * params.dt)
   end
+  for _, sparkle in ipairs(Sparkles) do
+    if sparkle:GetY() > SCREEN_HEIGHT * 2 then
+      sparkle:addy(-SCREEN_HEIGHT * 3)
+    end
+    do sparkle
+      :addy(98 * params.dt)
+      :addrotationx(-45 * params.dt)
+      :addrotationy(-180 * params.dt)
+      :addrotationz(-90 * params.dt)
+    end
+  end
 end
 
 -- layout
+Sparkles = {}
+for i = 1, 300 do
+  table.insert(Sparkles, Rect:new())
+end
 GoodBoy = Rect:new()
 Strawb = Image:new()
 Ichigo = Label:new()
