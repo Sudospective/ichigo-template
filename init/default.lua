@@ -7,7 +7,6 @@ setmetatable(ichi, {
   end,
 })
 
-
 ichi.__version = '1.0-RC5'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
@@ -25,7 +24,6 @@ for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
 end
 
-
 -- run a file from src
 function ichi.run(path)
   local data = assert(loadfile(ichi.SRC_ROOT..path))
@@ -37,7 +35,6 @@ function ichi.include(name)
   return ichi(data)()
 end
 
-
 local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
 local LibActors = Def.ActorFrame {}
@@ -45,10 +42,8 @@ for k, v in pairs(LIBS) do
   table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
 end
 
-
 ichi.run '/main.lua'
 if ichi.init then ichi.init() end
-
 
 return Def.ActorFrame {
   FOV = 90,
