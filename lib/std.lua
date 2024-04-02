@@ -138,6 +138,14 @@ return ActorUtil.IsRegisteredClass('PandaTemplate') and Def.PandaTemplate {
   LoopModsAllPoptions = true,
   OnCommand = function(self)
     print('Using PandaTemplate Modreader')
+    local function mod_compare(a, b)
+      return a[1] < b[1]
+    end
+    if #MsgTable > 1 then
+      table.sort(ModTable, mod_compare)
+      table.sort(EaseTable, mod_compare)
+      table.sort(MsgTable, mod_compare)
+    end
     self:PopulateBeatMods(ModTable)
     self:PopulateBeatMessages(MsgTable)
     self:PopulateEases(EaseTable)

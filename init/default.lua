@@ -1,13 +1,13 @@
 local ichi = {}
 setmetatable(ichi, {
-  __index = _G,
+  __index = _ENV,
   __call = function(self, f)
     setfenv(f or 2, self)
     return f
   end,
 })
 
-ichi.__version = '1.0-RC5'
+ichi.__version = '1.0-RC6'
 ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
 ichi.SONG = GAMESTATE:GetCurrentSong()
@@ -24,22 +24,27 @@ for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
 end
 
--- run a file from src
+-- run a file from /src
 function ichi.run(path)
   local data = assert(loadfile(ichi.SRC_ROOT..path))
   return ichi(data)()
 end
--- include a file from src/include
+-- include a file from /include
 function ichi.include(name)
   local data = assert(loadfile(ichi.INC_ROOT..'/'..name..'.lua'))
   return ichi(data)()
 end
 
-local ROOT = GAMESTATE:GetCurrentSong():GetSongDir()
+local ROOT = ichi.SONG:GetSongDir()
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
   table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
+end
+
+local PLUGINS = FILEMAN:GetDirListing(ROOT..'src/plugins/', false, false)
+for k, v in pairs(PLUGINS) do
+  ichi.run('/plugins/'..v)
 end
 
 ichi.run '/main.lua'

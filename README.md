@@ -26,8 +26,9 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | SRC_ROOT | Source Root ("/Songs/Pack/Song/src") |
 | **Functions** |
 | run '*file.lua*' | Run a file within /src |
-| include '*file*' | Include a file within /src/include |
-| class '*name*' | Create a class |
+| include '*file*' | Include a file within /include |
+| class '*name*' {} | Create a class |
+| namespace '*name*' {} | Create a namespace |
 
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:
@@ -48,10 +49,10 @@ gimmick {16, 4, Tweens.easeOutElastic, -SCREEN_CENTER_Y, SCREEN_CENTER_Y, functi
 There are two ways to add actors in Ichigo. The first way is to call `actor` with at least the Actor type. For example:
 ```lua
 actor {
-    Type = 'Quad',
-    InitCommand = function(self)
-        q = self
-    end,
+  Type = 'Quad',
+  InitCommand = function(self)
+    q = self
+  end,
 }
 ```
 The second way is to use Gizmos. Gizmos are object oriented and allow for easier creation of Actors. Here is an example of creating a Quad Actor using the Rect Gizmo:
@@ -62,7 +63,7 @@ Either method will give you the same result. You can now manipulate the Actor as
 ```lua
 q:SetSize(64, 64):Center()
 ```
-Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not share the same names. See the below table for a list of Gizmos and their corresponding Actors. Feel free to look within `src/include/gizmos.lua`.
+Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not share the same names. See the below table for a list of Gizmos and their corresponding Actors. Feel free to look within `include/gizmos.lua`.
 | Actor Name | Gizmo Name |
 | ----- | ----- |
 | Actor | Gizmo |
@@ -83,21 +84,35 @@ Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not
 | N/A | FakePlayer |
 | N/A | Input |
 
+### Plugins in Ichigo
+Plugins are great for quick, global functions that are user made. Here's a simple plugin that creates a black background:
+```lua
+function black_bg()
+  actor {
+    Type = 'Quad',
+    InitCommand = function(self)
+      self:FullScreen():diffuse(0, 0, 0, 1)
+    end,
+  }
+end
+```
+You can define more than one global function in a plugin. Another example can be found in `src/plugins/sugarkill.lua`.
+
 ### Classes in Ichigo
 If you've used classes in other languages before, this should be a straightforward process. A brief example of classes looks like this:
 ```lua
 -- base class
 class 'Example' {
-    Field = 'foo',
-    Method = function(self) return self.Field end, -- 'foo'
+  Field = 'foo',
+  Method = function(self) return self.Field end, -- 'foo'
 }
 -- derived cass
 class 'Example2' : extends 'Example' {
-    NewField = 'bar',
-    Method = function(self) return self.Field..self.NewField end, -- 'foobar'
+  NewField = 'bar',
+  Method = function(self) return self.Field..self.NewField end, -- 'foobar'
 }
 ```
-You can also take a look at `example.lua` in `src/include`.
+You can also take a look at `example.lua` in `include`.
 
 ### Libraries in Ichigo
 Libraries are a great way to extend the functionality of Ichigo Template. They are not protected inside of the `ichi` environment, but instead add to it, defining variables and functions that source files will use. Here's a short example of a library:
@@ -106,23 +121,24 @@ Libraries are a great way to extend the functionality of Ichigo Template. They a
 local ichi = ...
 -- here we add to ichi like so
 function ichi.MyLibraryFunction()
-    print('My Ichigo Library')
+  print('My Ichigo Library')
 end
 -- you can also return actors
 return Def.Actor {
-    OnCommand = function(self) print('hewo') end
+  OnCommand = function(self) print('hewo') end
 }
 ```
-You can then use the function in your `main.lua` by calling `MyLibraryFunction()`.
+You can then use the function in your `main.lua` by calling `MyLibraryFunction()`. The best example of a library written for Ichigo would be the standard library (`lib/std.lua`)
 
 
 ## Tips to Keep Your Files Clean
 - Do all of your work within the `src` folder.
 - Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
 - Make use of the `init`, `ready`, and `update` functions when necessary.
-- Keep all class definitions in the `src/include` folder and include them with `include`.
+- Keep all class definitions in the `include` folder and include them with the `include` keyword.
 - Keep all libraries in the `lib` folder. They autoload from there.
+- Likewise, keep all plugins inside `src/plugins`. They are also autoloaded.
 - `include` at the top of the file. `run` at the bottom.
-- Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
 - If you plan to write code that other files will depend on, consider a library or an include file.
-- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the ichi environment handed to them.
+- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the ichi environment handed to them. Consider a class or a plugin instead.
+- Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
