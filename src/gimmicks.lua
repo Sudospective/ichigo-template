@@ -1,5 +1,6 @@
 --[[
 
+  - {percent, mod}
   - {beat, percent, mod}
   - {beat, length, ease, startPercent, endPercent, mod}
 
@@ -10,8 +11,9 @@
 --]]
 
 gimmick
-  {-10, 2, 'xmod'}
-  {-10, 100, 'modtimersong'}
+  {2, 'xmod'}
+  {100, 'modtimersong'}
+  
   {-10, 100, 'dark'}
   
   {0, 2, Tweens.easeLinear, 100, 0, 'dark'}

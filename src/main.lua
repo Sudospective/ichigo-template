@@ -6,14 +6,12 @@ include 'autogimmick'
 -- open this json file in automaton to edit gimmicks visually!
 AG = AutoGimmick:new('/assets/mods')
 
--- ran right after main.lua is loaded
 function init()
   if go() then -- if alpha v
     Shaders:LoadShader('/assets/colors.frag', 'Colors')
   end
 end
 
--- ran after all actors are ready
 function ready()
   -- background
   do BG
@@ -39,7 +37,6 @@ function ready()
   wm_ready()
 end
 
--- ran on each frame
 function update(params)
   AG:Update(params.time)
   wm_update(params)

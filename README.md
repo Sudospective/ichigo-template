@@ -24,11 +24,20 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | SONG | Current Song object |
 | SONG_POS | Song Position object |
 | SRC_ROOT | Source Root ("/Songs/Pack/Song/src") |
+| INC_ROOT | Include Root ("/Songs/Pack/Song/include") |
 | **Functions** |
 | run '*file.lua*' | Run a file within /src |
 | include '*file*' | Include a file within /include |
 | class '*name*' {} | Create a class |
 | namespace '*name*' {} | Create a namespace |
+| **Standard Library** |
+| rei | Force legacy modreader |
+| ni | Require two players |
+| go | Check for OutFox Alpha V |
+| register(*PlayerOption*) | Register a PlayerOption to the template |
+| setupPlayer(*ActorProxy*) | Setup an ActorProxy to proxy a player |
+| setupJudgment(*ActorProxy*) | Setup an ActorProxy to proxy a judgment |
+| setupCombo(*ActorProxy*) | Setup an ActorProxy to proxy a combo |
 
 ### Adding Gimmicks in Ichigo
 Gimmicks are added inside `gimmicks.lua` in the `src` folder. They are added by calling the function `gimmick`. Here are some examples:

@@ -4,9 +4,17 @@ local ModTable = {}
 local MsgTable = {}
 local EaseTable = {}
 local PopTable = {}
+local DefTable = {}
+
+local legacy = false
+local timebased = false
 
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song'))
+end
+
+function ichi.rei()
+  legacy = true
 end
 
 -- require two players
@@ -26,6 +34,10 @@ function ichi.go()
   return (ProductVersion():find('0.5') and true) or false
 end
 
+function ichi.tokei()
+  timebased = true
+end
+
 -- create an actor
 function ichi.actor(t)
   table.insert(ichi.Actors, t)
@@ -35,12 +47,15 @@ end
 -- create a gimmick
 function ichi.gimmick(t)
   local newT = {}
-  if type(t[2]) == 'function' then -- func
+  if type(t[2]) == 'string' then -- setdefault
+    newT = {t[1], t[2]}
+    table.insert(DefTable, newT)
+  elseif type(t[2]) == 'function' then -- func
     newT = {t[1], t[2]}
     table.insert(MsgTable, newT)
   elseif type(t[3]) == 'string' then -- set
     local modstring
-    if t[3]:find('mod') then
+    if t[3]:find('mod') and not t[3]:find('modtimer') then
       if t[3]:find('x') then
         modstring = t[2]..t[3]:sub(1, 1)
       else
@@ -61,7 +76,7 @@ function ichi.gimmick(t)
       if type(t[6]) == 'string' then
         local modstring
         local perc = t[3](t[2], t[4], t[5] - t[4], t[2])
-        if t[6]:find('mod') then
+        if t[6]:find('mod') and not t[6]:find('modtimer') then
           if t[6]:find('x') then
             modstring = perc..t[6]:sub(1, 1)
           else
@@ -130,7 +145,7 @@ function ichi.setupCombo(plr, proxy)
     :sleep(9e9)
 end
 
-return ActorUtil.IsRegisteredClass('PandaTemplate') and Def.PandaTemplate {
+return (ActorUtil.IsRegisteredClass('PandaTemplate') and not legacy) and Def.PandaTemplate {
   Name = 'Bookworm',
   ClearDoneMods = true,
   ClearDoneEases = true,
@@ -146,10 +161,33 @@ return ActorUtil.IsRegisteredClass('PandaTemplate') and Def.PandaTemplate {
       table.sort(EaseTable, mod_compare)
       table.sort(MsgTable, mod_compare)
     end
-    self:PopulateBeatMods(ModTable)
-    self:PopulateBeatMessages(MsgTable)
+    if timebased then
+      self:PopulateTimeMods(ModTable)
+      self:PopulateTimeMessages(MsgTable)
+    else
+      self:PopulateBeatMods(ModTable)
+      self:PopulateBeatMessages(MsgTable)
+    end
     self:PopulateEases(EaseTable)
     self:PopulatePoptions(PopTable)
+    for k, v in pairs(PopTable) do
+      for _, mod in pairs(DefTable) do
+        modstring = '*-1 '
+        if mod[2]:find('mod') and not mod[2]:find('modtimer') then
+          if mod[2]:find('x') then
+            modstring = modstring..mod[1]..'x'
+          elseif mod[2]:find('c') then
+            modstring = modstring..'c'..mod[1]
+          elseif mod[2]:find('m') then
+            modstring = modstring..'m'..mod[1]
+          end
+        else
+          modstring = modstring..mod[2]..' '..mod[1]
+        end
+        v:FromString(modstring)
+      end
+      self:SetDefaultMods(v)
+    end
     self:SetPostCommand('Update')
   end,
   UpdateCommand = function(self, params)
