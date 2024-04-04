@@ -89,6 +89,7 @@ Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not
 | NoteField | PlayField |
 | Quad | Rect |
 | Sprite | Image |
+| AudioVisualizer | WaveForm |
 | N/A | ShaderLoader |
 | N/A | FakePlayer |
 | N/A | Input |

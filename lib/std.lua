@@ -182,7 +182,7 @@ return (ActorUtil.IsRegisteredClass('PandaTemplate') and not legacy) and Def.Pan
             modstring = modstring..'m'..mod[1]
           end
         else
-          modstring = modstring..mod[2]..' '..mod[1]
+          modstring = modstring..mod[1]..' '..mod[2]
         end
         v:FromString(modstring)
       end

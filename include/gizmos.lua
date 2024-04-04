@@ -164,3 +164,7 @@ class 'Input' : extends 'Gizmo' {
     SCREENMAN:GetTopScreen():AddInputCallback(self.__callback)
   end
 }
+
+class 'WaveForm' : extends 'Gizmo' {
+  __type = 'AudioVisualizer'
+}
