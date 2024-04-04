@@ -24,6 +24,10 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | SR | SCREEN_RIGHT |
 | ST | SCREEN_TOP |
 | SB | SCREEN_BOTTOM |
+| SONG | Current Song object |
+| SONG_POS | Song Position object |
+| SRC_ROOT | Source root folder ("/Songs/Pack/Song/src") |
+| INC_ROOT | Include root folder ("/Songs/Pack/Song/include") |
 | **Variables** |
 | __version | Ichigo Template version (useful for issue reports) |
 | Actors | Table containing all actors (ex: Actors.P1) |
@@ -32,10 +36,6 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | Charts | Charts for players |
 | Profiles | Table containing profiles for machine and players |
 | Difficulties | Table containing all difficulties |
-| SONG | Current Song object |
-| SONG_POS | Song Position object |
-| SRC_ROOT | Source root folder ("/Songs/Pack/Song/src") |
-| INC_ROOT | Include root folder ("/Songs/Pack/Song/include") |
 | **Functions** |
 | run '*file.lua*' | Run a file within /src |
 | include '*file*' | Include a file within /include |

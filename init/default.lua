@@ -8,6 +8,11 @@ setmetatable(ichi, {
 })
 ichi.ichi = ichi
 
+ichi.SONG = GAMESTATE:GetCurrentSong()
+ichi.SONG_POS = GAMESTATE:GetSongPosition()
+ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
+ichi.INC_ROOT = ichi.SONG:GetSongDir()..'include'
+
 ichi.SCX = SCREEN_CENTER_X
 ichi.SCY = SCREEN_CENTER_Y
 ichi.SW = SCREEN_WIDTH
@@ -26,11 +31,6 @@ ichi.Profiles = {
   Machine = PROFILEMAN:GetMachineProfile()
 }
 ichi.Difficulties = ichi.SONG:GetAllSteps()
-
-ichi.SONG = GAMESTATE:GetCurrentSong()
-ichi.SONG_POS = GAMESTATE:GetSongPosition()
-ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
-ichi.INC_ROOT = ichi.SONG:GetSongDir()..'include'
 
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Players[i] = ToEnumShortString(pn)
