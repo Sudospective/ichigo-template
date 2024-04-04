@@ -106,7 +106,7 @@ class 'FakePlayer' : extends 'Gizmo' {
         self:AutoPlay(true)
         local plr = self:GetParent()
         local po = self:GetPlayerOptions('ModsLevel_Current')
-        self.FieldID = RegisterOptions(po)
+        self.FieldID = register(po)
         self.Player = (self.FieldID - 1) % 2
         local vanishx = plr.vanishpointx
         local vanishy = plr.vanishpointy
@@ -124,8 +124,10 @@ class 'FakePlayer' : extends 'Gizmo' {
           return plr:vanishpointx(x):vanishpointy(y)
         end
         local nfmid = (metric 'ReceptorArrowsYStandard' + metric 'ReceptorArrowsYReverse') / 2
+        local ns = Options['P'..(self.Player + 1)]:NoteSkin()
         plr:Center():zoom(SCREEN_HEIGHT / 480)
         self:y(nfmid)
+        po:NoteSkin(ns)
       end,
       OnCommand = function(self)
         self:SetNoteDataFromLua(Actors['P'..(self.Player + 1)]:GetNoteData())

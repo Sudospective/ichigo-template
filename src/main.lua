@@ -37,6 +37,9 @@ function ready()
   wm_ready()
 end
 
+function input(event)
+end
+
 function update(params)
   AG:Update(params.time)
   wm_update(params)

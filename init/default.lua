@@ -6,22 +6,38 @@ setmetatable(ichi, {
     return f
   end,
 })
+ichi.ichi = ichi
+
+ichi.SCX = SCREEN_CENTER_X
+ichi.SCY = SCREEN_CENTER_Y
+ichi.SW = SCREEN_WIDTH
+ichi.SH = SCREEN_HEIGHT
+ichi.SL = SCREEN_LEFT
+ichi.SR = SCREEN_RIGHT
+ichi.ST = SCREEN_TOP
+ichi.SB = SCREEN_BOTTOM
 
 ichi.__version = '1.0-RC6'
-ichi.ichi = ichi
 ichi.Actors = Def.ActorFrame {}
+ichi.Players = {}
+ichi.Options = {}
+ichi.Charts = {}
+ichi.Profiles = {
+  Machine = PROFILEMAN:GetMachineProfile()
+}
+ichi.Difficulties = ichi.SONG:GetAllSteps()
+
 ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
 ichi.INC_ROOT = ichi.SONG:GetSongDir()..'include'
 
-ichi.Players = {}
-ichi.Options = {}
-ichi.Charts = {}
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Players[i] = ToEnumShortString(pn)
   ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
   ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
+  ichi.Profiles[ichi.Players[i]] = PROFILEMAN:GetProfile(pn)
+  ichi.Difficulties[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
 end
 
 -- run a file from /src
@@ -36,6 +52,7 @@ function ichi.include(name)
 end
 
 local ROOT = ichi.SONG:GetSongDir()
+
 local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
