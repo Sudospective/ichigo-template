@@ -63,7 +63,9 @@ end
 
 local PLUGINS = FILEMAN:GetDirListing(ROOT..'src/plugins/', false, false)
 for k, v in pairs(PLUGINS) do
-  ichi.run('/plugins/'..v)
+  if v:find('%.lua') then
+    ichi.run('/plugins/'..v)
+  end
 end
 
 ichi.run '/main.lua'
