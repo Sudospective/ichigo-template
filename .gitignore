@@ -3,5 +3,5 @@ notes.ssc.old
 ichigo-template.zip
 notes.sm
 notes.ats
-wip-libs/
+lib/*-wip.lua
 src/plugins/*.lua
