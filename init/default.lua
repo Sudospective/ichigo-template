@@ -26,18 +26,20 @@ ichi.__version = '1.0-RC6'
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
 ichi.Options = {}
-ichi.Charts = {}
+ichi.Charts = ichi.SONG:GetAllSteps()
 ichi.Profiles = {
   Machine = PROFILEMAN:GetMachineProfile()
 }
-ichi.Difficulties = ichi.SONG:GetAllSteps()
+ichi.States = {}
+
+ichi.Columns = {}
 
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Players[i] = ToEnumShortString(pn)
   ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
   ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
   ichi.Profiles[ichi.Players[i]] = PROFILEMAN:GetProfile(pn)
-  ichi.Difficulties[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
+  ichi.States[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn)
 end
 
 -- run a file from /src
@@ -72,6 +74,7 @@ return Def.ActorFrame {
   OnCommand = function(self)
     for _, pn in ipairs(ichi.Players) do
       ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
+      ichi.Columns[pn] = ichi.Actors[pn]:GetChild('NoteField'):GetColumnActors()
     end
     if ichi.ready then ichi.ready() end
     if ichi.input then

@@ -28,7 +28,10 @@ class 'Gizmo' {
 }
 
 class 'Container' : extends 'Gizmo' {
-  __type = 'ActorFrame'
+  __type = 'ActorFrame',
+  __ready = function(self)
+    self.__actor.FOV = 45
+  end
 }
 
 class 'Rect' : extends 'Gizmo' {
@@ -52,7 +55,7 @@ class 'Label' : extends 'Gizmo' {
   end
 }
 
-class 'RenderTarget' : extends 'Gizmo' {
+class 'RenderTarget' : extends 'Container' {
   __type = 'ActorFrameTexture'
 }
 
@@ -75,7 +78,15 @@ class 'ShaderLoader' : extends 'Gizmo' {
 }
 
 class 'Model3D' : extends 'Gizmo' {
-  __type = 'Model'
+  __type = 'Model',
+  LoadMeshes = function(self, path)
+    self.__actor.Meshes = SRC_ROOT..path
+    return self
+  end,
+  LoadMaterials = function(self, path)
+    self.__actor.Materials = SRC_ROOT..path
+    return self
+  end
 }
 
 class 'Audio' : extends 'Gizmo' {
@@ -90,7 +101,7 @@ class 'PlayField' : extends 'Gizmo' {
   __type = 'NoteField'
 }
 
-class 'FakePlayer' : extends 'Gizmo' {
+class 'FakePlayer' : extends 'Container' {
   __type = 'ActorFrame',
   __ready = function(self)
     local function metric(str)

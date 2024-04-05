@@ -11,7 +11,7 @@
 --]]
 
 gimmick
-  {2, 'xmod'}
+  {200, 'cmod'}
   {100, 'modtimersong'}
   
   {-10, 100, 'dark'}

@@ -115,6 +115,16 @@ function ichi.register(po)
   return #PopTable
 end
 
+-- TODO: Find a way to change the pivot of the column actors without breaking receptors
+function ichi.centerColumns()
+  local style = GAMESTATE:GetCurrentStyle()
+  for _, pn in ipairs(ichi.Players) do
+    for i, col in ipairs(ichi.Columns[pn]) do
+      local info = style:GetColumnInfo('PlayerNumber_'..pn, i)
+    end
+  end
+end
+
 -- setup player proxies
 function ichi.setupPlayer(plr, proxy)
   proxy:SetTarget(plr)

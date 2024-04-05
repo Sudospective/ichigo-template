@@ -31,6 +31,7 @@ function ready()
     setupJudgment(Actors[pn], Proxies[pn].Judgment)
     setupCombo(Actors[pn], Proxies[pn].Combo)
 
+    Actors[pn]:zwrite(true)
     Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
   end
 
