@@ -6,7 +6,7 @@ local EaseTable = {}
 local PopTable = {}
 local DefTable = {}
 
-local legacy = false
+local reader = (ProductVersion():find('0.5') and 'panda') or 'legacy'
 local timebased = false
 
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
@@ -14,7 +14,7 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 end
 
 function ichi.rei()
-  legacy = true
+  reader = 'legacy'
 end
 
 -- require two players
@@ -155,7 +155,7 @@ function ichi.setupCombo(plr, proxy)
     :sleep(9e9)
 end
 
-return (ActorUtil.IsRegisteredClass('PandaTemplate') and not legacy) and Def.PandaTemplate {
+return (ActorUtil.IsRegisteredClass('PandaTemplate') and reader == 'panda') and Def.PandaTemplate {
   Name = 'Bookworm',
   ClearDoneMods = true,
   ClearDoneEases = true,
@@ -203,7 +203,7 @@ return (ActorUtil.IsRegisteredClass('PandaTemplate') and not legacy) and Def.Pan
   UpdateCommand = function(self, params)
     self:SetUpdateSleep(params.dt)
   end
-} or Def.ActorFrame {
+} or reader == 'legacy' and Def.ActorFrame { -- Ease Template written by Exschwasion
   Name = 'Bookworm',
   OnCommand = function(self)
     print('Using Legacy Modreader')
@@ -304,4 +304,4 @@ return (ActorUtil.IsRegisteredClass('PandaTemplate') and not legacy) and Def.Pan
     end
     self:sleep(self:GetEffectDelta()):queuecommand('Update')
   end
-}
+} or Def.Actor{}
