@@ -139,7 +139,7 @@ class 'Example2' : extends 'Example' {
 ```
 You can also take a look at `example.lua` in `include`. Once you have written your class, you can include and use it like so:
 ```lua
-include 'example' -- loads include/example.lua
+include 'example' -- include/example.lua
 
 local e2 = Example2:new()
 print(e2:Method()) -- foobar
