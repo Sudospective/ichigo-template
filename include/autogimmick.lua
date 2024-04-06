@@ -23,6 +23,10 @@ class 'AutoGimmick' {
     self.__data = JsonDecode(f:Read())
     f:Close()
     f:destroy()
+    if not self.__data then
+      lua.ReportScriptError('No data to read from.')
+      return
+    end
     self.__auto = automaton(self.__data)
     for k, _ in pairs(self.__auto.mapNameToChannel) do
       self.__auto.auto(k, function(event)

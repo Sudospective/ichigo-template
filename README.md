@@ -106,7 +106,7 @@ Due to the global Lua variables used by Project OutFox, Actors and Gizmos do not
 | N/A | Input |
 
 ### Plugins in Ichigo
-Plugins are great for quick, global functions that are user made. Here's a simple plugin that creates a black background:
+Plugins are great for quick, global functions that are user made. They are wrapped inside the `ichi` environment. Here's a simple plugin that creates a black background:
 ```lua
 function black_bg()
   actor {
@@ -117,23 +117,33 @@ function black_bg()
   }
 end
 ```
-You can define more than one global function in a plugin. Another example can be found in `src/plugins/sugarkill.lua`.
+You can define more than one global function in a plugin.
 
 ### Classes in Ichigo
 If you've used classes in other languages before, this should be a straightforward process. A brief example of classes looks like this:
 ```lua
+-- a load blocker; if we already have it, don't continue
+if Example then return end
+
 -- base class
 class 'Example' {
   Field = 'foo',
   Method = function(self) return self.Field end, -- 'foo'
 }
+
 -- derived cass
 class 'Example2' : extends 'Example' {
   NewField = 'bar',
   Method = function(self) return self.Field..self.NewField end, -- 'foobar'
 }
 ```
-You can also take a look at `example.lua` in `include`.
+You can also take a look at `example.lua` in `include`. Once you have written your class, you can include and use it like so:
+```lua
+include 'example' -- loads include/example.lua
+
+local e2 = Example2:new()
+print(e2:Method()) -- foobar
+```
 
 ### Libraries in Ichigo
 Libraries are a great way to extend the functionality of Ichigo Template. They are not protected inside of the `ichi` environment, but instead add to it, defining variables and functions that source files will use. Here's a short example of a library:
@@ -149,7 +159,7 @@ return Def.Actor {
   OnCommand = function(self) print('hewo') end
 }
 ```
-You can then use the function in your `main.lua` by calling `MyLibraryFunction()`. The best example of a library written for Ichigo would be the standard library (`lib/std.lua`)
+You can then use the function in your `main.lua` by calling `MyLibraryFunction()`. The best example of a library written for Ichigo would be the standard library (`lib/std.lua`).
 
 
 ## Tips to Keep Your Files Clean
