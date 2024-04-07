@@ -113,35 +113,36 @@ class 'FakePlayer' : extends 'Container' {
       DrawDistanceAfterTargetsPixels = metric 'DrawDistanceAfterTargetsPixels',
       DrawDistanceBeforeTargetsPixels = metric 'DrawDistanceBeforeTargetsPixels',
       YReverseOffsetPixels = metric 'ReceptorArrowsYReverse' - metric 'ReceptorArrowsYStandard',
-      InitCommand = function(self)
-        self:AutoPlay(true)
-        local plr = self:GetParent()
-        local po = self:GetPlayerOptions('ModsLevel_Current')
-        self.FieldID = register(po)
-        self.Player = (self.FieldID - 1) % 2
+      AutoPlay = true,
+      FieldID = #Players + 1,
+      Player = #Players % 2,
+      NoteSkin = Options['P'..((#Players % 2) + 1)]:NoteSkin(),
+      InitCommand = function(s)
+        s.FieldID = register(s)
+        s.Player = (s.FieldID - 1) % 2
+        local plr = s:GetParent()
+        local po = s:GetPlayerOptions('ModsLevel_Current')
         local vanishx = plr.vanishpointx
         local vanishy = plr.vanishpointy
         function plr:vanishpointx(n)
           local offset = scale(po:Skew(), 0, 1, plr:GetX(), SCREEN_CENTER_X)
           vanishx(plr, offset + n)
-          return self
+          return s
         end
         function plr:vanishpointy(n)
           local offset = SCREEN_CENTER_Y
           vanishy(plr, offset + n)
-          return self
+          return s
         end
         function plr:vanishpoint(x, y)
           return plr:vanishpointx(x):vanishpointy(y)
         end
         local nfmid = (metric 'ReceptorArrowsYStandard' + metric 'ReceptorArrowsYReverse') / 2
-        local ns = Options['P'..(self.Player + 1)]:NoteSkin()
         plr:Center():zoom(SCREEN_HEIGHT / 480)
-        self:y(nfmid)
-        po:NoteSkin(ns)
+        s:y(nfmid)
       end,
-      OnCommand = function(self)
-        self:SetNoteDataFromLua(Actors['P'..(self.Player + 1)]:GetNoteData())
+      OnCommand = function(s)
+        s:SetNoteDataFromLua(Actors['P'..(s.Player + 1)]:GetNoteData())
       end,
     }
     table.insert(self.__actor, nf)

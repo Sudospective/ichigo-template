@@ -32,10 +32,10 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | __version | Ichigo Template version (useful for issue reports) |
 | Actors | Table containing all actors (ex: Actors.P1) |
 | Players | Shorthand enums for players (ex: "P1") |
-| Options | PlayerOptions for players |
-| Charts | Charts for players |
+| Options | Table containing PlayerOptions for players |
+| Charts | Table containing charts for song |
 | Profiles | Table containing profiles for machine and players |
-| Difficulties | Table containing all difficulties |
+| States | Table containing PlayerState for players |
 | **Functions** |
 | run '*file.lua*' | Run a file within /src |
 | include '*file*' | Include a file within /include |

@@ -4,7 +4,8 @@ include 'autogimmick'
 --ni() -- uncomment to require two players
 
 -- open this json file in automaton to edit gimmicks visually!
-AG = AutoGimmick:new('/assets/mods')
+-- https://github.com/0b5vr/automaton
+AG = AutoGimmick:new('/assets/mods.json')
 
 function init()
   if go() then -- if alpha v

@@ -26,7 +26,7 @@ ichi.__version = '1.0-RC7'
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
 ichi.Options = {}
-ichi.Charts = ichi.SONG:GetAllSteps()
+ichi.Charts = {}
 ichi.Profiles = {
   Machine = PROFILEMAN:GetMachineProfile()
 }
@@ -34,12 +34,25 @@ ichi.States = {}
 
 ichi.Columns = {}
 
+-- easier chart access
+for _, v in ipairs(ichi.SONG:GetAllSteps()) do
+  ichi.Charts[ToEnumShortString(v:GetDifficulty())] = v
+end
+
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Players[i] = ToEnumShortString(pn)
   ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
-  ichi.Charts[ichi.Players[i]] = GAMESTATE:GetCurrentSteps(pn)
   ichi.Profiles[ichi.Players[i]] = PROFILEMAN:GetProfile(pn)
   ichi.States[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn)
+  
+  -- if we use GetCurrentSteps, we could end up with userdata
+  -- that differs from the chart listed in ichi.Charts.
+  for k, v in pairs(ichi.Charts) do
+    if GAMESTATE:GetCurrentSteps(pn):GetDifficulty():find(k) then
+      ichi.Charts[ichi.Players[i]] = v
+      break
+    end
+  end
 end
 
 -- run a file from /src

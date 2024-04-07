@@ -108,10 +108,14 @@ function ichi.loop(t)
   return ichi.loop
 end
 
--- register playeroptions
-function ichi.register(po)
+-- register NoteField
+function ichi.register(nf)
+  local po = nf:GetPlayerOptions('ModsLevel_Current')
+  local ps = nf:GetPlayerState()
   table.insert(PopTable, po)
   ichi.Options['P'..#PopTable] = po
+  ichi.States['P'..#PopTable] = ps
+  ichi.Charts['P'..#PopTable] = Charts['P'..(#PopTable % 2 + 1)]
   return #PopTable
 end
 
