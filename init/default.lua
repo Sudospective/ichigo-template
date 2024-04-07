@@ -1,3 +1,8 @@
+if ProductFamily() ~= 'OutFox' then
+  lua.ReportScriptError('This template is only compatible with OutFox.')
+  return Def.Actor {}
+end
+
 local ichi = {}
 setmetatable(ichi, {
   __index = _ENV,

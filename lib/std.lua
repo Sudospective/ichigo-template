@@ -120,11 +120,20 @@ function ichi.register(nf)
 end
 
 -- TODO: Find a way to change the pivot of the column actors without breaking receptors
-function ichi.centerColumns()
+function ichi.centerColumnOffset()
   local style = GAMESTATE:GetCurrentStyle()
   for _, pn in ipairs(ichi.Players) do
     for i, col in ipairs(ichi.Columns[pn]) do
       local info = style:GetColumnInfo('PlayerNumber_'..pn, i)
+      if col:GetNumWrapperStates() > 0 then
+        for i = 1, col:GetNumWrapperStates() do
+          col:RemoveWrapperState(i)
+        end
+      end
+      local af = col:AddWrapperState()
+      print(af)
+      col:x(-info.XOffset)
+      af:addx(info.XOffset)
     end
   end
 end

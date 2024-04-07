@@ -1,3 +1,5 @@
+include 'autogimmick'
+
 --[[
 
   - {percent, mod}
@@ -9,6 +11,10 @@
   - {beat, length, ease, startValue, endValue, function(value)}
 
 --]]
+
+-- open this json file in automaton to edit gimmicks visually!
+-- https://github.com/0b5vr/automaton
+AG = AutoGimmick:new('/assets/mods.json')
 
 gimmick
   {200, 'cmod'}
