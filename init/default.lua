@@ -27,7 +27,8 @@ ichi.SR = SCREEN_RIGHT
 ichi.ST = SCREEN_TOP
 ichi.SB = SCREEN_BOTTOM
 
-ichi.__version = '1.0-RC7'
+ichi.__version = '1.0-RC8'
+ichi.Style = GAMESTATE:GetCurrentStyle()
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
 ichi.Options = {}

@@ -30,6 +30,7 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | INC_ROOT | Include root folder ("/Songs/Pack/Song/include") |
 | **Variables** |
 | __version | Ichigo Template version (useful for issue reports) |
+| Style | Current style from GameState |
 | Actors | Table containing all actors (ex: Actors.P1) |
 | Players | Shorthand enums for players (ex: "P1") |
 | Options | Table containing PlayerOptions for players |
@@ -171,5 +172,5 @@ You can then use the function in your `main.lua` by calling `MyLibraryFunction()
 - Likewise, keep all plugins inside `src/plugins`. They are also autoloaded.
 - `include` at the top of the file. `run` at the bottom.
 - If you plan to write code that other files will depend on, consider a library or an include file.
-- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the ichi environment handed to them. Consider a class or a plugin instead.
+- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the `ichi` environment table passed to them. Consider a class or a plugin instead.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
