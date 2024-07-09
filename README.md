@@ -24,6 +24,8 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | SR | SCREEN_RIGHT |
 | ST | SCREEN_TOP |
 | SB | SCREEN_BOTTOM |
+| DW | Display width |
+| DH | Display height |
 | SONG | Current Song object |
 | SONG_POS | Song Position object |
 | SRC_ROOT | Source root folder ("/Songs/Pack/Song/src") |
