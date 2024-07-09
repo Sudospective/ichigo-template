@@ -27,6 +27,9 @@ ichi.SR = SCREEN_RIGHT
 ichi.ST = SCREEN_TOP
 ichi.SB = SCREEN_BOTTOM
 
+ichi.DW = DISPLAY:GetDisplayWidth()
+ichi.DH = DISPLAY:GetDisplayHeight()
+
 ichi.__version = "1.0-RC9"
 ichi.Style = GAMESTATE:GetCurrentStyle()
 ichi.Actors = Def.ActorFrame {}
@@ -91,7 +94,7 @@ ichi.run "/main.lua"
 if ichi.init then ichi.init() end
 
 return Def.ActorFrame {
-  FOV = 90,
+  FOV = 120, -- the fov of one human eye
   OnCommand = function(self)
     for _, pn in ipairs(ichi.Players) do
       ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild("Player"..pn)
