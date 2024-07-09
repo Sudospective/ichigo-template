@@ -1,7 +1,6 @@
 if AutoGimmick then return end
 
 class "AutoGimmick" {
-  __version = "1.0",
   __init = function(self, path)
     if path:find("%.json") then
       path = path:sub(1, path:find("%.json") - 1)
@@ -40,7 +39,7 @@ class "AutoGimmick" {
         end
       end)
     end
-  end,
+  end;
   Define = function(self, name, func)
     for _, pn in ipairs(Players) do
       self.__auto.auto(pn.."/"..name, function(event)
@@ -48,8 +47,8 @@ class "AutoGimmick" {
       end)
     end
     return self
-  end,
+  end;
   Update = function(self, time)
     self.__auto:update(time)
-  end,
+  end;
 }

@@ -42,10 +42,10 @@ end
 
 -- check for alpha v
 function ichi.go()
-  return (ProductVersion():find("0.5") and true) or false
+  return tonumber(ProductVersion():sub(1, ProductVersion():find("%-") - 1)) >= 0.5
 end
 
--- set time-based mods
+-- enable time-based mods
 function ichi.tokei()
   timebased = true
 end
@@ -143,7 +143,7 @@ function ichi.centerColumnOffset()
         end
       end
       local af = col:AddWrapperState()
-      print(af)
+      --print(af)
       col:x(-info.XOffset)
       af:addx(info.XOffset)
     end

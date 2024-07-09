@@ -5,6 +5,7 @@ function ichi.class(name)
   local newclass={}
   ichi[name]=newclass
   newclass.__members={}
+  newclass.__class = name
   function newclass.define(class,members)
     for k,v in pairs(members) do
       class.__members[k]=v

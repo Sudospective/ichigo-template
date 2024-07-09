@@ -1,7 +1,7 @@
 if Gizmo then return end
 
 class "Gizmo" {
-  __type = "Actor",
+  __type = "Actor";
   __init = function(self, ...)
     if not ActorUtil.IsRegisteredClass(self.__type) then
       lua.ReportScriptError("Invalid Actor class \""..self.__type.."\".")
@@ -24,47 +24,53 @@ class "Gizmo" {
     if self.__ready then
       self:__ready(...)
     end
-  end,
+  end;
 }
 
 class "Container" : extends "Gizmo" {
-  __type = "ActorFrame",
+  __type = "ActorFrame";
   __ready = function(self)
     self.__actor.FOV = 45
-  end,
+  end;
 }
 
 class "Rect" : extends "Gizmo" {
-  __type = "Quad",
+  __type = "Quad";
 }
 
 class "Image" : extends "Gizmo" {
-  __type = "Sprite",
+  __type = "Sprite";
 }
 
 class "MultiImage" : extends "Gizmo" {
-  __type = "ActorMultiTexture",
+  __type = "ActorMultiTexture";
 }
 
 class "Label" : extends "Gizmo" {
-  __type = "BitmapText",
+  __type = "BitmapText";
   __ready = function(self)
     if not self.__actor.Font then
       self.__actor.Font = "Common Normal"
     end
-  end,
+  end;
 }
 
 class "RenderTarget" : extends "Container" {
-  __type = "ActorFrameTexture",
+  __type = "ActorFrameTexture";
 }
 
 class "Viewport" : extends "Gizmo" {
-  __type = "ActorScreenTexture",
+  __type = "ActorScreenTexture";
 }
 
 class "ShaderLoader" : extends "Gizmo" {
-  __type = "Actor",
+  __type = "Actor";
+  __ready = function(self)
+    if not go() then
+      SCREENMAN:SystemMessage("ShaderLoader: Alpha V not detected")
+      self.LoadShader = function() end -- noop
+    end
+  end;
   LoadShader = function(self, path, name)
     local shader = Def.Actor {
       Frag = SRC_ROOT..path,
@@ -74,35 +80,35 @@ class "ShaderLoader" : extends "Gizmo" {
     }
     table.insert(ichi.Actors, 1, shader)
     return self
-  end,
+  end;
 }
 
 class "Model3D" : extends "Gizmo" {
-  __type = "Model",
+  __type = "Model";
   LoadMeshes = function(self, path)
     self.__actor.Meshes = SRC_ROOT..path
     return self
-  end,
+  end;
   LoadMaterials = function(self, path)
     self.__actor.Materials = SRC_ROOT..path
     return self
-  end,
+  end;
 }
 
 class "Audio" : extends "Gizmo" {
-  __type = "Sound",
+  __type = "Sound";
 }
 
 class "Proxy" : extends "Gizmo" {
-  __type = "ActorProxy",
+  __type = "ActorProxy";
 }
 
 class "PlayField" : extends "Gizmo" {
-  __type = "NoteField",
+  __type = "NoteField";
 }
 
 class "FakePlayer" : extends "Container" {
-  __type = "ActorFrame",
+  __type = "ActorFrame";
   __ready = function(self)
     local function metric(str)
       return tonumber(THEME:GetMetric("Player", str))
@@ -146,31 +152,31 @@ class "FakePlayer" : extends "Container" {
       end,
     }
     table.insert(self.__actor, nf)
-  end,
+  end;
 }
 
 class "Polygon" : extends "Gizmo" {
-  __type = "ActorMultiVertex",
+  __type = "ActorMultiVertex";
 }
 
 class "Input" : extends "Gizmo" {
-  __type = "Actor",
-  __enabled = true,
+  __type = "Actor";
+  __enabled = true;
   __ready = function(self)
     self.__actor.OffCommand = function(s)
       if self.__callback then
         SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
       end
     end
-  end,
+  end;
   SetEnabled = function(self, b)
     if b == nil then return end
     self.__enabled = b
     return self
-  end,
+  end;
   IsEnabled = function(self)
     return self.__enabled
-  end,
+  end;
   SetInputCallback = function(self, callback)
     if self.__callback then
       SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
@@ -181,9 +187,9 @@ class "Input" : extends "Gizmo" {
     end
     SCREENMAN:GetTopScreen():AddInputCallback(self.__callback)
     return self
-  end,
+  end;
 }
 
 class "AudioWaveform" : extends "Gizmo" {
-  __type = "AudioVisualizer",
+  __type = "AudioVisualizer";
 }
