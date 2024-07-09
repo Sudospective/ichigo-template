@@ -1,10 +1,10 @@
 if Gizmo then return end
 
-class 'Gizmo' {
-  __type = 'Actor',
-  __init = function(self)
+class "Gizmo" {
+  __type = "Actor",
+  __init = function(self, ...)
     if not ActorUtil.IsRegisteredClass(self.__type) then
-      lua.ReportScriptError('Invalid Actor class '..self.__type..'.')
+      lua.ReportScriptError("Invalid Actor class \""..self.__type.."\".")
       return
     end
     self.__actor = Def[self.__type] {}
@@ -22,49 +22,49 @@ class 'Gizmo' {
     end
     table.insert(Actors, self.__actor)
     if self.__ready then
-      self:__ready()
+      self:__ready(...)
     end
   end,
 }
 
-class 'Container' : extends 'Gizmo' {
-  __type = 'ActorFrame',
+class "Container" : extends "Gizmo" {
+  __type = "ActorFrame",
   __ready = function(self)
     self.__actor.FOV = 45
-  end
+  end,
 }
 
-class 'Rect' : extends 'Gizmo' {
-  __type = 'Quad'
+class "Rect" : extends "Gizmo" {
+  __type = "Quad",
 }
 
-class 'Image' : extends 'Gizmo' {
-  __type = 'Sprite'
+class "Image" : extends "Gizmo" {
+  __type = "Sprite",
 }
 
-class 'MultiImage' : extends 'Gizmo' {
-  __type = 'ActorMultiTexture'
+class "MultiImage" : extends "Gizmo" {
+  __type = "ActorMultiTexture",
 }
 
-class 'Label' : extends 'Gizmo' {
-  __type = 'BitmapText',
+class "Label" : extends "Gizmo" {
+  __type = "BitmapText",
   __ready = function(self)
     if not self.__actor.Font then
-      self.__actor.Font = 'Common Normal'
+      self.__actor.Font = "Common Normal"
     end
-  end
+  end,
 }
 
-class 'RenderTarget' : extends 'Container' {
-  __type = 'ActorFrameTexture'
+class "RenderTarget" : extends "Container" {
+  __type = "ActorFrameTexture",
 }
 
-class 'Viewport' : extends 'Gizmo' {
-  __type = 'ActorScreenTexture'
+class "Viewport" : extends "Gizmo" {
+  __type = "ActorScreenTexture",
 }
 
-class 'ShaderLoader' : extends 'Gizmo' {
-  __type = 'Actor',
+class "ShaderLoader" : extends "Gizmo" {
+  __type = "Actor",
   LoadShader = function(self, path, name)
     local shader = Def.Actor {
       Frag = SRC_ROOT..path,
@@ -77,8 +77,8 @@ class 'ShaderLoader' : extends 'Gizmo' {
   end,
 }
 
-class 'Model3D' : extends 'Gizmo' {
-  __type = 'Model',
+class "Model3D" : extends "Gizmo" {
+  __type = "Model",
   LoadMeshes = function(self, path)
     self.__actor.Meshes = SRC_ROOT..path
     return self
@@ -86,42 +86,42 @@ class 'Model3D' : extends 'Gizmo' {
   LoadMaterials = function(self, path)
     self.__actor.Materials = SRC_ROOT..path
     return self
-  end
+  end,
 }
 
-class 'Audio' : extends 'Gizmo' {
-  __type = 'Sound'
+class "Audio" : extends "Gizmo" {
+  __type = "Sound",
 }
 
-class 'Proxy' : extends 'Gizmo' {
-  __type = 'ActorProxy'
+class "Proxy" : extends "Gizmo" {
+  __type = "ActorProxy",
 }
 
-class 'PlayField' : extends 'Gizmo' {
-  __type = 'NoteField'
+class "PlayField" : extends "Gizmo" {
+  __type = "NoteField",
 }
 
-class 'FakePlayer' : extends 'Container' {
-  __type = 'ActorFrame',
+class "FakePlayer" : extends "Container" {
+  __type = "ActorFrame",
   __ready = function(self)
     local function metric(str)
-      return tonumber(THEME:GetMetric('Player', str))
+      return tonumber(THEME:GetMetric("Player", str))
     end
     self.__actor.FOV = 45
     local nf = Def.NoteField {
-      Name = 'NoteField',
-      DrawDistanceAfterTargetsPixels = metric 'DrawDistanceAfterTargetsPixels',
-      DrawDistanceBeforeTargetsPixels = metric 'DrawDistanceBeforeTargetsPixels',
-      YReverseOffsetPixels = metric 'ReceptorArrowsYReverse' - metric 'ReceptorArrowsYStandard',
+      Name = "NoteField",
+      DrawDistanceAfterTargetsPixels = metric "DrawDistanceAfterTargetsPixels",
+      DrawDistanceBeforeTargetsPixels = metric "DrawDistanceBeforeTargetsPixels",
+      YReverseOffsetPixels = metric "ReceptorArrowsYReverse" - metric "ReceptorArrowsYStandard",
       AutoPlay = true,
       FieldID = #Players + 1,
       Player = #Players % 2,
-      NoteSkin = Options['P'..((#Players % 2) + 1)]:NoteSkin(),
+      NoteSkin = Options["P"..((#Players % 2) + 1)]:NoteSkin(),
       InitCommand = function(s)
         s.FieldID = register(s)
         s.Player = (s.FieldID - 1) % 2
         local plr = s:GetParent()
-        local po = s:GetPlayerOptions('ModsLevel_Current')
+        local po = s:GetPlayerOptions("ModsLevel_Current")
         local vanishx = plr.vanishpointx
         local vanishy = plr.vanishpointy
         function plr:vanishpointx(n)
@@ -137,24 +137,24 @@ class 'FakePlayer' : extends 'Container' {
         function plr:vanishpoint(x, y)
           return plr:vanishpointx(x):vanishpointy(y)
         end
-        local nfmid = (metric 'ReceptorArrowsYStandard' + metric 'ReceptorArrowsYReverse') / 2
+        local nfmid = (metric "ReceptorArrowsYStandard" + metric "ReceptorArrowsYReverse") / 2
         plr:Center():zoom(SCREEN_HEIGHT / 480)
         s:y(nfmid)
       end,
       OnCommand = function(s)
-        s:SetNoteDataFromLua(Actors['P'..(s.Player + 1)]:GetNoteData())
+        s:SetNoteDataFromLua(Actors["P"..(s.Player + 1)]:GetNoteData())
       end,
     }
     table.insert(self.__actor, nf)
-  end
+  end,
 }
 
-class 'Polygon' : extends 'Gizmo' {
-  __type = 'ActorMultiVertex'
+class "Polygon" : extends "Gizmo" {
+  __type = "ActorMultiVertex",
 }
 
-class 'Input' : extends 'Gizmo' {
-  __type = 'Actor',
+class "Input" : extends "Gizmo" {
+  __type = "Actor",
   __enabled = true,
   __ready = function(self)
     self.__actor.OffCommand = function(s)
@@ -166,6 +166,10 @@ class 'Input' : extends 'Gizmo' {
   SetEnabled = function(self, b)
     if b == nil then return end
     self.__enabled = b
+    return self
+  end,
+  IsEnabled = function(self)
+    return self.__enabled
   end,
   SetInputCallback = function(self, callback)
     if self.__callback then
@@ -176,9 +180,10 @@ class 'Input' : extends 'Gizmo' {
       callback(event)
     end
     SCREENMAN:GetTopScreen():AddInputCallback(self.__callback)
-  end
+    return self
+  end,
 }
 
-class 'WaveForm' : extends 'Gizmo' {
-  __type = 'AudioVisualizer'
+class "AudioWaveform" : extends "Gizmo" {
+  __type = "AudioVisualizer",
 }

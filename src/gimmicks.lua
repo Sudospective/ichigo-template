@@ -1,4 +1,8 @@
-include 'autogimmick'
+include "autogimmick"
+
+-- open this json file in automaton to edit gimmicks visually!
+-- https://github.com/0b5vr/automaton-electron
+AG = AutoGimmick:new("/assets/mods.json")
 
 --[[
 
@@ -12,22 +16,18 @@ include 'autogimmick'
 
 --]]
 
--- open this json file in automaton to edit gimmicks visually!
--- https://github.com/0b5vr/automaton
-AG = AutoGimmick:new('/assets/mods.json')
-
 gimmick
-  {200, 'cmod'}
-  {100, 'modtimersong'}
+  {200, "cmod"}
+  {100, "modtimersong"}
   
-  {-10, 100, 'dark'}
+  {-10, 100, "dark"}
   
-  {0, 2, Tweens.easeLinear, 100, 0, 'dark'}
-  {0, 4, Tweens.easeOutElastic, 100, 0, 'drunk'}
-  {0, 6, Tweens.easeOutElastic, 100, 0, 'tipsy'}
+  {0, 2, Tweens.easeLinear, 100, 0, "dark"}
+  {0, 4, Tweens.easeOutElastic, 100, 0, "drunk"}
+  {0, 6, Tweens.easeOutElastic, 100, 0, "tipsy"}
 
 if Charts.P1 == Charts.Challenge then
   gimmick
-    {0, 2, Tweens.easeOutBounce, 0, 100, 'flip', plr = 1}
-    {0, 4, Tweens.easeOutElastic, 0, -100, 'invert', plr = 1}
+    {0, 2, Tweens.easeOutBounce, 0, 100, "flip", plr = 1}
+    {0, 4, Tweens.easeOutElastic, 0, -100, "invert", plr = 1}
 end

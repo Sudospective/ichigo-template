@@ -1,5 +1,5 @@
-if ProductFamily() ~= 'OutFox' then
-  lua.ReportScriptError('This template is only compatible with OutFox.')
+if ProductFamily() ~= "OutFox" then
+  lua.ReportScriptError("This template is only compatible with OutFox.")
   return Def.Actor {}
 end
 
@@ -15,8 +15,8 @@ ichi.ichi = ichi
 
 ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
-ichi.SRC_ROOT = ichi.SONG:GetSongDir()..'src'
-ichi.INC_ROOT = ichi.SONG:GetSongDir()..'include'
+ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
+ichi.INC_ROOT = ichi.SONG:GetSongDir().."include"
 
 ichi.SCX = SCREEN_CENTER_X
 ichi.SCY = SCREEN_CENTER_Y
@@ -27,7 +27,7 @@ ichi.SR = SCREEN_RIGHT
 ichi.ST = SCREEN_TOP
 ichi.SB = SCREEN_BOTTOM
 
-ichi.__version = '1.0-RC8'
+ichi.__version = "1.0-RC9"
 ichi.Style = GAMESTATE:GetCurrentStyle()
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
@@ -47,7 +47,7 @@ end
 
 for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   ichi.Players[i] = ToEnumShortString(pn)
-  ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions('ModsLevel_Song')
+  ichi.Options[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song")
   ichi.Profiles[ichi.Players[i]] = PROFILEMAN:GetProfile(pn)
   ichi.States[ichi.Players[i]] = GAMESTATE:GetPlayerState(pn)
   
@@ -68,34 +68,34 @@ function ichi.run(path)
 end
 -- include a file from /include
 function ichi.include(name)
-  local data = assert(loadfile(ichi.INC_ROOT..'/'..name..'.lua'))
+  local data = assert(loadfile(ichi.INC_ROOT.."/"..name..".lua"))
   return ichi(data)()
 end
 
 local ROOT = ichi.SONG:GetSongDir()
 
-local LIBS = FILEMAN:GetDirListing(ROOT..'lib/', false, true)
+local LIBS = FILEMAN:GetDirListing(ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
   table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
 end
 
-local PLUGINS = FILEMAN:GetDirListing(ROOT..'src/plugins/', false, false)
+local PLUGINS = FILEMAN:GetDirListing(ROOT.."src/plugins/", false, false)
 for k, v in pairs(PLUGINS) do
-  if v:find('%.lua') then
-    ichi.run('/plugins/'..v)
+  if v:find("%.lua") and not v:find("%.disabled") then
+    ichi.run("/plugins/"..v)
   end
 end
 
-ichi.run '/main.lua'
+ichi.run "/main.lua"
 if ichi.init then ichi.init() end
 
 return Def.ActorFrame {
   FOV = 90,
   OnCommand = function(self)
     for _, pn in ipairs(ichi.Players) do
-      ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild('Player'..pn)
-      ichi.Columns[pn] = ichi.Actors[pn]:GetChild('NoteField'):GetColumnActors()
+      ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild("Player"..pn)
+      ichi.Columns[pn] = ichi.Actors[pn]:GetChild("NoteField"):GetColumnActors()
     end
     if ichi.ready then ichi.ready() end
     if ichi.input then
@@ -108,13 +108,13 @@ return Def.ActorFrame {
     end
   end,
   Def.Actor {
-    Name = 'Sleepyhead',
+    Name = "Sleepyhead",
     InitCommand = function(self) self:sleep(9e9) end
   },
   Def.Actor {
-    Name = 'Newsboy',
+    Name = "Newsboy",
     OnCommand = function(self)
-      self:sleep(self:GetEffectDelta()):queuecommand('Update')
+      self:sleep(self:GetEffectDelta()):queuecommand("Update")
     end,
     UpdateCommand = function(self, params)
       params = params or {}
@@ -122,13 +122,13 @@ return Def.ActorFrame {
       params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
       params.time = params.time or ichi.SONG_POS:GetMusicSeconds()
       if ichi.update then ichi.update(params) end
-      self:sleep(params.dt):queuecommand('Update')
+      self:sleep(params.dt):queuecommand("Update")
     end,
   },
   LibActors,
   ichi.Actors,
   Def.ActorFrame {
-    Name = 'Picasso',
+    Name = "Picasso",
     OnCommand = function(self)
       if ichi.draw then
         self:SetDrawFunction(ichi.draw)

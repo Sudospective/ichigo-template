@@ -43,9 +43,11 @@ Ichigo Template allows you to not only streamline your gimmick creation process,
 | class '*name*' {} | Create a class |
 | namespace '*name*' {} | Create a namespace |
 | **Standard Library** |
-| rei | Force legacy modreader |
-| ni | Require two players |
-| go | Check for OutFox Alpha V |
+| isan() | Force legacy modreader |
+| rei() | Disable modreader |
+| ni() | Require two players |
+| go() | Check for OutFox Alpha V |
+| tokei() | Time-based mods |
 | register(*PlayerOption*) | Register a PlayerOption to the template |
 | setupPlayer(*ActorProxy*) | Setup an ActorProxy to proxy a player |
 | setupJudgment(*ActorProxy*) | Setup an ActorProxy to proxy a judgment |

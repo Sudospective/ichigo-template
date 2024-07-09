@@ -1,20 +1,20 @@
 if AutoGimmick then return end
 
-class 'AutoGimmick' {
-  __version = '1.0',
+class "AutoGimmick" {
+  __version = "1.0",
   __init = function(self, path)
-    if path:find('%.json') then
-      path = path:sub(1, path:find('%.json') - 1)
+    if path:find("%.json") then
+      path = path:sub(1, path:find("%.json") - 1)
     end
-    local file = SRC_ROOT..path..'.json'
+    local file = SRC_ROOT..path..".json"
     if not FILEMAN:DoesFileExist(file) then
-      file = SRC_ROOT..path..'/default.json'
+      file = SRC_ROOT..path.."/default.json"
     end
     if not FILEMAN:DoesFileExist(file) then
       lua.ReportScriptError(
-        'Unable to local file "'
-        ..SRC_ROOT..path..'.json" or "'
-        ..SRC_ROOT..path..'/default.json".'
+        "Unable to read local file \""
+        ..SRC_ROOT..path..".json\" or \""
+        ..SRC_ROOT..path.."/default.json\"."
       )
       return
     end
@@ -24,7 +24,7 @@ class 'AutoGimmick' {
     f:Close()
     f:destroy()
     if not self.__data then
-      lua.ReportScriptError('No data to read from.')
+      lua.ReportScriptError("No data to read from.")
       return
     end
     self.__auto = automaton(self.__data)
@@ -33,13 +33,17 @@ class 'AutoGimmick' {
         local pn = k:sub(1, 2)
         local mod = k:lower():sub(4)
         local amp = event.value * 100
-        Options[pn]:FromString('*-1 '..amp..' '..mod)
+        if Options[pn] then
+          Options[pn]:FromString("*-1 "..amp.." "..mod)
+        else
+          print("No player options for "..pn.." exists.")
+        end
       end)
     end
   end,
   Define = function(self, name, func)
     for _, pn in ipairs(Players) do
-      self.__auto.auto(pn..'/'..name, function(event)
+      self.__auto.auto(pn.."/"..name, function(event)
         func(event.value, pn)
       end)
     end

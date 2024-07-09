@@ -2,7 +2,7 @@
 
 function init()
   if go() then -- if alpha v
-    Shaders:LoadShader('/assets/colors.frag', 'Colors')
+    Shaders:LoadShader("/assets/colors.frag", "Colors")
   end
 end
 
@@ -26,7 +26,7 @@ function ready()
     setupCombo(Actors[pn], Proxies[pn].Combo)
 
     Actors[pn]:zwrite(true)
-    Options[pn]:NotePathDrawMode('DrawMode_PolyLineStrip')
+    Options[pn]:NotePathDrawMode("DrawMode_PolyLineStrip")
   end
 
   wm_ready()
@@ -40,6 +40,6 @@ function update(params)
   wm_update(params)
 end
 
-run '/layout.lua'
-run '/gimmicks.lua'
-run '/assets/watermark.lua'
+run "/layout.lua"
+run "/gimmicks.lua"
+run "/assets/watermark.lua"

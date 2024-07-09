@@ -1,4 +1,4 @@
-include 'gizmos'
+include "gizmos"
 -- gizmos appear in order created
 
 -- if alpha v
@@ -16,6 +16,6 @@ for _, pn in ipairs(Players) do
   Proxies[pn] = {
     Player = Proxy:new(),
     Judgment = Proxy:new(),
-    Combo = Proxy:new()
+    Combo = Proxy:new(),
   }
 end
