@@ -1,3 +1,8 @@
+-- std.lua
+
+-- Standard Library for Ichigo Template
+-- written by Sudospective
+
 local ichi = ...
 
 local ModTable = {}

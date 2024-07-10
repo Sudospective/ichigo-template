@@ -1,4 +1,9 @@
--- adapted from 32log to work with ichi template
+-- class.lua
+
+-- Adapted from 32log to work with Ichigo Template
+-- Original class function for LOVE written by ishkabible
+-- Namespace function written by Sudospective
+
 local ichi = ...
 
 function ichi.class(name)
