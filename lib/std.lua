@@ -196,7 +196,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     ichi.rei = nil
   end,
   OnCommand = function(self)
-    print("Using PandaTemplate Modreader")
+    print("Ichigo", "Using PandaTemplate Modreader")
     local function mod_compare(a, b)
       return a[1] < b[1]
     end
@@ -248,7 +248,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     ichi.rei = nil
   end,
   OnCommand = function(self)
-    print("Using Legacy Modreader")
+    print("Ichigo", "Using Legacy Modreader")
     self.Disable = false
     self.FirstBeat = ichi.SONG_POS:GetSongBeat()
     self.CurAction = 1

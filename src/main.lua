@@ -32,13 +32,16 @@ function ready()
   wm_ready()
 end
 
-function input(event)
-end
-
 function update(params)
   AG:Update(params.time)
   wm_update(params)
 end
+
+-- function input(event)
+-- end
+
+-- function draw()
+-- end
 
 run "/layout.lua"
 run "/gimmicks.lua"

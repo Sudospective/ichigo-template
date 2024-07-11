@@ -1,4 +1,4 @@
-include 'gizmos'
+include "gizmos"
 
 -- main
 function wm_ready()
@@ -12,24 +12,24 @@ function wm_ready()
   end
   do Strawb
     :Center()
-    :Load(SRC_ROOT..'/assets/strawb.png')
+    :Load(SRC_ROOT.."/assets/strawb.png")
     :SetSize(64, 64)
     :zoom(0)
   end
   do Ichigo
-    :LoadFromFont(THEME:GetPathF('Common', 'Normal'))
+    :LoadFromFont(THEME:GetPathF("Common", "Normal"))
     :Center()
     :diffuse(0, 0, 0, 1)
-    :settext('イチゴ')
+    :settext("イチゴ")
     :wag()
     :effectmagnitude(0, 0, 5)
     :zoom(0)
   end
   do Template
-    :LoadFromFont(THEME:GetPathF('Common', 'Normal'))
+    :LoadFromFont(THEME:GetPathF("Common", "Normal"))
     :Center()
     :addy(96)
-    :settext('Ichigo Template')
+    :settext("Ichigo Template")
     :cropright(1)
     :shadowcolor(0, 0, 0, 0.5)
     :shadowlengthy(3)
