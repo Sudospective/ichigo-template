@@ -15,13 +15,13 @@ Documentation is available [here](https://ichigo-docs.sudospective.net).
 
 
 ## Tips to Keep Your Files Clean
-- Do all of your gimmick related work within the `src` folder.
+- Do all of your gimmick related work within the `/src` folder.
 - Setup goes in `main.lua`. Actors and Gizmos go in `layout.lua`. Gimmicks go in `gimmicks.lua`.
-- Make use of the `init`, `ready`, and `update` functions when necessary.
-- Keep all class definitions in the `include` folder and include them with the `include` keyword.
-- Keep all libraries in the `lib` folder. They autoload from there.
-- Likewise, keep all plugins inside `src/plugins`. They are also autoloaded.
+- Make use of the user-defined hooks (`init`, `ready`, `update`, etc.) when necessary.
+- Keep all class definitions in the `/include` folder and include them with the `include` method.
+- Keep all libraries in the `/lib` folder. They autoload from there.
+- Likewise, keep all plugins inside `/src/plugins`. They are also autoloaded.
 - `include` at the top of the file. `run` at the bottom.
-- If you plan to write code that other files will depend on, consider a library or an include file.
-- If your code depends on a library, do not write it as a library. Libraries should not depend on anything and serve to extend the ichi environment table passed to them. Consider a class or a plugin instead.
+- If you plan to write code that other files will depend on, consider a library or a header.
+- If your code depends on a library, do not write it as a library. Libraries should not depend on anything and serve only to extend the ichi environment table passed to them. Consider a header or a plugin instead.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
