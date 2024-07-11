@@ -23,5 +23,5 @@ Documentation is available [here](https://ichigo-docs.sudospective.net).
 - Likewise, keep all plugins inside `src/plugins`. They are also autoloaded.
 - `include` at the top of the file. `run` at the bottom.
 - If you plan to write code that other files will depend on, consider a library or an include file.
-- If your code requires a library, do not write it as a library. Libraries should not depend on anything other than the `ichi` environment table passed to them. Consider a class or a plugin instead.
+- If your code depends on a library, do not write it as a library. Libraries should not depend on anything and serve to extend the ichi environment table passed to them. Consider a class or a plugin instead.
 - Don't be afraid to ask me any questions! You can contact me (Sudospective) in the Project OutFox Discord server.
