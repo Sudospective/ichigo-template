@@ -2,6 +2,11 @@ if AutoGimmick then return end
 
 class "AutoGimmick" {
   __init = function(self, path)
+    if path then
+      self:LoadFromPath(path)
+    end
+  end;
+  LoadFromPath = function(self, path)
     if path:find("%.json") then
       path = path:sub(1, path:find("%.json") - 1)
     end

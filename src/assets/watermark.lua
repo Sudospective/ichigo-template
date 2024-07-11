@@ -12,7 +12,6 @@ function wm_ready()
   end
   do Strawb
     :Center()
-    :Load(SRC_ROOT.."/assets/strawb.png")
     :SetSize(64, 64)
     :zoom(0)
   end
@@ -44,7 +43,7 @@ end
 
 -- layout
 GoodBoy = Rect:new()
-Strawb = Image:new()
+Strawb = Image:new("/assets/strawb.png")
 Ichigo = Label:new()
 Template = Label:new()
 

@@ -2,8 +2,8 @@ if Example then return end -- this is our load blocker
 
 -- base class
 class "Example" {
-  __init = function(self, ...)
-    print(self.__class, ...)
+  __init = function(self)
+    print(self.__class)
   end;
   Field = true;
   Method = function(self) return self.Field end;

@@ -13,11 +13,7 @@ setmetatable(ichi, {
 })
 ichi.ichi = ichi
 
-ichi.SONG = GAMESTATE:GetCurrentSong()
-ichi.SONG_POS = GAMESTATE:GetSongPosition()
-ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
-ichi.INC_ROOT = ichi.SONG:GetSongDir().."include"
-
+-- constants
 ichi.SCX = SCREEN_CENTER_X
 ichi.SCY = SCREEN_CENTER_Y
 ichi.SW = SCREEN_WIDTH
@@ -26,11 +22,15 @@ ichi.SL = SCREEN_LEFT
 ichi.SR = SCREEN_RIGHT
 ichi.ST = SCREEN_TOP
 ichi.SB = SCREEN_BOTTOM
-
 ichi.DW = DISPLAY:GetDisplayWidth()
 ichi.DH = DISPLAY:GetDisplayHeight()
+ichi.SONG = GAMESTATE:GetCurrentSong()
+ichi.SONG_POS = GAMESTATE:GetSongPosition()
+ichi.SONG_ROOT = ichi.SONG:GetSongDir()
+ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
+ichi.__version = "1.0-RC10"
 
-ichi.__version = "1.0-RC9"
+-- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
 ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
@@ -40,7 +40,6 @@ ichi.Profiles = {
   Machine = PROFILEMAN:GetMachineProfile()
 }
 ichi.States = {}
-
 ichi.Columns = {}
 
 -- easier chart access
@@ -66,24 +65,22 @@ end
 
 -- run a file from /src
 function ichi.run(path)
-  local data = assert(loadfile(ichi.SRC_ROOT..path))
+  local data = assert(loadfile(ichi.SONG_ROOT.."src/"..path))
   return ichi(data)()
 end
 -- include a file from /include
 function ichi.include(name)
-  local data = assert(loadfile(ichi.INC_ROOT.."/"..name..".lua"))
+  local data = assert(loadfile(ichi.SONG_ROOT.."include/"..name..".lua"))
   return ichi(data)()
 end
 
-local ROOT = ichi.SONG:GetSongDir()
-
-local LIBS = FILEMAN:GetDirListing(ROOT.."lib/", false, true)
+local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
   table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
 end
 
-local PLUGINS = FILEMAN:GetDirListing(ROOT.."src/plugins/", false, false)
+local PLUGINS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."src/plugins/", false, false)
 for k, v in pairs(PLUGINS) do
   if v:find("%.lua") and not v:find("%.disabled") then
     ichi.run("/plugins/"..v)

@@ -40,6 +40,11 @@ class "Rect" : extends "Gizmo" {
 
 class "Image" : extends "Gizmo" {
   __type = "Sprite";
+  __ready = function(self, path)
+    if path then
+      self.__actor.Texture = SRC_ROOT..path
+    end
+  end;
 }
 
 class "MultiImage" : extends "Gizmo" {
@@ -52,6 +57,7 @@ class "Label" : extends "Gizmo" {
     if not self.__actor.Font then
       self.__actor.Font = "Common Normal"
     end
+    self.__actor.Text = "Sample text"
   end;
 }
 
