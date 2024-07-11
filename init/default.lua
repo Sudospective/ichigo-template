@@ -77,7 +77,9 @@ end
 local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do
-  table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
+  if v:find("%.lua") and not v:find("%.disabled") then
+    table.insert(LibActors, assert(loadfile(v))(ichi) or nil)
+  end
 end
 
 local PLUGINS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."src/plugins/", false, false)
@@ -100,6 +102,19 @@ return Def.ActorFrame {
     if ichi.ready then ichi.ready() end
     if ichi.input then
       SCREENMAN:GetTopScreen():AddInputCallback(ichi.input)
+    end
+    if SCREENMAN:GetTopScreen().GetEditState then
+      SCREENMAN:GetTopScreen():GetChild("Overlay"):AddChild(function()
+        return Def.Actor {
+          Name = "InputCleaner",
+          EditCommand = function(self)
+            if ichi.input then
+              SCREENMAN:GetTopScreen():RemoveInputCallback(ichi.input)
+            end
+            SCREENMAN:GetTopScreen():GetChild("Overlay"):RemoveChild(self:GetName())
+          end,
+        }
+      end)
     end
   end,
   OffCommand = function(self)

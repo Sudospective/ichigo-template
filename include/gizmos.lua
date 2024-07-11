@@ -82,6 +82,7 @@ class "ShaderLoader" : extends "Gizmo" {
       Frag = SRC_ROOT..path,
       InitCommand = function(s)
         self[name] = s:GetShader()
+        s:visible(false)
       end
     }
     table.insert(ichi.Actors, 1, shader)
@@ -91,6 +92,12 @@ class "ShaderLoader" : extends "Gizmo" {
 
 class "Model3D" : extends "Gizmo" {
   __type = "Model";
+  __ready = function(self, path)
+    if path then
+      self:LoadMeshes(path)
+      self:LoadMaterials(path)
+    end
+  end;
   LoadMeshes = function(self, path)
     self.__actor.Meshes = SRC_ROOT..path
     return self
@@ -103,6 +110,11 @@ class "Model3D" : extends "Gizmo" {
 
 class "Audio" : extends "Gizmo" {
   __type = "Sound";
+  __ready = function(self, path)
+    if path then
+      self.__actor.File = SRC_ROOT..path
+    end
+  end;
 }
 
 class "Proxy" : extends "Gizmo" {
@@ -198,4 +210,12 @@ class "Input" : extends "Gizmo" {
 
 class "AudioWaveform" : extends "Gizmo" {
   __type = "AudioVisualizer";
+  __ready = function(self)
+    local init = self.__actor.InitCommand
+    self.__actor.InitCommand = function(s)
+      init(s)
+      s:SetSound(SCREENMAN:GetTopScreen():GetSound())
+    end
+    self.__actor.UpdateRate = 1/60
+  end;
 }
