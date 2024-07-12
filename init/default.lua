@@ -28,7 +28,7 @@ ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SONG_ROOT = ichi.SONG:GetSongDir()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
-ichi.__version = "1.0-RC10"
+ichi.__version = "1.0"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
