@@ -8,7 +8,7 @@ class "Gizmo" {
       return
     end
     self.__actor = Def[self.__type] {}
-    local t = _G[self.__type] or {}
+    local t = self.__type == "Sound" and ActorSound or _G[self.__type] or {}
     for k, v in pairs(Actor) do
       t[k] = v
     end
