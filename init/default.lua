@@ -1,5 +1,5 @@
 if ProductFamily() ~= "OutFox" then
-  lua.ReportScriptError("This template is only compatible with OutFox.")
+  lua.ReportScriptError("This template is only compatible with Project OutFox.")
   return Def.Actor {}
 end
 
