@@ -53,11 +53,9 @@ class "MultiImage" : extends "Gizmo" {
 
 class "Label" : extends "Gizmo" {
   __type = "BitmapText";
-  __ready = function(self)
-    if not self.__actor.Font then
-      self.__actor.Font = "Common Normal"
-    end
-    self.__actor.Text = "Sample text"
+  __ready = function(self, text, font)
+    self.__actor.Font = font or "Common Normal"
+    self.__actor.Text = text or "Sample text"
   end;
 }
 
