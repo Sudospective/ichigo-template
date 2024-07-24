@@ -5,11 +5,12 @@
 
 local ichi = ...
 
+local DefTable = {}
+local EaseTable = {}
 local ModTable = {}
 local MsgTable = {}
-local EaseTable = {}
+local NoteTable = {}
 local PopTable = {}
-local DefTable = {}
 
 local reader = (ProductVersion():find("0.5") and "panda") or "legacy"
 local timebased = false
@@ -110,6 +111,23 @@ function ichi.gimmick(t)
   return ichi.gimmick
 end
 
+-- create a note gimmick
+-- notegimmick {0, 2, Tweens.inoutquint, 0, 100, 'tipsy', col = 1, beat = 4}
+function ichi.notegimmick(t)
+  if not t.beat then
+    lua.ReportScriptError("No beat for notegimmick provided.")
+    return
+  end
+  if type(t.plr) == "number" then
+    t.plr = {t.plr}
+  end
+  if type(t.col) == "number" then
+    t.col = {t.col}
+  end
+  table.insert(NoteTable, t)
+  return ichi.notegimmick
+end
+
 -- create a loop
 function ichi.loop(t)
   if type(t[1]) == "number" then
@@ -148,7 +166,6 @@ function ichi.centerColumnOffset()
         end
       end
       local af = col:AddWrapperState()
-      --print(af)
       col:x(-info.XOffset)
       af:addx(info.XOffset)
     end
@@ -235,6 +252,19 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     self:SetPostCommand("Update")
   end,
   UpdateCommand = function(self, params)
+    local beat = timebased and (params.time or ichi.SONG_POS:GetMusicSeconds()) or (params.beat or ichi.SONG_POS:GetSongBeat())
+    for _, v in ipairs(NoteTable) do
+      v.plr = v.plr or {1, 2}
+      v.col = v.col or {1, 2, 3, 4}
+      if beat >= v[1] and beat <= v[1] + v[2] then
+        local strength = v[4] + (v[5] - v[4]) * v[3]((beat - v[1]) / v[2])
+        for _, pn in ipairs(v.plr) do
+          for _, col in ipairs(v.col) do
+            ichi.Actors["P"..pn]:AddNoteMod(v.beat, col, v[6], strength * 0.01)
+          end
+        end
+      end
+    end
     if updatetime == 0 then
       self:SetUpdateSleep(params.dt)
     else
@@ -246,6 +276,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   InitCommand = function(self)
     ichi.isan = nil
     ichi.rei = nil
+    ichi.notegimmick = nil
   end,
   OnCommand = function(self)
     print("Ichigo", "Using Legacy Modreader")
