@@ -111,7 +111,11 @@ class "Audio" : extends "Gizmo" {
   __ready = function(self, path)
     if path then
       self.__actor.File = SRC_ROOT..path
+      self.__actor.Precache = true
     end
+  end;
+  SetPrecache = function(self, b)
+    self.__actor.Precache = b
   end;
 }
 
