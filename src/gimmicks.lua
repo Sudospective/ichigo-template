@@ -1,9 +1,3 @@
-include "autogimmick"
-
--- open this json file in automaton to edit gimmicks visually!
--- https://github.com/0b5vr/automaton-electron
-AG = AutoGimmick:new("/assets/mods.json")
-
 --[[
 
   - {percent, mod}

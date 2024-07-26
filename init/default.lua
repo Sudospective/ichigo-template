@@ -74,6 +74,17 @@ function ichi.include(name)
   return ichi(data)()
 end
 
+function ichi.setting(name, value)
+  if value then
+    LoadModule("Config.Save.lua")(name, value, ichi.SONG_ROOT.."settings.ini")
+  else
+    return LoadModule("Config.Load.lua")(name, ichi.SONG_ROOT.."settings.ini")
+  end
+end
+
+-- grab from settings
+ichi.IH = tonumber(ichi.setting("IntendedHeight"))
+
 local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}
 for k, v in pairs(LIBS) do

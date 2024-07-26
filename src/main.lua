@@ -33,7 +33,6 @@ function ready()
 end
 
 function update(params)
-  AG:Update(params.time)
   wm_update(params)
 end
 
