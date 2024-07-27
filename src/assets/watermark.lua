@@ -4,6 +4,7 @@ include "gizmos"
 function wm_ready()
   do GoodBoy
     :Center()
+    :basezoom(SH / IH)
     :SetSize(96, 96)
     :diffuse(1, 0.8, 0.8, 1)
     :zoom(0)
@@ -13,12 +14,14 @@ function wm_ready()
   end
   do Ichigo
     :Center()
+    :basezoom(SH / IH)
     :SetSize(64 * Ichigo:GetTexture():GetSourceWidth() / Ichigo:GetTexture():GetSourceHeight(), 64)
     :zoom(0)
   end
   do TemplateText
     :LoadFromFont(THEME:GetPathF("Common", "Normal"))
     :Center()
+    :basezoom(SH / IH)
     :addy(96)
     :settext("Ichigo Template")
     :cropright(1)
