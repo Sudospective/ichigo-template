@@ -12,15 +12,29 @@ local MsgTable = {}
 local NoteTable = {}
 local PopTable = {}
 
+local timebased = false
+if ichi.setting "TimeBasedGimmicks" then
+  timebased = true
+end
+
+local updatetime = 0
+
 local reader = (ProductVersion():find("0.5") and "panda") or "legacy"
 if ichi.setting "LegacyModreader" then
   reader = "legacy"
-elseif ichi.setting "DisableModreader" then
+end
+if ichi.setting "DisableModreader" then
   reader = "none"
 end
 
-local timebased = false
-local updatetime = 0
+if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+  table.insert(ichi.Actors, Def.Actor {
+    OnCommand = function(self)
+      SCREENMAN:SystemMessage("Two Players Required")
+      SCREENMAN:GetTopScreen():Cancel()
+    end
+  })
+end
 
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song"))
@@ -33,11 +47,6 @@ end
 -- check for alpha v
 function ichi.go()
   return tonumber(ProductVersion():sub(1, ProductVersion():find("%-") - 1)) >= 0.5
-end
-
--- enable time-based mods
-function ichi.tokei()
-  timebased = true
 end
 
 -- create an actor
@@ -186,14 +195,6 @@ function ichi.setupCombo(plr, proxy)
     :sleep(9e9)
 end
 
-if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
-  table.insert(ichi.Actors, Def.Actor {
-    OnCommand = function(self)
-      SCREENMAN:SystemMessage("Two Players Required")
-      SCREENMAN:GetTopScreen():Cancel()
-    end
-  })
-end
 
 return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and Def.PandaTemplate {
   Name = "Bookworm",
