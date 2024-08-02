@@ -74,16 +74,44 @@ function ichi.include(name)
   return ichi(data)()
 end
 
-function ichi.setting(name, value)
-  if value then
-    LoadModule("Config.Save.lua")(name, value, ichi.SONG_ROOT.."settings.ini")
-  else
-    return LoadModule("Config.Load.lua")(name, ichi.SONG_ROOT.."settings.ini")
+local settings = {}
+local function config(key, file, cat)
+  if not FILEMAN:DoesFileExist(file) then return end
+  local container = {}
+  local configfile = RageFileUtil.CreateRageFile()
+  configfile:Open(file, 1)
+  local configcontent = configfile:Read()
+  configfile:Close()
+  configfile:destroy()
+  local caty = true
+  for line in string.gmatch(configcontent.."\n", "(.-)\n") do
+    for con in string.gmatch(line, "%[(.-)%]") do
+      if con == cat or cat == nil then caty = true else caty = false end
+    end
+    for keyval, val in string.gmatch(line, "(.-)=(.+)") do
+      if key == keyval and caty then
+        if val == "true" then return true end
+        if val == "false" then return false end
+        return val
+      end
+    end
   end
+end
+function ichi.setting(name)
+  if not settings[name] then
+    local value = config(name, ichi.SONG_ROOT.."settings.ini")
+    if value == nil then
+      error("No value for setting \""..name.."\".")
+      return
+    end
+    value = tonumber(value) or tobool(value) or value
+    settings[name] = value
+  end
+  return settings[name]
 end
 
 -- grab from settings
-ichi.IH = tonumber(ichi.setting("IntendedHeight"))
+ichi.IH = ichi.setting "IntendedHeight"
 
 local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}

@@ -1,7 +1,8 @@
 --ni() -- uncomment to require two players
 
 function init()
-  if go() then -- if alpha v
+  -- if alpha v
+  if go() then
     Shaders:LoadShader("/assets/colors.frag", "Colors")
   end
 end
@@ -42,6 +43,6 @@ end
 -- function draw()
 -- end
 
-run "/layout.lua"
-run "/gimmicks.lua"
-run "/assets/watermark.lua"
+run "layout.lua"
+run "gimmicks.lua"
+run "assets/watermark.lua"

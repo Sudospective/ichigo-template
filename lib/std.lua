@@ -13,6 +13,12 @@ local NoteTable = {}
 local PopTable = {}
 
 local reader = (ProductVersion():find("0.5") and "panda") or "legacy"
+if ichi.setting "LegacyModreader" then
+  reader = "legacy"
+elseif ichi.setting "DisableModreader" then
+  reader = "none"
+end
+
 local timebased = false
 local updatetime = 0
 
@@ -20,30 +26,8 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song"))
 end
 
--- force legacy modreader
-function ichi.isan()
-  reader = "legacy"
-end
-
--- disable modreader
-function ichi.rei()
-  reader = "none"
-end
-
 function ichi.updatetime(time)
   updatetime = time
-end
-
--- require two players
-function ichi.ni()
-  if GAMESTATE:GetNumPlayersEnabled() < 2 then
-    table.insert(ichi.Actors, Def.Actor {
-      OnCommand = function(self)
-        SCREENMAN:SystemMessage("Two Players Required")
-        SCREENMAN:GetTopScreen():Cancel()
-      end
-    })
-  end
 end
 
 -- check for alpha v
@@ -86,7 +70,7 @@ function ichi.gimmick(t)
     table.insert(ModTable, newT)
   elseif type(t[3]) == "function" then -- ease / func_ease / perframe
     if #t < 4 then -- perframe
-      newT = {t[1], t[2], t[1], t[2], t[3], "len", Tweens.easeLinear, t.plr or nil}
+      newT = {t[1], t[2], t[1], t[1] + t[2], t[3], "len", Tweens.easeLinear, t.plr or nil}
       table.insert(EaseTable, newT)
     else -- func_ease / ease
       newT = {t[1], t[2], t[4], t[5], t[6], "len", t[3], t.plr or nil}
@@ -213,15 +197,22 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     ichi.rei = nil
   end,
   OnCommand = function(self)
-    print("Ichigo", "Using PandaTemplate Modreader")
+    print("Ichigo", "Standard Library", "Using PandaTemplate Modreader")
+    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+      table.insert(ichi.Actors, Def.Actor {
+        OnCommand = function(self)
+          SCREENMAN:SystemMessage("Two Players Required")
+          SCREENMAN:GetTopScreen():Cancel()
+        end
+      })
+    end
     local function mod_compare(a, b)
       return a[1] < b[1]
     end
-    if #MsgTable > 1 then
-      table.sort(ModTable, mod_compare)
-      table.sort(EaseTable, mod_compare)
-      table.sort(MsgTable, mod_compare)
-    end
+    table.sort(ModTable, mod_compare)
+    table.sort(MsgTable, mod_compare)
+    table.sort(EaseTable, mod_compare)
+    table.sort(NoteTable, mod_compare)
     if timebased then
       self:PopulateTimeMods(ModTable)
       self:PopulateTimeMessages(MsgTable)
@@ -231,7 +222,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     end
     self:PopulateEases(EaseTable)
     self:PopulatePoptions(PopTable)
-    for k, v in pairs(PopTable) do
+    for _, v in ipairs(PopTable) do
       for _, mod in pairs(DefTable) do
         modstring = "*-1 "
         if mod[2]:find("mod") and not mod[2]:find("modtimer") then
@@ -255,12 +246,22 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     local beat = timebased and (params.time or ichi.SONG_POS:GetMusicSeconds()) or (params.beat or ichi.SONG_POS:GetSongBeat())
     for _, v in ipairs(NoteTable) do
       v.plr = v.plr or {1, 2}
+      if type(v.plr) == "number" then
+        v.plr = {v.plr}
+      end
       v.col = v.col or {1, 2, 3, 4}
+      if type(v.col) == "number" then
+        v.col = {v.col}
+      end
       if beat >= v[1] and beat <= v[1] + v[2] then
         local strength = v[4] + (v[5] - v[4]) * v[3]((beat - v[1]) / v[2])
         for _, pn in ipairs(v.plr) do
           for _, col in ipairs(v.col) do
-            ichi.Actors["P"..pn]:AddNoteMod(v.beat, col, v[6], strength * 0.01)
+            if ichi.Actors["P"..pn].AddNoteMod then
+              ichi.Actors["P"..pn]:AddNoteMod(v.beat, col, v[6], strength * 0.01)
+            elseif ichi.Actors["P"..pn]:GetChild("NoteField") then
+              ichi.Actors["P"..pn]:GetChild("NoteField"):AddNoteMod(v.beat, col, v[6], strength * 0.01)
+            end
           end
         end
       end
@@ -270,7 +271,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     else
       self:SetUpdateSleep(updatetime)
     end
-  end
+  end,
 } or reader == "legacy" and Def.ActorFrame { -- Ease Template written by Exschwasion
   Name = "Bookworm",
   InitCommand = function(self)
@@ -279,18 +280,24 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     ichi.notegimmick = nil
   end,
   OnCommand = function(self)
-    print("Ichigo", "Using Legacy Modreader")
+    print("Ichigo", "Standard Library", "Using Legacy Modreader")
+    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+      table.insert(ichi.Actors, Def.Actor {
+        OnCommand = function(self)
+          SCREENMAN:SystemMessage("Two Players Required")
+          SCREENMAN:GetTopScreen():Cancel()
+        end
+      })
+    end
     self.Disable = false
     self.FirstBeat = ichi.SONG_POS:GetSongBeat()
     self.CurAction = 1
     local function mod_compare(a, b)
       return a[1] < b[1]
     end
-    if #MsgTable > 1 then
-      table.sort(ModTable, mod_compare)
-      table.sort(EaseTable, mod_compare)
-      table.sort(MsgTable, mod_compare)
-    end
+    table.sort(ModTable, mod_compare)
+    table.sort(MsgTable, mod_compare)
+    table.sort(EaseTable, mod_compare)
     self:queuecommand("Update")
   end,
   UpdateCommand = function(self)
@@ -301,6 +308,24 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
         -- reset
         for pn = 1, #PopTable do
           PopTable[pn]:FromString("clearall")
+        end
+        -- default
+        for _, v in ipairs(PopTable) do
+          for _, mod in pairs(DefTable) do
+            modstring = "*-1 "
+            if mod[2]:find("mod") and not mod[2]:find("modtimer") then
+              if mod[2]:find("x") then
+                modstring = modstring..mod[1].."x"
+              elseif mod[2]:find("c") then
+                modstring = modstring.."c"..mod[1]
+              elseif mod[2]:find("m") then
+                modstring = modstring.."m"..mod[1]
+              end
+            else
+              modstring = modstring..mod[1].." "..mod[2]
+            end
+            v:FromString(modstring)
+          end
         end
         -- mods
         for i, v in ipairs(ModTable) do
@@ -376,7 +401,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
       end
     end
     self:sleep(self:GetEffectDelta()):queuecommand("Update")
-  end
+  end,
 } or Def.Actor{
   InitCommand = function(self)
     ichi.isan = nil
@@ -384,5 +409,16 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     ichi.gimmick = nil
     ichi.updatetime = nil
     ichi.tokei = nil
+  end,
+  OnCommand = function(self)
+    print("Ichigo", "Standard Library", "Modreader Disabled")
+    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+      table.insert(ichi.Actors, Def.Actor {
+        OnCommand = function(self)
+          SCREENMAN:SystemMessage("Two Players Required")
+          SCREENMAN:GetTopScreen():Cancel()
+        end
+      })
+    end
   end,
 }
