@@ -186,6 +186,15 @@ function ichi.setupCombo(plr, proxy)
     :sleep(9e9)
 end
 
+if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+  table.insert(ichi.Actors, Def.Actor {
+    OnCommand = function(self)
+      SCREENMAN:SystemMessage("Two Players Required")
+      SCREENMAN:GetTopScreen():Cancel()
+    end
+  })
+end
+
 return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and Def.PandaTemplate {
   Name = "Bookworm",
   ClearDoneMods = true,
@@ -198,14 +207,6 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   end,
   OnCommand = function(self)
     print("Ichigo", "Standard Library", "Using PandaTemplate Modreader")
-    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
-      table.insert(ichi.Actors, Def.Actor {
-        OnCommand = function(self)
-          SCREENMAN:SystemMessage("Two Players Required")
-          SCREENMAN:GetTopScreen():Cancel()
-        end
-      })
-    end
     local function mod_compare(a, b)
       return a[1] < b[1]
     end
@@ -281,14 +282,6 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   end,
   OnCommand = function(self)
     print("Ichigo", "Standard Library", "Using Legacy Modreader")
-    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
-      table.insert(ichi.Actors, Def.Actor {
-        OnCommand = function(self)
-          SCREENMAN:SystemMessage("Two Players Required")
-          SCREENMAN:GetTopScreen():Cancel()
-        end
-      })
-    end
     self.Disable = false
     self.FirstBeat = ichi.SONG_POS:GetSongBeat()
     self.CurAction = 1
@@ -412,13 +405,5 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   end,
   OnCommand = function(self)
     print("Ichigo", "Standard Library", "Modreader Disabled")
-    if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
-      table.insert(ichi.Actors, Def.Actor {
-        OnCommand = function(self)
-          SCREENMAN:SystemMessage("Two Players Required")
-          SCREENMAN:GetTopScreen():Cancel()
-        end
-      })
-    end
   end,
 }
