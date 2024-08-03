@@ -12,32 +12,20 @@ local MsgTable = {}
 local NoteTable = {}
 local PopTable = {}
 
+local updatetime = 0
+
 local timebased = false
 if ichi.setting "TimeBasedGimmicks" then
   timebased = true
 end
 
-local updatetime = 0
-
-local reader = (ProductVersion():find("0.5") and "panda") or "legacy"
-if ichi.setting "LegacyModreader" then
-  reader = "legacy"
-end
-if ichi.setting "DisableModreader" then
-  reader = "none"
-end
-
-if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
-  table.insert(ichi.Actors, Def.Actor {
-    OnCommand = function(self)
-      SCREENMAN:SystemMessage("Two Players Required")
-      SCREENMAN:GetTopScreen():Cancel()
-    end
-  })
-end
-
 for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song"))
+end
+
+function ichi.yasumi()
+  local screen = SCREENMAN:GetTopScreen()
+  return screen.IsPaused and screen:IsPaused() or false
 end
 
 function ichi.updatetime(time)
@@ -51,7 +39,7 @@ end
 
 -- create an actor
 function ichi.actor(t)
-  table.insert(ichi.Actors, t)
+  table.insert(ichi.Actors, Def[t.Type](t))
   return ichi.actor
 end
 
@@ -196,6 +184,24 @@ function ichi.setupCombo(plr, proxy)
 end
 
 
+if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+  table.insert(ichi.Actors, Def.Actor {
+    OnCommand = function(self)
+      SCREENMAN:SystemMessage("Two Players Required")
+      SCREENMAN:GetTopScreen():Cancel()
+    end
+  })
+end
+
+
+local reader = (ichi.go() and "panda") or "legacy"
+if ichi.setting "LegacyModreader" then
+  reader = "legacy"
+end
+if ichi.setting "DisableModreader" then
+  reader = "none"
+end
+
 return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and Def.PandaTemplate {
   Name = "Bookworm",
   ClearDoneMods = true,
@@ -256,7 +262,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
         v.col = {v.col}
       end
       if beat >= v[1] and beat <= v[1] + v[2] then
-        local strength = v[4] + (v[5] - v[4]) * v[3]((beat - v[1]) / v[2])
+        local strength = v[3](beat - v[1], v[4], v[5] - v[4], v[2])
         for _, pn in ipairs(v.plr) do
           for _, col in ipairs(v.col) do
             if ichi.Actors["P"..pn].AddNoteMod then
