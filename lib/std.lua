@@ -400,7 +400,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
         end
       end
     end
-    self:sleep(self:GetEffectDelta()):queuecommand("Update")
+    self:sleep(updatetime ~= 0 and updatetime or self:GetEffectDelta()):queuecommand("Update")
   end,
 } or Def.Actor{
   InitCommand = function(self)
