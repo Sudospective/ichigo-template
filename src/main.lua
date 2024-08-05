@@ -1,5 +1,3 @@
---ni() -- uncomment to require two players
-
 function init()
   -- if alpha v
   if go() then
