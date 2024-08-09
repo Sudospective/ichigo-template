@@ -73,7 +73,6 @@ function ichi.include(name)
   return ichi(data)()
 end
 
-local settings = {}
 local function config(key, file, cat)
   if not FILEMAN:DoesFileExist(file) then return end
   local container = {}
@@ -88,7 +87,7 @@ local function config(key, file, cat)
       if con == cat or cat == nil then caty = true else caty = false end
     end
     for keyval, val in string.gmatch(line, "(.-)=(.+)") do
-      val = val:gsub("\r", "") -- trim any weird return carriages from CRLF
+      val = val:gsub("\r\n", "\n") -- trim any weird return carriages from CRLF
       if key == keyval and caty then
         if val == "true" then return true end
         if val == "false" then return false end
@@ -97,6 +96,8 @@ local function config(key, file, cat)
     end
   end
 end
+
+local settings = {}
 function ichi.setting(name)
   if not settings[name] then
     local value = config(name, ichi.SONG_ROOT.."settings.ini")
