@@ -3,8 +3,7 @@ if ProductFamily() ~= "OutFox" then
   return Def.Actor {}
 end
 
-local ichi = {}
-setmetatable(ichi, {
+local ichi = setmetatable({}, {
   __index = _ENV,
   __call = function(self, f)
     setfenv(f or 2, self)
