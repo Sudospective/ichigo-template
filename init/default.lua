@@ -88,6 +88,7 @@ local function config(key, file, cat)
       if con == cat or cat == nil then caty = true else caty = false end
     end
     for keyval, val in string.gmatch(line, "(.-)=(.+)") do
+      val = val:gsub("\r", "") -- trim any weird return carriages from CRLF
       if key == keyval and caty then
         if val == "true" then return true end
         if val == "false" then return false end
