@@ -209,11 +209,11 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   ClearAllPoptions = true,
   LoopModsAllPoptions = true,
   InitCommand = function(self)
+    print("Ichigo", "Standard Library", "Using PandaTemplate Modreader")
     ichi.isan = nil
     ichi.rei = nil
   end,
   OnCommand = function(self)
-    print("Ichigo", "Standard Library", "Using PandaTemplate Modreader")
     local function mod_compare(a, b)
       return a[1] < b[1]
     end
@@ -283,12 +283,12 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
 } or reader == "legacy" and Def.ActorFrame { -- Ease Template written by Exschwasion
   Name = "Bookworm",
   InitCommand = function(self)
+    print("Ichigo", "Standard Library", "Using Legacy Modreader")
     ichi.isan = nil
     ichi.rei = nil
     ichi.notegimmick = nil
   end,
   OnCommand = function(self)
-    print("Ichigo", "Standard Library", "Using Legacy Modreader")
     self.Disable = false
     self.FirstBeat = ichi.SONG_POS:GetSongBeat()
     self.CurAction = 1
@@ -404,13 +404,9 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   end,
 } or Def.Actor{
   InitCommand = function(self)
-    ichi.isan = nil
-    ichi.rei = nil
-    ichi.gimmick = nil
-    ichi.updatetime = nil
-    ichi.tokei = nil
-  end,
-  OnCommand = function(self)
     print("Ichigo", "Standard Library", "Modreader Disabled")
+    ichi.gimmick = nil
+    ichi.notegimmick = nil
+    ichi.updatetime = nil
   end,
 }
