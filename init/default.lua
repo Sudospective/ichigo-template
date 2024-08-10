@@ -1,5 +1,5 @@
 if ProductFamily() ~= "OutFox" then
-  lua.ReportScriptError("This template is only compatible with Project OutFox.")
+  error("This template is only compatible with Project OutFox.")
   return Def.Actor {}
 end
 
@@ -27,7 +27,7 @@ ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SONG_ROOT = ichi.SONG:GetSongDir()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
-ichi.__version = "1.1"
+ichi.__version = "1.2"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
@@ -63,14 +63,34 @@ for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
 end
 
 -- run a file from /src
+local funcs = {
+  init = {},
+  ready = {},
+  update = {},
+  input = {},
+  draw = {},
+}
+local initfuncs = {}
+local readyfuncs = {}
+local updatefuncs = {}
+local inputfuncs = {}
+local drawfuncs = {}
 function ichi.run(path)
   local data = assert(loadfile(ichi.SONG_ROOT.."src/"..path))
-  return ichi(data)()
+  ichi(data)()
+  local i = {}
+  for name in pairs(funcs) do
+    i[name] = ichi[name]
+    if i[name] then
+      table.insert(funcs[name], i[name])
+      ichi[name] = nil
+    end
+  end
 end
 -- include a file from /include
 function ichi.include(name)
   local data = assert(loadfile(ichi.SONG_ROOT.."include/"..name..".lua"))
-  return ichi(data)()
+  ichi(data)()
 end
 
 local function config(key, file, cat)
@@ -81,13 +101,13 @@ local function config(key, file, cat)
   local configcontent = configfile:Read()
   configfile:Close()
   configfile:destroy()
+  configcontent = configcontent:gsub("\r\n", "\n")
   local caty = true
   for line in string.gmatch(configcontent.."\n", "(.-)\n") do
     for con in string.gmatch(line, "%[(.-)%]") do
       if con == cat or cat == nil then caty = true else caty = false end
     end
     for keyval, val in string.gmatch(line, "(.-)=(.+)") do
-      val = val:gsub("\r\n", "\n") -- trim any weird return carriages from CRLF
       if key == keyval and caty then
         if val == "true" then return true end
         if val == "false" then return false end
@@ -125,12 +145,12 @@ end
 local PLUGINS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."src/plugins/", false, false)
 for k, v in pairs(PLUGINS) do
   if v:find("%.lua") and not v:find("%.disabled") then
-    ichi.run("/plugins/"..v)
+    ichi.run("plugins/"..v)
   end
 end
 
-ichi.run "/main.lua"
-if ichi.init then ichi.init() end
+ichi.run("main.lua")
+for _, func in ipairs(funcs.init) do func() end
 
 return Def.ActorFrame {
   FOV = 120, -- the fov of one human eye
@@ -139,17 +159,17 @@ return Def.ActorFrame {
       ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild("Player"..pn)
       ichi.Columns[pn] = ichi.Actors[pn]:GetChild("NoteField"):GetColumnActors()
     end
-    if ichi.ready then ichi.ready() end
-    if ichi.input then
-      SCREENMAN:GetTopScreen():AddInputCallback(ichi.input)
+    for _, func in ipairs(funcs.ready) do func() end
+    for _, func in ipairs(funcs.input) do
+      SCREENMAN:GetTopScreen():AddInputCallback(func)
     end
     if SCREENMAN:GetTopScreen().GetEditState then
       SCREENMAN:GetTopScreen():GetChild("Overlay"):AddChild(function()
         return Def.Actor {
           Name = "InputCleaner",
           EditCommand = function(self)
-            if ichi.input then
-              SCREENMAN:GetTopScreen():RemoveInputCallback(ichi.input)
+            for _, func in ipairs(funcs.input) do
+              SCREENMAN:GetTopScreen():RemoveInputCallback(func)
             end
             SCREENMAN:GetTopScreen():GetChild("Overlay"):RemoveChild(self:GetName())
           end,
@@ -158,13 +178,13 @@ return Def.ActorFrame {
     end
   end,
   OffCommand = function(self)
-    if ichi.input then
-      SCREENMAN:GetTopScreen():RemoveInputCallback(ichi.input)
+    for _, func in ipairs(funcs.input) do
+      SCREENMAN:GetTopScreen():RemoveInputCallback(func)
     end
   end,
   Def.Actor {
     Name = "Sleepyhead",
-    InitCommand = function(self) self:sleep(9e9) end
+    InitCommand = function(self) self:sleep(9e9) end,
   },
   Def.Actor {
     Name = "Newsboy",
@@ -172,14 +192,12 @@ return Def.ActorFrame {
       self:sleep(self:GetEffectDelta()):queuecommand("Update")
     end,
     UpdateCommand = function(self, params)
-      if ichi.update then
-        params = params or {}
-        params.dt = params.dt or self:GetEffectDelta()
-        params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
-        params.time = params.time or ichi.SONG_POS:GetMusicSeconds()
-        ichi.update(params)
-        self:sleep(params.dt):queuecommand("Update")
-      end
+      params = params or {}
+      params.dt = params.dt or self:GetEffectDelta()
+      params.beat = params.beat or ichi.SONG_POS:GetSongBeat()
+      params.time = params.time or ichi.SONG_POS:GetMusicSeconds()
+      for _, func in ipairs(funcs.update) do func(params) end
+      self:sleep(params.dt):queuecommand("Update")
     end,
   },
   LibActors,
@@ -187,9 +205,11 @@ return Def.ActorFrame {
   Def.ActorFrame {
     Name = "Picasso",
     OnCommand = function(self)
-      if ichi.draw then
-        self:SetDrawFunction(ichi.draw)
+      if #drawfuncs > 0 then
+        self:SetDrawFunction(function()
+          for _, func in ipairs(funcs.draw) do func() end
+        end)
       end
-    end
-  }
+    end,
+  },
 }

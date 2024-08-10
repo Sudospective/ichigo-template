@@ -27,13 +27,10 @@ function ready()
     Actors[pn]:zwrite(true)
     Options[pn]:NotePathDrawMode("DrawMode_PolyLineStrip")
   end
-
-  wm_ready()
 end
 
-function update(params)
-  wm_update(params)
-end
+--function update(params)
+--end
 
 -- function input(event)
 -- end

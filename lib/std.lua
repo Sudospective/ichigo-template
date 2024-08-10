@@ -96,7 +96,7 @@ end
 -- notegimmick {0, 2, Tweens.inoutquint, 0, 100, 'tipsy', col = 1, beat = 4}
 function ichi.notegimmick(t)
   if not t.beat then
-    lua.ReportScriptError("No beat for notegimmick provided.")
+    error("No beat for notegimmick provided.")
     return
   end
   if type(t.plr) == "number" then

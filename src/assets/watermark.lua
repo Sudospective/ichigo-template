@@ -1,7 +1,7 @@
 include "gizmos"
 
 -- main
-function wm_ready()
+function ready()
   do GoodBoy
     :Center()
     :basezoom(SH / IH)
@@ -30,7 +30,7 @@ function wm_ready()
   end
 end
 
-function wm_update(params)
+function update(params)
   GoodBoy:addrotationz(-30 * params.dt)
 end
 
