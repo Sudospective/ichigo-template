@@ -1,8 +1,8 @@
 .vscode/
 src/characters/
-notes.ssc.old
 ichigo-template.zip
 notes.sm
+notes.*.old
 notes.ats
 lib/*-wip.lua
 src/plugins/*.lua

@@ -70,11 +70,6 @@ local funcs = {
   input = {},
   draw = {},
 }
-local initfuncs = {}
-local readyfuncs = {}
-local updatefuncs = {}
-local inputfuncs = {}
-local drawfuncs = {}
 function ichi.run(path)
   local data = assert(loadfile(ichi.SONG_ROOT.."src/"..path))
   ichi(data)()
@@ -205,7 +200,7 @@ return Def.ActorFrame {
   Def.ActorFrame {
     Name = "Picasso",
     OnCommand = function(self)
-      if #drawfuncs > 0 then
+      if #funcs.draw > 0 then
         self:SetDrawFunction(function()
           for _, func in ipairs(funcs.draw) do func() end
         end)
