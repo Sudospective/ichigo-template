@@ -14,14 +14,28 @@ gimmick
   {200, "cmod"}
   {100, "modtimersong"}
   
-  {-10, 100, "dark"}
-  
-  {0, 2, Tweens.easeLinear, 100, 0, "dark"}
   {0, 4, Tweens.easeOutElastic, 100, 0, "drunk"}
   {0, 6, Tweens.easeOutElastic, 100, 0, "tipsy"}
 
-if Charts.P1 == Charts.Challenge then
-  gimmick
-    {0, 2, Tweens.easeOutBounce, 0, 100, "flip", plr = 1}
-    {0, 4, Tweens.easeOutElastic, 0, -100, "invert", plr = 1}
+
+notes = {
+  {beat = 8, col = 1}
+}
+
+notegimmick
+  {5, 2, Tweens.easeInOutCircle, OFMath.radians(360) * 100, 0, "confusionoffset"}
+
+notes = nil
+
+-- per-player slumpage-only gimmicks
+for i, pn in ipairs(Players) do
+  if Charts[pn] == Charts.Edit then
+    plr = i
+
+    gimmick
+      {0, 2, Tweens.easeOutBounce, 0, 100, "flip"}
+      {0, 4, Tweens.easeOutElastic, 0, -100, "invert"}
+    
+    plr = nil
+  end
 end

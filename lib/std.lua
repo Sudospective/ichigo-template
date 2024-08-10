@@ -45,6 +45,7 @@ end
 
 -- create a gimmick
 function ichi.gimmick(t)
+  t.plr = t.plr or ichi.plr
   local newT = {}
   if type(t[2]) == "string" then -- setdefault
     newT = {t[1], t[2]}
@@ -93,17 +94,21 @@ function ichi.gimmick(t)
 end
 
 -- create a note gimmick
--- notegimmick {0, 2, Tweens.inoutquint, 0, 100, 'tipsy', col = 1, beat = 4}
+-- notegimmick {0, 2, Tweens.inoutquint, 0, 100, 'tipsy', notes = { {beat = 4, col = 1} }}
 function ichi.notegimmick(t)
-  if not t.beat then
-    error("No beat for notegimmick provided.")
-    return
-  end
+  t.plr = t.plr or ichi.plr
+  t.notes = t.notes or ichi.notes
   if type(t.plr) == "number" then
     t.plr = {t.plr}
   end
-  if type(t.col) == "number" then
-    t.col = {t.col}
+  for i, v in ipairs(t.notes) do
+    if not v.beat then
+      error("notegimmick: No beat for note "..i.." provided.")
+      return
+    end
+    if type(v.col) == "number" then
+      v.col = {v.col}
+    end
   end
   table.insert(NoteTable, t)
   return ichi.notegimmick
@@ -264,11 +269,13 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
       if beat >= v[1] and beat <= v[1] + v[2] then
         local strength = v[3](beat - v[1], v[4], v[5] - v[4], v[2])
         for _, pn in ipairs(v.plr) do
-          for _, col in ipairs(v.col) do
-            if ichi.Actors["P"..pn].AddNoteMod then
-              ichi.Actors["P"..pn]:AddNoteMod(v.beat, col, v[6], strength * 0.01)
-            elseif ichi.Actors["P"..pn]:GetChild("NoteField") then
-              ichi.Actors["P"..pn]:GetChild("NoteField"):AddNoteMod(v.beat, col, v[6], strength * 0.01)
+          for _, note in ipairs(v.notes) do
+            for _, col in ipairs(note.col) do
+              if ichi.Actors["P"..pn].AddNoteMod then
+                ichi.Actors["P"..pn]:AddNoteMod(note.beat, col, v[6], strength * 0.01)
+              elseif ichi.Actors["P"..pn]:GetChild("NoteField") then
+                ichi.Actors["P"..pn]:GetChild("NoteField"):AddNoteMod(note.beat, col, v[6], strength * 0.01)
+              end
             end
           end
         end
