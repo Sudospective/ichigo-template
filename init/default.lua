@@ -27,7 +27,7 @@ ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SONG_ROOT = ichi.SONG:GetSongDir()
 ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
-ichi.__version = "1.2"
+ichi.__version = "1.3"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
@@ -40,6 +40,7 @@ ichi.Profiles = {
 }
 ichi.States = {}
 ichi.Columns = {}
+ichi.NoteData = {}
 
 -- easier chart access
 for _, v in ipairs(ichi.SONG:GetAllSteps()) do
@@ -150,9 +151,11 @@ for _, func in ipairs(funcs.init) do func() end
 return Def.ActorFrame {
   FOV = 120, -- the fov of one human eye
   OnCommand = function(self)
+    ichi.Actors.Screen = SCREENMAN:GetTopScreen()
     for _, pn in ipairs(ichi.Players) do
-      ichi.Actors[pn] = SCREENMAN:GetTopScreen():GetChild("Player"..pn)
+      ichi.Actors[pn] = ichi.Actors.Screen:GetChild("Player"..pn)
       ichi.Columns[pn] = ichi.Actors[pn]:GetChild("NoteField"):GetColumnActors()
+      ichi.NoteData[pn] = ichi.Actors[pn]:GetNoteData()
     end
     for _, func in ipairs(funcs.ready) do func() end
     for _, func in ipairs(funcs.input) do
