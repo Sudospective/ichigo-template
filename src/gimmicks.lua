@@ -18,14 +18,14 @@ gimmick
   {0, 6, Tweens.easeOutElastic, 100, 0, "tipsy"}
 
 
-notes = {
+note = {
   {beat = 8, col = 1}
 }
 
 notegimmick
   {5, 2, Tweens.easeInOutCircle, OFMath.radians(360) * 100, 0, "confusionoffset"}
 
-notes = nil
+note = nil
 
 -- per-player slumpage-only gimmicks
 for i, pn in ipairs(Players) do

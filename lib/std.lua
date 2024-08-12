@@ -97,11 +97,11 @@ end
 -- notegimmick {0, 2, Tweens.inoutquint, 0, 100, 'tipsy', notes = { {beat = 4, col = 1} }}
 function ichi.notegimmick(t)
   t.plr = t.plr or ichi.plr
-  t.notes = t.notes or ichi.notes
+  t.note = t.note or ichi.note
   if type(t.plr) == "number" then
     t.plr = {t.plr}
   end
-  for i, v in ipairs(t.notes) do
+  for i, v in ipairs(t.note) do
     if not v.beat then
       error("notegimmick: No beat for note "..i.." provided.")
       return
@@ -269,7 +269,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
       if beat >= v[1] and beat <= v[1] + v[2] then
         local strength = v[3](beat - v[1], v[4], v[5] - v[4], v[2])
         for _, pn in ipairs(v.plr) do
-          for _, note in ipairs(v.notes) do
+          for _, note in ipairs(v.note) do
             for _, col in ipairs(note.col) do
               if ichi.Actors["P"..pn].AddNoteMod then
                 ichi.Actors["P"..pn]:AddNoteMod(note.beat, col, v[6], strength * 0.01)
