@@ -26,7 +26,7 @@ ichi.DH = DISPLAY:GetDisplayHeight()
 ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SONG_ROOT = ichi.SONG:GetSongDir()
-ichi.SRC_ROOT = ichi.SONG:GetSongDir().."src"
+ichi.SRC_ROOT = ichi.SONG_ROOT.."src"
 ichi.__version = "1.3"
 
 -- variables
