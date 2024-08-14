@@ -150,6 +150,10 @@ for _, func in ipairs(funcs.init) do func() end
 
 return Def.ActorFrame {
   FOV = 120, -- the fov of one human eye
+  InitCommand = function(self)
+    ichi.Actors.Frame = self
+    self:Center()
+  end,
   OnCommand = function(self)
     ichi.Actors.Screen = SCREENMAN:GetTopScreen()
     for _, pn in ipairs(ichi.Players) do
@@ -199,7 +203,13 @@ return Def.ActorFrame {
     end,
   },
   LibActors,
-  ichi.Actors,
+  Def.ActorFrame {
+    Name = "CenterWrapper",
+    InitCommand = function(self)
+      self:xy(-ichi.SCX, -ichi.SCY)
+    end,
+    ichi.Actors,
+  },
   Def.ActorFrame {
     Name = "Picasso",
     OnCommand = function(self)

@@ -20,17 +20,23 @@ class "Gizmo" {
     self.__actor.InitCommand = function(s)
       self.__actor = s
     end
-    table.insert(Actors, self.__actor)
     if self.__ready then
       self:__ready(...)
     end
+    table.insert(Actors, self.__actor)
   end;
+  GetActor = function(self)
+    return self.__actor
+  end
 }
 
 class "Container" : extends "Gizmo" {
   __type = "ActorFrame";
   __ready = function(self)
-    self.__actor.FOV = 45
+    self:GetActor().FOV = 45
+  end;
+  AddActor = function(self, child)
+    table.insert(self:GetActor(), child:GetActor())
   end;
 }
 
@@ -42,7 +48,7 @@ class "Image" : extends "Gizmo" {
   __type = "Sprite";
   __ready = function(self, path)
     if path then
-      self.__actor.Texture = SRC_ROOT..path
+      self:GetActor().Texture = SRC_ROOT..path
     end
   end;
 }
@@ -54,8 +60,11 @@ class "MultiImage" : extends "Gizmo" {
 class "Label" : extends "Gizmo" {
   __type = "BitmapText";
   __ready = function(self, text, font)
-    self.__actor.Font = font or "Common Normal"
-    self.__actor.Text = text or "Sample text"
+    if font:find("/") then
+      font = SRC_ROOT..font
+    end
+    self:GetActor().Font = font or "Common Normal"
+    self:GetActor().Text = text or "Sample text"
   end;
 }
 
@@ -97,11 +106,11 @@ class "Model3D" : extends "Gizmo" {
     end
   end;
   LoadMeshes = function(self, path)
-    self.__actor.Meshes = SRC_ROOT..path
+    self:GetActor().Meshes = SRC_ROOT..path
     return self
   end;
   LoadMaterials = function(self, path)
-    self.__actor.Materials = SRC_ROOT..path
+    self:GetActor().Materials = SRC_ROOT..path
     return self
   end;
 }
@@ -110,12 +119,12 @@ class "Audio" : extends "Gizmo" {
   __type = "Sound";
   __ready = function(self, path)
     if path then
-      self.__actor.File = SRC_ROOT..path
-      self.__actor.Precache = true
+      self:GetActor().File = SRC_ROOT..path
+      self:GetActor().Precache = true
     end
   end;
   SetPrecache = function(self, b)
-    self.__actor.Precache = b
+    self:GetActor().Precache = b
   end;
 }
 
@@ -133,7 +142,7 @@ class "FakePlayer" : extends "Container" {
     local function metric(str)
       return tonumber(THEME:GetMetric("Player", str))
     end
-    self.__actor.FOV = 45
+    self:GetActor().FOV = 45
     local nf = Def.NoteField {
       Name = "NoteField",
       DrawDistanceAfterTargetsPixels = metric "DrawDistanceAfterTargetsPixels",
@@ -171,7 +180,7 @@ class "FakePlayer" : extends "Container" {
         s:SetNoteDataFromLua(Actors["P"..(s.Player + 1)]:GetNoteData())
       end,
     }
-    table.insert(self.__actor, nf)
+    table.insert(self:GetActor(), nf)
   end;
 }
 
@@ -183,7 +192,7 @@ class "Input" : extends "Gizmo" {
   __type = "Actor";
   __enabled = true;
   __ready = function(self)
-    self.__actor.OffCommand = function(s)
+    self:GetActor().OffCommand = function(s)
       if self.__callback then
         SCREENMAN:GetTopScreen():RemoveInputCallback(self.__callback)
       end
@@ -213,11 +222,11 @@ class "Input" : extends "Gizmo" {
 class "AudioWaveform" : extends "Gizmo" {
   __type = "AudioVisualizer";
   __ready = function(self)
-    local init = self.__actor.InitCommand
-    self.__actor.InitCommand = function(s)
+    local init = self:GetActor().InitCommand
+    self:GetActor().InitCommand = function(s)
       init(s)
       s:SetSound(SCREENMAN:GetTopScreen():GetSound())
     end
-    self.__actor.UpdateRate = 1/60
+    self:GetActor().UpdateRate = 1/60
   end;
 }
