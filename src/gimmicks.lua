@@ -11,7 +11,7 @@
 --]]
 
 gimmick
-  {200, "cmod"}
+  {1, "xmod"}
   {100, "modtimersong"}
   
   {0, 4, Tweens.easeOutElastic, 100, 0, "drunk"}
