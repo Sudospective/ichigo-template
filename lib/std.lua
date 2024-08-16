@@ -136,7 +136,7 @@ function ichi.register(nf)
   table.insert(PopTable, po)
   ichi.Options["P"..#PopTable] = po
   ichi.States["P"..#PopTable] = ps
-  ichi.Charts["P"..#PopTable] = Charts["P"..(#PopTable % 2 + 1)]
+  ichi.Charts["P"..#PopTable] = ichi.Charts["P"..(#PopTable % #ichi.Players + 1)]
   return #PopTable
 end
 
@@ -258,23 +258,30 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
   UpdateCommand = function(self, params)
     local beat = timebased and (params.time or ichi.SONG_POS:GetMusicSeconds()) or (params.beat or ichi.SONG_POS:GetSongBeat())
     for _, v in ipairs(NoteTable) do
-      v.plr = v.plr or {1, 2}
-      if type(v.plr) == "number" then
-        v.plr = {v.plr}
-      end
-      v.col = v.col or {1, 2, 3, 4}
-      if type(v.col) == "number" then
-        v.col = {v.col}
-      end
-      if beat >= v[1] and beat <= v[1] + v[2] then
-        local strength = v[3](beat - v[1], v[4], v[5] - v[4], v[2])
-        for _, pn in ipairs(v.plr) do
-          for _, note in ipairs(v.note) do
-            for _, col in ipairs(note.col) do
-              if ichi.Actors["P"..pn].AddNoteMod then
-                ichi.Actors["P"..pn]:AddNoteMod(note.beat, col, v[6], strength * 0.01)
-              elseif ichi.Actors["P"..pn]:GetChild("NoteField") then
-                ichi.Actors["P"..pn]:GetChild("NoteField"):AddNoteMod(note.beat, col, v[6], strength * 0.01)
+      if v.note then
+        v.plr = v.plr or {}
+        if #v.plr == 0 then
+          for i, pn in ipairs(ichi.Players) do
+            table.insert(v.plr, i)
+          end
+        end
+        if type(v.plr) == "number" then
+          v.plr = {v.plr}
+        end
+        v.col = v.col or {1, 2, 3, 4}
+        if type(v.col) == "number" then
+          v.col = {v.col}
+        end
+        if beat >= v[1] and beat <= v[1] + v[2] then
+          local strength = v[3](beat - v[1], v[4], v[5] - v[4], v[2])
+          for _, pn in ipairs(v.plr) do
+            for _, note in ipairs(v.note) do
+              for _, col in ipairs(note.col) do
+                if ichi.Actors["P"..pn].AddNoteMod then
+                  ichi.Actors["P"..pn]:AddNoteMod(note.beat, col, v[6], strength * 0.01)
+                elseif ichi.Actors["P"..pn]:GetChild("NoteField") then
+                  ichi.Actors["P"..pn]:GetChild("NoteField"):AddNoteMod(note.beat, col, v[6], strength * 0.01)
+                end
               end
             end
           end

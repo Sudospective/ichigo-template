@@ -60,7 +60,7 @@ class "MultiImage" : extends "Gizmo" {
 class "Label" : extends "Gizmo" {
   __type = "BitmapText";
   __ready = function(self, text, font)
-    if font:find("/") then
+    if font and font:find("/") then
       font = SRC_ROOT..font
     end
     self:GetActor().Font = font or "Common Normal"
@@ -151,10 +151,10 @@ class "FakePlayer" : extends "Container" {
       AutoPlay = true,
       FieldID = #Players + 1,
       Player = #Players % 2,
-      NoteSkin = Options["P"..((#Players % 2) + 1)]:NoteSkin(),
+      NoteSkin = Options[Players[1]]:NoteSkin(),
       InitCommand = function(s)
         s.FieldID = register(s)
-        s.Player = (s.FieldID - 1) % 2
+        s.Player = (s.FieldID - 1) % #Players
         local plr = s:GetParent()
         local po = s:GetPlayerOptions("ModsLevel_Current")
         local vanishx = plr.vanishpointx
@@ -177,7 +177,7 @@ class "FakePlayer" : extends "Container" {
         s:y(nfmid)
       end,
       OnCommand = function(s)
-        s:SetNoteDataFromLua(Actors["P"..(s.Player + 1)]:GetNoteData())
+        s:ChangeReload(Charts["P"..(s.Player + 1)])
       end,
     }
     table.insert(self:GetActor(), nf)
