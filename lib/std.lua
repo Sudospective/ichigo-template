@@ -136,7 +136,7 @@ function ichi.register(nf)
   table.insert(PopTable, po)
   ichi.Options["P"..#PopTable] = po
   ichi.States["P"..#PopTable] = ps
-  ichi.Charts["P"..#PopTable] = ichi.Charts["P"..(#PopTable % #ichi.Players + 1)]
+  ichi.Charts["P"..#PopTable] = ichi.Charts["P"..((#PopTable % #ichi.Players) + 1)]
   return #PopTable
 end
 
