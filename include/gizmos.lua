@@ -37,6 +37,7 @@ class "Container" : extends "Gizmo" {
   end;
   AddActor = function(self, child)
     table.insert(self:GetActor(), child:GetActor())
+    return self
   end;
 }
 

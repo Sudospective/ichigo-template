@@ -147,8 +147,8 @@ function ichi.centerColumnOffset()
     for i, col in ipairs(ichi.Columns[pn]) do
       local info = style:GetColumnInfo("PlayerNumber_"..pn, i)
       if col:GetNumWrapperStates() > 0 then
-        for i = 1, col:GetNumWrapperStates() do
-          col:RemoveWrapperState(i)
+        for j = 1, col:GetNumWrapperStates() do
+          col:RemoveWrapperState(j)
         end
       end
       local af = col:AddWrapperState()
