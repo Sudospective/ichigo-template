@@ -77,7 +77,7 @@ class "RenderTarget" : extends "Container" {
   __type = "ActorFrameTexture";
 }
 
-class "Viewport" : extends "Gizmo" {
+class "Viewport" : extends "Container" {
   __type = "ActorScreenTexture";
 }
 
