@@ -81,8 +81,7 @@ class "Viewport" : extends "Gizmo" {
   __type = "ActorScreenTexture";
 }
 
-class "ShaderLoader" : extends "Gizmo" {
-  __type = "Actor";
+class "ShaderLoader" : extends "Container" {
   __ready = function(self)
     if not go() then
       SCREENMAN:SystemMessage("ShaderLoader: Alpha V not detected")
@@ -97,7 +96,7 @@ class "ShaderLoader" : extends "Gizmo" {
         s:visible(false)
       end
     }
-    table.insert(ichi.Actors, 1, shader)
+    table.insert(self:GetActor(), 1, shader)
     return self
   end;
 }
