@@ -192,8 +192,8 @@ class "FakePlayer" : extends "Container" {
 class "ProxyWall" : extends "RollingContainer" {
   __ready = function(self, length, pattern)
     local a = self:GetActor()
-    local width = GAMESTATE:GetStyleFieldSize("PlayerNumber_P1") * SH / 480
-    length = length or math.ceil(SW * 1.5 / width)
+    local width = GAMESTATE:GetStyleFieldSize("PlayerNumber_P1") * SCREEN_HEIGHT / 480
+    length = length or math.ceil(SCREEN_WIDTH * 1.5 / width)
     pattern = pattern or {1, 2}
     if type(pattern) == "number" then
       pattern = {pattern}
@@ -216,7 +216,7 @@ class "ProxyWall" : extends "RollingContainer" {
             Name = p,
             OnCommand = function(s)
               s:SetTarget(Actors[p]:GetChild("NoteField"))
-              s:basezoom(SH / 480):rotafterzoom(false)
+              s:basezoom(SCREEN_HEIGHT / 480):rotafterzoom(false)
             end,
           }
         end)
