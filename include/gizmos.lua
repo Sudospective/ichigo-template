@@ -41,6 +41,10 @@ class "Container" : extends "Gizmo" {
   end;
 }
 
+class "RollingContainer" : extends "Container" {
+  __type = "ActorScroller";
+}
+
 class "Rect" : extends "Gizmo" {
   __type = "Quad";
 }
@@ -182,6 +186,68 @@ class "FakePlayer" : extends "Container" {
       end,
     }
     table.insert(self:GetActor(), nf)
+  end;
+}
+
+class "ProxyWall" : extends "RollingContainer" {
+  __ready = function(self, length, pattern)
+    local a = self:GetActor()
+    local width = GAMESTATE:GetStyleFieldSize("PlayerNumber_P1") * SH / 480
+    length = length or math.ceil(SW * 1.5 / width)
+    pattern = pattern or {1, 2}
+    if type(pattern) == "number" then
+      pattern = {pattern}
+    end
+    a.FOV = 45
+    a.UseScroller = true
+    a.SecondsPerItem = 0
+    a.NumItemsToDraw = length
+    a.ItemPaddingStart = 0
+    a.ItemPaddingEnd = 0
+    a.TransformFunction = function(s, offset, itemIndex, numItems)
+      s:x((offset + ((length - 1) % 2) * 0.5) * width)
+    end
+    a.OnCommand = function(s)
+      s:SetLoop(true):SetFastCatchup(true):rotafterzoom(false)
+      for _, v in ipairs(pattern) do
+        local p = "P"..v
+        s:AddChild(function()
+          return Def.ActorProxy {
+            Name = p,
+            OnCommand = function(s)
+              s:SetTarget(Actors[p]:GetChild("NoteField"))
+              s:basezoom(SH / 480):rotafterzoom(false)
+            end,
+          }
+        end)
+      end
+      if s:GetNumWrapperStates() > 0 then
+        for i = 1, s:GetNumWrapperStates() do
+          s:RemoveWrapperState(i)
+        end
+      end
+      local wrapper = s:AddWrapperState()
+      wrapper
+        :Center()
+        :fov(45)
+        :rotafterzoom(false)
+      function s:rotationx(n)
+        wrapper:rotationx(n)
+        return s
+      end
+      function s:rotationy(n)
+        wrapper:rotationy(n)
+        return s
+      end
+      function s:rotationz(n)
+        wrapper:rotationz(n)
+        return s
+      end
+    end
+  end;
+  SetWallX = function(self, offset)
+    self:GetActor():SetCurrentAndDestinationItem(offset)
+    return self
   end;
 }
 
