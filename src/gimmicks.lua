@@ -17,7 +17,6 @@ gimmick
   {0, 4, Tweens.easeOutElastic, 100, 0, "drunk"}
   {0, 6, Tweens.easeOutElastic, 100, 0, "tipsy"}
 
-
 notes = {
   {beat = 8, col = 1}
 }

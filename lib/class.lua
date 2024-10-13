@@ -18,6 +18,10 @@ function ichi.class(name)
   end
   function newclass.extends(class,base)
     class.super=ichi[base]
+    if class.super == nil then
+      error("Class "..base.." does not exist.")
+      return
+    end
     for k,v in pairs(ichi[base].__members) do
       class.__members[k]=v
     end
