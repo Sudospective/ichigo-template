@@ -29,8 +29,8 @@ function ready()
   end
 end
 
---function update(params)
---end
+-- function update(params)
+-- end
 
 -- function input(event)
 -- end
