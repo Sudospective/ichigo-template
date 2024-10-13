@@ -34,7 +34,7 @@ for i, pn in ipairs(Players) do
     gimmick
       {0, 2, Tweens.easeOutBounce, 0, 100, "flip"}
       {0, 4, Tweens.easeOutElastic, 0, -100, "invert"}
-    
+
     plr = nil
   end
 end
