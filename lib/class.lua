@@ -55,3 +55,14 @@ function ichi.namespace(name)
     return setmetatable(newspace, {__index = newspace})
   end
 end
+
+function ichi.using(namespace)
+  return function(func)
+    if not ichi[namespace] then
+      error("Namespace does not exist.")
+      return
+    end
+    setfenv(func, ichi[namespace])
+    func()
+  end
+end
