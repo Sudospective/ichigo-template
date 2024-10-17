@@ -98,6 +98,9 @@ end
 function ichi.notegimmick(t)
   t.plr = t.plr or ichi.plr
   t.notes = t.notes or ichi.notes
+  if t.notes.beat ~= nil then
+    t.notes = {t.notes}
+  end
   if type(t.plr) == "number" then
     t.plr = {t.plr}
   end
