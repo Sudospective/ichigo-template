@@ -63,7 +63,6 @@ for i, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   end
 end
 
--- run a file from /src
 local funcs = {
   init = {},
   ready = {},
@@ -71,14 +70,24 @@ local funcs = {
   input = {},
   draw = {},
 }
+
+-- run a file from /src
 function ichi.run(path)
   local data = assert(loadfile(ichi.SONG_ROOT.."src/"..path))
   ichi(data)()
   local i = {}
+  -- This for loop checks for global functions in the ichi
+  -- environment labeled as either "init", "ready", "update",
+  -- "input", or "draw". If it finds any, it puts them into
+  -- the above `funcs` table and erases them from the
+  -- ichi environment. This allows for scripts to implement
+  -- user-defined hooks of the same names.
   for name in pairs(funcs) do
     i[name] = ichi[name]
     if i[name] then
-      table.insert(funcs[name], i[name])
+      if type(i[name]) == "function" then
+        table.insert(funcs[name], i[name])
+      end
       ichi[name] = nil
     end
   end
@@ -91,7 +100,6 @@ end
 
 local function config(key, file, cat)
   if not FILEMAN:DoesFileExist(file) then return end
-  local container = {}
   local configfile = RageFileUtil.CreateRageFile()
   configfile:Open(file, 1)
   local configcontent = configfile:Read()
@@ -113,6 +121,7 @@ local function config(key, file, cat)
   end
 end
 
+-- We don't want to read from file every time, so save our settings in a table.
 local settings = {}
 function ichi.setting(name)
   if not settings[name] then
