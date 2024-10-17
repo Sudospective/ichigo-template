@@ -200,7 +200,9 @@ return Def.ActorFrame {
   Def.Actor {
     Name = "Newsboy",
     OnCommand = function(self)
-      self:sleep(self:GetEffectDelta()):queuecommand("Update")
+      if #funcs.update > 0 then
+        self:sleep(self:GetEffectDelta()):queuecommand("Update")
+      end
     end,
     UpdateCommand = function(self, params)
       params = params or {}
