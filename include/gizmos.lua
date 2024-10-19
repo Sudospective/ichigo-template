@@ -156,10 +156,11 @@ class "FakePlayer" : extends "Container" {
       FieldID = #Players + 1,
       Player = #Players % 2,
       NoteSkin = Options[Players[1]]:NoteSkin(),
-      InitCommand = function(s)
+      OnCommand = function(s)
         s.FieldID = register(s)
         s.Player = (s.FieldID - 1) % #Players
         local plr = s:GetParent()
+        if not plr then return end
         local po = s:GetPlayerOptions("ModsLevel_Current")
         local vanishx = plr.vanishpointx
         local vanishy = plr.vanishpointy
@@ -179,8 +180,6 @@ class "FakePlayer" : extends "Container" {
         local nfmid = (metric "ReceptorArrowsYStandard" + metric "ReceptorArrowsYReverse") / 2
         plr:Center():zoom(SCREEN_HEIGHT / 480)
         s:y(nfmid)
-      end,
-      OnCommand = function(s)
         s:ChangeReload(Charts["P"..(s.Player + 1)])
       end,
     }
