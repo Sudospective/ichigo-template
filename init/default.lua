@@ -158,7 +158,7 @@ ichi.run("main.lua")
 for _, func in ipairs(funcs.init) do func() end
 
 return Def.ActorFrame {
-  FOV = 120, -- the fov of one human eye
+  FOV = 120,
   InitCommand = function(self)
     ichi.Actors.Frame = self
     self:Center()

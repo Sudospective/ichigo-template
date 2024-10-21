@@ -241,7 +241,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     self:PopulatePoptions(PopTable)
     for _, v in ipairs(PopTable) do
       for _, mod in pairs(DefTable) do
-        modstring = "*-1 "
+        local modstring = "*-1 "
         if mod[2]:find("mod") and not mod[2]:find("modtimer") then
           if mod[2]:find("x") then
             modstring = modstring..mod[1].."x"
@@ -257,7 +257,9 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
       end
       self:SetDefaultMods(v)
     end
-    self:SetPostCommand("Update")
+    if #NoteTable > 0 then
+      self:SetPostCommand("Update")
+    end
   end,
   UpdateCommand = function(self, params)
     local beat = timebased and (params.time or ichi.SONG_POS:GetMusicSeconds()) or (params.beat or ichi.SONG_POS:GetSongBeat())
