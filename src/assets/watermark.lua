@@ -2,9 +2,8 @@ include "gizmos"
 
 -- main
 function ready()
+  Watermark:Center():basezoom(SH / IH)
   do GoodBoy
-    :Center()
-    :basezoom(SH / IH)
     :SetSize(96, 96)
     :diffuse(1, 0.8, 0.8, 1)
     :zoom(0)
@@ -13,17 +12,11 @@ function ready()
     :shadowlengthy(3)
   end
   do Ichigo
-    :Center()
-    :basezoom(SH / IH)
     :SetSize(64 * Ichigo:GetTexture():GetSourceWidth() / Ichigo:GetTexture():GetSourceHeight(), 64)
     :zoom(0)
   end
   do TemplateText
-    :LoadFromFont(THEME:GetPathF("Common", "Normal"))
-    :Center()
-    :basezoom(SH / IH)
     :addy(96)
-    :settext("Ichigo Template")
     :cropright(1)
     :shadowcolor(0, 0, 0, 0.5)
     :shadowlengthy(3)
@@ -35,9 +28,16 @@ function update(params)
 end
 
 -- layout
+Watermark = Container:new()
 GoodBoy = Rect:new()
 Ichigo = Image:new("/assets/ichigo.png") -- art by draco_system
-TemplateText = Label:new()
+TemplateText = Label:new("Ichigo Template")
+
+Watermark:AddGizmo(GoodBoy)
+Watermark:AddGizmo(Ichigo)
+Watermark:AddGizmo(TemplateText)
+
+AddGizmo(Watermark)
 
 -- gimmicks
 gimmick

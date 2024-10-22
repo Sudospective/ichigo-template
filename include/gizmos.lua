@@ -23,7 +23,7 @@ class "Gizmo" {
     if self.__ready then
       self:__ready(...)
     end
-    table.insert(Actors, self.__actor)
+    --table.insert(Actors, self.__actor)
   end;
   GetActor = function(self)
     return self.__actor
@@ -35,8 +35,8 @@ class "Container" : extends "Gizmo" {
   __ready = function(self)
     self:GetActor().FOV = 45
   end;
-  AddActor = function(self, child)
-    table.insert(self:GetActor(), child:GetActor())
+  AddGizmo = function(self, gizmo)
+    table.insert(self.__actor, gizmo.__actor)
     return self
   end;
 }

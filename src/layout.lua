@@ -20,3 +20,11 @@ for _, pn in ipairs(Players) do
     Combo = Proxy:new(),
   }
 end
+
+AddGizmo(Shaders)
+AddGizmo(BG)
+for _, pn in ipairs(Players) do
+  AddGizmo(Proxies[pn].Player)
+  AddGizmo(Proxies[pn].Judgment)
+  AddGizmo(Proxies[pn].Combo)
+end
