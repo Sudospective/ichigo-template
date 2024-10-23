@@ -43,10 +43,6 @@ function ichi.actor(t)
   return ichi.actor
 end
 
-function ichi.AddGizmo(gizmo)
-  table.insert(ichi.Actors, gizmo.__actor)
-end
-
 -- create a gimmick
 function ichi.gimmick(t)
   t.plr = t.plr or ichi.plr
