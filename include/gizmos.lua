@@ -141,7 +141,6 @@ class "PlayField" : extends "Gizmo" {
 }
 
 class "FakePlayer" : extends "Container" {
-  __type = "ActorFrame";
   __ready = function(self)
     local function metric(str)
       return tonumber(THEME:GetMetric("Player", str))
