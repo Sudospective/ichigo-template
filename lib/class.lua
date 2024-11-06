@@ -43,7 +43,11 @@ end
 
 function ichi.namespace(name)
   local newspace = {}
-  ichi[name] = newspace
+  ichi[name] = ichi[name] or newspace
+  if ichi[name].__class then
+    error("Cannot use class as namespace.")
+    return
+  end
   return function(t)
     for k, v in pairs(t) do
       if type(v) == 'table' then
