@@ -31,7 +31,11 @@ ichi.__version = "1.0"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
-ichi.Actors = Def.ActorFrame {}
+ichi.Actors = Def.ActorFrame {
+  InitCommand = function(self)
+    ichi.Actors.Pivot = self
+  end
+}
 ichi.Players = {}
 ichi.Options = {}
 ichi.Charts = {}
