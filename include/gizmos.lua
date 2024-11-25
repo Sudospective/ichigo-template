@@ -27,7 +27,7 @@ class "Gizmo" {
   end;
   GetActor = function(self)
     return self.__actor
-  end
+  end;
 }
 
 class "Container" : extends "Gizmo" {
