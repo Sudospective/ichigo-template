@@ -1,6 +1,11 @@
+-- Include Gizmo header
 include "gizmos"
 
--- main
+
+--main
+
+-- These hooks can be written in multiple scripts,
+-- each script will have its own hook associated with it
 function ready()
   Watermark:Center():basezoom(SH / IH)
   do GoodBoy
@@ -27,7 +32,13 @@ function update(params)
   GoodBoy:addrotationz(-30 * params.dt)
 end
 
+
 -- layout
+
+-- We can create Gizmos, which are like Actors, but have a simpler
+-- way to create them. Keep in mind of the different names that
+-- correspond to different Actors; you can find a list here:
+-- https://ichigo-docs.sudospective.net/ichigo-template-docs/gizmos
 Watermark = Container:new()
 GoodBoy = Rect:new()
 Ichigo = Image:new("/assets/ichigo.png") -- art by draco_system
@@ -39,7 +50,13 @@ Watermark:AddGizmo(TemplateText)
 
 AddGizmo(Watermark)
 
+
 -- gimmicks
+
+-- The `gimmick` command works similarly to how the `func` command
+-- works in Mirin template versions under 4.0, with the added
+-- functionality of `set` and `ease`. Here is an example of it being
+-- used for `func`-like behavior.
 gimmick
   {0, function()
     do GoodBoy
