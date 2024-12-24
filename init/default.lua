@@ -27,7 +27,7 @@ ichi.SONG = GAMESTATE:GetCurrentSong()
 ichi.SONG_POS = GAMESTATE:GetSongPosition()
 ichi.SONG_ROOT = ichi.SONG:GetSongDir()
 ichi.SRC_ROOT = ichi.SONG_ROOT.."src"
-ichi.__version = "1.0"
+ichi.__version = "1.1"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
@@ -102,8 +102,14 @@ function ichi.include(name)
   ichi(data)()
 end
 
-local function config(key, file, cat)
-  if not FILEMAN:DoesFileExist(file) then return end
+local function read_config(key, file, cat)
+  if not FILEMAN:DoesFileExist(file) then
+    local createfile = RageFileUtil.CreateRageFile()
+    createfile:Open(file, 2)
+    createfile:Write("")
+    createfile:Close()
+    createfile:destroy()
+  end
   local configfile = RageFileUtil.CreateRageFile()
   configfile:Open(file, 1)
   local configcontent = configfile:Read()
@@ -113,7 +119,7 @@ local function config(key, file, cat)
   local caty = true
   for line in string.gmatch(configcontent.."\n", "(.-)\n") do
     for con in string.gmatch(line, "%[(.-)%]") do
-      if con == cat or cat == nil then caty = true else caty = false end
+      caty = con == cat
     end
     for keyval, val in string.gmatch(line, "(.-)=(.+)") do
       if key == keyval and caty then
@@ -124,24 +130,102 @@ local function config(key, file, cat)
     end
   end
 end
+local function write_config(key, value, file, cat)
+  if cat == nil then
+    error("Category must be defined.")
+    return
+  end
+  if not FILEMAN:DoesFileExist(file) then
+    local createfile = RageFileUtil.CreateRageFile()
+    createfile:Open(file, 2)
+    createfile:Write("")
+    createfile:Close()
+    createfile:destroy()
+  end
+
+  local container = {}
+  local configcontent
+  
+  local configfile = RageFileUtil.CreateRageFile()
+  if configfile:Open(file, 1) then
+    configcontent = configfile:Read()
+  end
+
+  configfile:Close()
+
+  local found = false
+  local caty = true
+  local current_cat = ""
+
+  for line in string.gmatch(configcontent.."\n", "(.-)\n") do
+    for con in string.gmatch(line, "%[(.-)%]") do
+      print(con)
+      caty = con == cat
+      container[con] = {}
+      current_cat = con
+    end
+    for keyval, val in string.gmatch(line, "(.-)=(.+)") do
+      if key == keyval then
+        if caty then
+          val = value
+          found = true
+        end
+      end
+      if container[current_cat] then
+        container[current_cat][keyval] = val
+      end
+      break
+    end
+  end
+
+  if found == false then
+    container[cat] = container[cat] or {}
+    container[cat][key] = value
+  end
+
+  local output = ""
+
+  for category in pairs(container) do
+    if output ~= "" then
+      output = output.."\n"
+    end
+    output = output.."["..category.."]".."\n"
+    for k, v in pairs(container[category]) do
+      output = output..k.."="..tostring(v).."\n"
+    end
+  end
+
+  configfile:Open(file, 2)
+  configfile:Write(output)
+  configfile:Close()
+  configfile:destroy()
+
+end
 
 -- We don't want to read from file every time, so save our settings in a table.
 local settings = {}
-function ichi.setting(name)
-  if not settings[name] then
-    local value = config(name, ichi.SONG_ROOT.."settings.ini")
-    if value == nil then
-      error("No value for setting \""..name.."\".")
-      return
+function ichi.setting(category, name, default)
+  if not settings[category] or not settings[category][name] then
+    local val = read_config(name, ichi.SONG_ROOT.."settings.ini", category)
+    if val == nil then
+      if default ~= nil then
+        val = default
+        write_config(name, val, ichi.SONG_ROOT.."settings.ini", category)
+      else
+        error("No value for setting \""..name.."\" in category \""..category.."\".")
+        return
+      end
     end
-    value = tonumber(value) or tobool(value) or value
-    settings[name] = value
+    val = tonumber(val) or tobool(val) or val
+    settings[category] = settings[category] or {}
+    settings[category][name] = val
   end
-  return settings[name]
+  PrintTable(settings)
+  return settings[category][name]
 end
 
 -- grab from settings
-ichi.IH = ichi.setting "IntendedHeight"
+ichi.IH = ichi.setting("Ichigo", "IntendedHeight", 720)
 
 local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}

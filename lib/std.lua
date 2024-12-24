@@ -5,6 +5,8 @@
 
 local ichi = ...
 
+local settings_cat = "StandardLib"
+
 local DefTable = {}
 local EaseTable = {}
 local ModTable = {}
@@ -15,7 +17,7 @@ local PopTable = {}
 local updatetime = 0
 
 local timebased = false
-if ichi.setting "TimeBasedGimmicks" then
+if ichi.setting(settings_cat, "TimeBasedGimmicks", false) then
   timebased = true
 end
 
@@ -193,7 +195,7 @@ function ichi.setupCombo(plr, proxy)
 end
 
 
-if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 then
+if ichi.setting(settings_cat, "RequireTwoPlayers", false) and GAMESTATE:GetNumPlayersEnabled() < 2 then
   table.insert(ichi.Actors, Def.Actor {
     OnCommand = function(self)
       SCREENMAN:SystemMessage("Two Players Required")
@@ -203,7 +205,7 @@ if ichi.setting "RequireTwoPlayers" and GAMESTATE:GetNumPlayersEnabled() < 2 the
 end
 
 
-local reader = ichi.setting "ModreaderType"
+local reader = ichi.setting(settings_cat, "ModreaderType", "panda")
 
 return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and Def.PandaTemplate {
   Name = "Bookworm",
@@ -416,7 +418,7 @@ return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and 
     end
     self:sleep(updatetime ~= 0 and updatetime or self:GetEffectDelta()):queuecommand("Update")
   end,
-} or Def.Actor{
+} or Def.Actor {
   InitCommand = function(self)
     print("Ichigo", "Standard Library", "Modreader Disabled")
     ichi.gimmick = nil
