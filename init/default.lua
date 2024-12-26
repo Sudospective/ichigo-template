@@ -103,6 +103,10 @@ function ichi.include(name)
 end
 
 local function read_config(key, file, cat)
+  if cat == nil then
+    error("Category must be defined.")
+    return
+  end
   if not FILEMAN:DoesFileExist(file) then
     local createfile = RageFileUtil.CreateRageFile()
     createfile:Open(file, 2)
@@ -142,21 +146,16 @@ local function write_config(key, value, file, cat)
     createfile:Close()
     createfile:destroy()
   end
-
   local container = {}
   local configcontent
-  
   local configfile = RageFileUtil.CreateRageFile()
   if configfile:Open(file, 1) then
     configcontent = configfile:Read()
   end
-
   configfile:Close()
-
   local found = false
   local caty = true
   local current_cat = ""
-
   for line in string.gmatch(configcontent.."\n", "(.-)\n") do
     for con in string.gmatch(line, "%[(.-)%]") do
       print(con)
@@ -177,14 +176,11 @@ local function write_config(key, value, file, cat)
       break
     end
   end
-
   if found == false then
     container[cat] = container[cat] or {}
     container[cat][key] = value
   end
-
   local output = ""
-
   for category in pairs(container) do
     if output ~= "" then
       output = output.."\n"
@@ -194,12 +190,10 @@ local function write_config(key, value, file, cat)
       output = output..k.."="..tostring(v).."\n"
     end
   end
-
   configfile:Open(file, 2)
   configfile:Write(output)
   configfile:Close()
   configfile:destroy()
-
 end
 
 -- We don't want to read from file every time, so save our settings in a table.
@@ -225,7 +219,7 @@ function ichi.setting(category, name, default)
 end
 
 -- grab from settings
-ichi.IH = ichi.setting("Ichigo", "IntendedHeight", 720)
+ichi.IH = ichi.setting("Ichigo", "IntendedHeight", ichi.SH)
 
 local LIBS = FILEMAN:GetDirListing(ichi.SONG_ROOT.."lib/", false, true)
 local LibActors = Def.ActorFrame {}

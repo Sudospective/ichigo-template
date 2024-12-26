@@ -7,4 +7,5 @@ notes.ats
 lib/*-wip.lua
 src/plugins/*.lua
 src/plugins/*.md
+settings.ini
 --temp--
