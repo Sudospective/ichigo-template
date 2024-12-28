@@ -39,8 +39,6 @@ ichi.Profiles = {
   Machine = PROFILEMAN:GetMachineProfile()
 }
 ichi.States = {}
-ichi.Columns = {}
-ichi.NoteData = {}
 
 -- easier chart access
 for _, v in ipairs(ichi.SONG:GetAllSteps()) do

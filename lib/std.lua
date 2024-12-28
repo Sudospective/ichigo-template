@@ -25,9 +25,15 @@ for _, pn in ipairs(GAMESTATE:GetEnabledPlayers()) do
   table.insert(PopTable, GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song"))
 end
 
-function ichi.yasumi()
-  local screen = SCREENMAN:GetTopScreen()
-  return screen.IsPaused and screen:IsPaused() or false
+function ichi.yasumi(val)
+  local screen = ichi.Actors.Screen
+  if val ~= nil then
+    if screen.PauseGame then
+      screen:PauseGame(val)
+    end
+  else
+    return screen.IsPaused and screen:IsPaused() or false
+  end
 end
 
 function ichi.updatetime(time)
