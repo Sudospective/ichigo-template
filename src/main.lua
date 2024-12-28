@@ -9,6 +9,11 @@ function init()
 end
 
 function ready()
+  -- hide actors for performance
+  if Actors.Screen.HideGameplayElements then
+    Actors.Screen:HideGameplayElements()
+  end
+
   -- background
   do BG
     :FullScreen()

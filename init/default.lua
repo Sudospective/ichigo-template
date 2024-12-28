@@ -31,11 +31,7 @@ ichi.__version = "1.1"
 
 -- variables
 ichi.Style = GAMESTATE:GetCurrentStyle()
-ichi.Actors = Def.ActorFrame {
-  InitCommand = function(self)
-    ichi.Actors.Pivot = self
-  end
-}
+ichi.Actors = Def.ActorFrame {}
 ichi.Players = {}
 ichi.Options = {}
 ichi.Charts = {}
@@ -85,7 +81,8 @@ function ichi.run(path)
   -- "input", or "draw". If it finds any, it puts them into
   -- the above `funcs` table and erases them from the
   -- ichi environment. This allows for scripts to implement
-  -- user-defined hooks of the same names.
+  -- user-defined hooks of the same names without clashing
+  -- with existing hooks.
   for name in pairs(funcs) do
     i[name] = ichi[name]
     if i[name] then
@@ -214,7 +211,6 @@ function ichi.setting(category, name, default)
     settings[category] = settings[category] or {}
     settings[category][name] = val
   end
-  PrintTable(settings)
   return settings[category][name]
 end
 
@@ -242,29 +238,38 @@ for _, func in ipairs(funcs.init) do func() end
 return Def.ActorFrame {
   FOV = 120,
   InitCommand = function(self)
-    ichi.Actors.Frame = self
+    ichi.Actors.Pivot = self
     self:Center()
+    for i = 1, self:GetNumWrapperStates() do
+      self:RemoveWrapperState(i)
+    end
+    ichi.Actors.Frame = self:AddWrapperState()
   end,
   OnCommand = function(self)
     ichi.Actors.Screen = SCREENMAN:GetTopScreen()
+    ichi.Actors.Overlay = ichi.Actors.Screen:GetChild("Overlay")
+    ichi.Actors.Underlay = ichi.Actors.Screen:GetChild("Underlay")
     for _, pn in ipairs(ichi.Players) do
       ichi.Actors[pn] = ichi.Actors.Screen:GetChild("Player"..pn)
-      ichi.Columns[pn] = ichi.Actors[pn]:GetChild("NoteField"):GetColumnActors()
-      ichi.NoteData[pn] = ichi.Actors[pn]:GetNoteData()
+      ichi.Actors[pn].Life = ichi.Actors.Screen:GetChild("Life"..pn)
+      ichi.Actors[pn].Score = ichi.Actors.Screen:GetChild("Score"..pn)
+
+      ichi.Actors[pn].Columns = ichi.Actors[pn]:GetChild("NoteField"):GetColumnActors()
+      ichi.Actors[pn].NoteData = ichi.Actors[pn]:GetNoteData()
     end
     for _, func in ipairs(funcs.ready) do func() end
     for _, func in ipairs(funcs.input) do
-      SCREENMAN:GetTopScreen():AddInputCallback(func)
+      ichi.Actors.Screen:AddInputCallback(func)
     end
-    if SCREENMAN:GetTopScreen().GetEditState then
-      SCREENMAN:GetTopScreen():GetChild("Overlay"):AddChild(function()
+    if ichi.Actors.Screen.GetEditState and not ichi.Actors.Overlay:GetChild("InputCleaner") then
+      ichi.Actors.Overlay:AddChild(function()
         return Def.Actor {
           Name = "InputCleaner",
           EditCommand = function(self)
             for _, func in ipairs(funcs.input) do
-              SCREENMAN:GetTopScreen():RemoveInputCallback(func)
+              ichi.Actors.Screen:RemoveInputCallback(func)
             end
-            SCREENMAN:GetTopScreen():GetChild("Overlay"):RemoveChild(self:GetName())
+            ichi.Actors.Overlay:RemoveChild(self:GetName())
           end,
         }
       end)
@@ -272,7 +277,7 @@ return Def.ActorFrame {
   end,
   OffCommand = function(self)
     for _, func in ipairs(funcs.input) do
-      SCREENMAN:GetTopScreen():RemoveInputCallback(func)
+      ichi.Actors.Screen:RemoveInputCallback(func)
     end
   end,
   Def.Actor {
