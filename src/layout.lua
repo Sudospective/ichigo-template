@@ -1,7 +1,5 @@
 include "gizmos"
 
--- gizmos appear in order created
-
 -- if alpha v
 if go() then
   -- shader loader
