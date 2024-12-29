@@ -156,7 +156,7 @@ function ichi.centerColumnOffset()
   local style = GAMESTATE:GetCurrentStyle()
   if style == nil then return end
   for _, pn in ipairs(ichi.Players) do
-    for i, col in ipairs(ichi.Columns[pn]) do
+    for i, col in ipairs(ichi.Actors[pn].Columns) do
       local info = style:GetColumnInfo("PlayerNumber_"..pn, i)
       if col:GetNumWrapperStates() > 0 then
         for j = 1, col:GetNumWrapperStates() do
