@@ -9,7 +9,7 @@ function init()
 end
 
 function ready()
-  -- hide actors for performance
+  -- hide gameplay elements for performance
   if Actors.Screen.HideGameplayElements then
     Actors.Screen:HideGameplayElements()
   end
