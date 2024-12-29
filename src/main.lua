@@ -1,4 +1,4 @@
--- Documentation at: https://ichigo-docs.sudospective.net
+-- Documentation at https://ichigo-docs.sudospective.net
 -- Small example in /assets/watermark.lua
 
 function init()

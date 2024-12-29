@@ -211,7 +211,7 @@ if ichi.setting(settings_cat, "RequireTwoPlayers", false) and GAMESTATE:GetNumPl
 end
 
 
-local reader = ichi.setting(settings_cat, "ModreaderType", "panda")
+local reader = ichi.setting(settings_cat, "ModreaderType", go() and "panda" or "legacy")
 
 return (ActorUtil.IsRegisteredClass("PandaTemplate") and reader == "panda") and Def.PandaTemplate {
   Name = "Bookworm",
