@@ -1,0 +1,1 @@
+You can download plugins for Ichigo Template at https://git.sudospective.net/ichigo-template/ichigo-template-plugins

@@ -71,6 +71,10 @@ local funcs = {
 
 -- run a file from /src
 function ichi.run(path)
+  if path:find("%.%.") then
+    lua.ReportScriptError("Cannot run file outside of src")
+    return
+  end
   local data = assert(loadfile(ichi.SONG_ROOT.."src/"..path))
   ichi(data)()
   local i = {}
