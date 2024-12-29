@@ -95,11 +95,6 @@ function ichi.run(path)
     end
   end
 end
--- include a file from /include
-function ichi.include(name)
-  local data = assert(loadfile(ichi.SONG_ROOT.."include/"..name..".lua"))
-  ichi(data)()
-end
 
 local function read_config(key, file, cat)
   if cat == nil then

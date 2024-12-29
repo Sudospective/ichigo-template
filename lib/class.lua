@@ -51,12 +51,12 @@ function ichi.namespace(name)
   return function(t)
     for k, v in pairs(t) do
       if type(v) == 'table' then
-        newspace[k] = DeepCopy(v)
+        ichi[name][k] = DeepCopy(v)
       else
-        newspace[k] = v
+        ichi[name][k] = v
       end
     end
-    return setmetatable(newspace, {__index = newspace})
+    return setmetatable(ichi[name], {__index = ichi})
   end
 end
 
@@ -69,4 +69,12 @@ function ichi.using(namespace)
     setfenv(func, ichi[namespace])
     func()
   end
+end
+
+function ichi.include(name)
+  local data = assert(loadfile(ichi.SONG_ROOT.."include/"..name..".lua"))
+  if data == nil then
+    lua.ReportScriptError("Library \""..name.."\" is empty or otherwise unavailable.")
+  end
+  ichi(data)()
 end
